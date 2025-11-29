@@ -25,7 +25,7 @@ class ProductUpdate(ProductBase):
 
 # Properties shared by models stored in DB
 class ProductInDBBase(ProductBase):
-    id: int
+    id: str
 
     class Config:
         from_attributes = True

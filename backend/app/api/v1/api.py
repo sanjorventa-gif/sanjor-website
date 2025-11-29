@@ -1,8 +1,13 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, products, users
+from app.api.v1.endpoints import auth, products, users, news, history, upload, downloads, carousel
 
 api_router = APIRouter()
 api_router.include_router(auth.router, tags=["login"])
-api_router.include_router(products.router, prefix="/products", tags=["products"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(products.router, prefix="/products", tags=["products"])
+api_router.include_router(news.router, prefix="/news", tags=["news"])
+api_router.include_router(history.router, prefix="/history", tags=["history"])
+api_router.include_router(upload.router, prefix="/upload", tags=["upload"])
+api_router.include_router(downloads.router, prefix="/downloads", tags=["downloads"])
+api_router.include_router(carousel.router, prefix="/carousel", tags=["carousel"])

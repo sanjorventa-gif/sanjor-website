@@ -1,49 +1,55 @@
 import { useState, useEffect } from 'react';
-import { Box, Text, Flex, Heading, Stack, Container, IconButton } from '@chakra-ui/react';
+import { Box, Text, Flex, Heading, Stack, Container, IconButton, Skeleton } from '@chakra-ui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { getCarouselItems, type CarouselItem } from '../../api/carousel';
 
 const AUTOPLAY_DELAY = 8000; // 8 seconds
 
-const slides = [
-    {
-        id: 1,
-        image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-        title: 'Excelencia en Equipamiento de Laboratorio',
-        subtitle: 'Más de 50 años brindando precisión y calidad en cada equipo.',
-    },
-    {
-        id: 2,
-        image: 'https://images.unsplash.com/photo-1581093458891-9f30220728b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-        title: 'Innovación y Tecnología',
-        subtitle: 'Sistemas avanzados de control y diseño para resultados confiables.',
-    },
-    {
-        id: 3,
-        image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-        title: 'Soluciones a Medida',
-        subtitle: 'Desarrollamos equipos especiales adaptados a sus necesidades específicas.',
-    },
-];
-
 export default function HeroCarousel() {
+    const [slides, setSlides] = useState<CarouselItem[]>([]);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const fetchSlides = async () => {
+            try {
+                const data = await getCarouselItems();
+                setSlides(data);
+            } catch (error) {
+                console.error('Error fetching carousel items:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchSlides();
+    }, []);
+
+    useEffect(() => {
+        if (slides.length === 0) return;
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
         }, AUTOPLAY_DELAY);
         return () => clearInterval(timer);
-    }, [currentSlide]); // Reset timer on slide change manually if needed, but interval works fine if not reset. 
-    // Actually, to sync with progress bar, we might want to rely on the key change of the progress bar.
+    }, [currentSlide, slides.length]);
 
     const prevSlide = () => {
+        if (slides.length === 0) return;
         setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
     };
 
     const nextSlide = () => {
+        if (slides.length === 0) return;
         setCurrentSlide((prev) => (prev + 1) % slides.length);
     };
+
+    if (isLoading) {
+        return <Skeleton height="calc(100vh - 60px)" width="full" />;
+    }
+
+    if (slides.length === 0) {
+        return null; // Or a placeholder
+    }
 
     return (
         <Box

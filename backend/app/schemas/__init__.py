@@ -1,3 +1,6 @@
-from .product import Product, ProductCreate, ProductUpdate
 from .token import Token, TokenPayload
-from .user import User, UserCreate, UserUpdate
+from .user import User, UserCreate, UserInDB, UserUpdate
+from .product import Product, ProductCreate, ProductUpdate
+from .news import News, NewsCreate, NewsUpdate
+from .history import History, HistoryCreate, HistoryUpdate
+from .download import Download, DownloadCreate, DownloadUpdate

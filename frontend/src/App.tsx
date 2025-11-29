@@ -16,6 +16,14 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminLayout from './components/layout/AdminLayout';
 import Users from './pages/admin/Users';
 import UserForm from './pages/admin/UserForm';
+import NewsList from './pages/admin/NewsList';
+import NewsForm from './pages/admin/NewsForm';
+import HistoryList from './pages/admin/HistoryList';
+import HistoryForm from './pages/admin/HistoryForm';
+import DownloadsList from './pages/admin/DownloadsList';
+import DownloadForm from './pages/admin/DownloadForm';
+import CarouselList from './pages/admin/CarouselList';
+import CarouselForm from './pages/admin/CarouselForm';
 
 import UserLogin from './pages/auth/UserLogin';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -53,6 +61,18 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="users/new" element={<UserForm />} />
             <Route path="users/edit/:id" element={<UserForm />} />
+            <Route path="news" element={<NewsList />} />
+            <Route path="news/new" element={<NewsForm />} />
+            <Route path="news/edit/:id" element={<NewsForm />} />
+            <Route path="history" element={<HistoryList />} />
+            <Route path="history/new" element={<HistoryForm />} />
+            <Route path="history/edit/:id" element={<HistoryForm />} />
+            <Route path="downloads" element={<DownloadsList />} />
+            <Route path="downloads/new" element={<DownloadForm />} />
+            <Route path="downloads/edit/:id" element={<DownloadForm />} />
+            <Route path="carousel" element={<CarouselList />} />
+            <Route path="carousel/new" element={<CarouselForm />} />
+            <Route path="carousel/edit/:id" element={<CarouselForm />} />
           </Route>
         </Route>
       </Routes>

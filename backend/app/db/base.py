@@ -3,3 +3,7 @@
 from app.db.base_class import Base  # noqa
 from app.models.product import Product  # noqa
 from app.models.user import User  # noqa
+from app.models.news import News  # noqa
+from app.models.history import History  # noqa
+from app.models.download import Download  # noqa
+from app.models.carousel import CarouselItem  # noqa

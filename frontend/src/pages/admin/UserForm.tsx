@@ -11,9 +11,18 @@ import {
     useToast,
     Select,
     Switch,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    Text,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/axios';
+import { getUser, createUser, updateUser } from '../../api/users';
 
 export default function UserForm() {
     const { id } = useParams();
@@ -21,6 +30,8 @@ export default function UserForm() {
     const navigate = useNavigate();
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [tempPassword, setTempPassword] = useState('');
 
     const [formData, setFormData] = useState({
         email: '',
@@ -38,18 +49,8 @@ export default function UserForm() {
 
     const fetchUser = async () => {
         try {
-            const response = await api.get(`/users/`);
-            // Simple find since we don't have get-by-id endpoint exposed yet or we can use the list
-            // Actually I added get-by-id in backend, let's use it if I did.
-            // Checking backend code... yes I added router.put("/{user_id}") but not get("/{user_id}") specifically?
-            // Wait, I added get_multi and update/delete/create. I missed get_by_id in the router!
-            // I will use the list and find for now, or add the endpoint.
-            // Let's check the backend code I wrote.
-            // I wrote: read_users (list), create_user, update_user, delete_user.
-            // Missing get_user_by_id.
-            // I'll just filter from the list for now to save a round trip of editing backend again.
-            const user = response.data.find((u: any) => u.id === Number(id));
-            if (user) {
+            if (id) {
+                const user = await getUser(Number(id));
                 setFormData({
                     email: user.email,
                     password: '', // Don't show password
@@ -73,10 +74,10 @@ export default function UserForm() {
         setIsLoading(true);
 
         try {
-            if (isEditing) {
+            if (isEditing && id) {
                 const { password, ...dataWithoutPassword } = formData;
                 const updateData = password ? formData : dataWithoutPassword;
-                await api.put(`/users/${id}`, updateData);
+                await updateUser(Number(id), updateData);
                 toast({
                     title: 'Usuario actualizado',
                     status: 'success',
@@ -84,7 +85,7 @@ export default function UserForm() {
                     isClosable: true,
                 });
             } else {
-                await api.post('/users/', formData);
+                await createUser(formData);
                 toast({
                     title: 'Usuario creado',
                     status: 'success',
@@ -106,6 +107,19 @@ export default function UserForm() {
         }
     };
 
+    const handleSavePassword = () => {
+        setFormData({ ...formData, password: tempPassword });
+        onClose();
+        setTempPassword('');
+        toast({
+            title: 'Contraseña establecida',
+            description: 'Se guardará cuando actualice el usuario.',
+            status: 'info',
+            duration: 2000,
+            isClosable: true,
+        });
+    };
+
     return (
         <Container maxW="container.md" py={8}>
             <Box bg="white" p={8} rounded="lg" shadow="sm">
@@ -123,21 +137,13 @@ export default function UserForm() {
                             />
                         </FormControl>
 
-                        <FormControl id="password" isRequired={!isEditing}>
-                            <FormLabel>Contraseña {isEditing && '(Dejar en blanco para mantener)'}</FormLabel>
-                            <Input
-                                type="password"
-                                value={formData.password}
-                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            />
-                        </FormControl>
-
                         <FormControl id="role">
                             <FormLabel>Rol</FormLabel>
                             <Select
-                                value={formData.role}
+                                value={formData.role || ''}
                                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                             >
+                                <option value="">Pendiente (Sin Rol)</option>
                                 <option value="admin">Admin</option>
                                 <option value="usuario_nacional">Usuario Nacional</option>
                                 <option value="usuario_internacional">Usuario Internacional</option>
@@ -157,9 +163,32 @@ export default function UserForm() {
                             />
                         </FormControl>
 
+                        {isEditing ? (
+                            <FormControl>
+                                <FormLabel>Contraseña</FormLabel>
+                                <Button onClick={onOpen} size="sm" colorScheme="blue" variant="outline">
+                                    Cambiar Contraseña
+                                </Button>
+                                {formData.password && (
+                                    <Text fontSize="sm" color="green.500" mt={2}>
+                                        Contraseña modificada (pendiente de guardar)
+                                    </Text>
+                                )}
+                            </FormControl>
+                        ) : (
+                            <FormControl id="password" isRequired>
+                                <FormLabel>Contraseña</FormLabel>
+                                <Input
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                />
+                            </FormControl>
+                        )}
+
                         <Button
                             type="submit"
-                            colorScheme="brand"
+                            colorScheme="blue"
                             size="lg"
                             isLoading={isLoading}
                         >
@@ -168,6 +197,32 @@ export default function UserForm() {
                     </Stack>
                 </form>
             </Box>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Cambiar Contraseña</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <FormControl>
+                            <FormLabel>Nueva Contraseña</FormLabel>
+                            <Input
+                                type="password"
+                                value={tempPassword}
+                                onChange={(e) => setTempPassword(e.target.value)}
+                                placeholder="Ingrese la nueva contraseña"
+                            />
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={handleSavePassword}>
+                            Establecer
+                        </Button>
+                        <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Container>
     );
 }

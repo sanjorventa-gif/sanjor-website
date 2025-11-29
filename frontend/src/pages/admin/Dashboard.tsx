@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     Box,
     Heading,
@@ -21,11 +22,23 @@ import { Reorder } from 'framer-motion';
 
 export default function Dashboard() {
     const { products, removeProduct, reorder } = useProducts();
+    const [localProducts, setLocalProducts] = useState(products);
     const toast = useToast();
     const navigate = useNavigate();
 
-    // Sort products by order for display
-    const sortedProducts = [...products].sort((a, b) => (a.order || 0) - (b.order || 0));
+    // Sync local state with global products on load or update
+    useEffect(() => {
+        setLocalProducts([...products].sort((a, b) => (a.order || 0) - (b.order || 0)));
+    }, [products]);
+
+    const handleReorder = (newOrder: any[]) => {
+        setLocalProducts(newOrder);
+    };
+
+    const handleDragEnd = () => {
+        // Only trigger API call when drag ends
+        reorder(localProducts);
+    };
 
     return (
         <Container maxW="container.xl" py={8}>
@@ -41,21 +54,22 @@ export default function Dashboard() {
                     <Thead bg="gray.50">
                         <Tr>
                             <Th>Orden</Th>
-                            <Th>Imagen</Th>
+                            <Th>Acciones</Th>
                             <Th>Nombre</Th>
+                            <Th>Imagen</Th>
                             <Th>Categoría</Th>
                             <Th>Dimensiones</Th>
                             <Th>Temperatura</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
-                    <Reorder.Group as="tbody" axis="y" values={sortedProducts} onReorder={reorder}>
-                        {sortedProducts.map((product) => (
+                    <Reorder.Group as="tbody" axis="y" values={localProducts} onReorder={handleReorder}>
+                        {localProducts.map((product) => (
                             <Reorder.Item
                                 as="tr"
                                 key={product.id}
                                 value={product}
                                 style={{ cursor: 'grab', position: 'relative' }}
+                                onDragEnd={handleDragEnd}
                                 whileDrag={{
                                     scale: 1.02,
                                     boxShadow: "0px 5px 15px rgba(0,0,0,0.1)",
@@ -65,42 +79,6 @@ export default function Dashboard() {
                             >
                                 <Td>
                                     <DragHandleIcon color="gray.400" />
-                                </Td>
-                                <Td>
-                                    <Image
-                                        src={product.image}
-                                        alt={product.name}
-                                        boxSize="50px"
-                                        objectFit="cover"
-                                        rounded="md"
-                                        fallbackSrc="https://via.placeholder.com/50"
-                                    />
-                                </Td>
-                                <Td fontWeight="medium">{product.name}</Td>
-                                <Td>
-                                    <Badge
-                                        colorScheme={
-                                            product.category === 'cultivo'
-                                                ? 'green'
-                                                : product.category === 'esterilizacion'
-                                                    ? 'blue'
-                                                    : product.category === 'secado'
-                                                        ? 'orange'
-                                                        : 'purple'
-                                        }
-                                    >
-                                        {product.category.toUpperCase()}
-                                    </Badge>
-                                </Td>
-                                <Td fontSize="sm" color="gray.600">
-                                    {product.dimensions ? (
-                                        `${product.dimensions.length}x${product.dimensions.width}x${product.dimensions.height} ${product.dimensions.unit}`
-                                    ) : '-'}
-                                </Td>
-                                <Td fontSize="sm" color="gray.600">
-                                    {product.temperature ? (
-                                        `${product.temperature.min} - ${product.temperature.max} ${product.temperature.unit}`
-                                    ) : '-'}
                                 </Td>
                                 <Td>
                                     <IconButton
@@ -130,6 +108,42 @@ export default function Dashboard() {
                                             }
                                         }}
                                     />
+                                </Td>
+                                <Td fontWeight="medium">{product.name}</Td>
+                                <Td>
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        boxSize="50px"
+                                        objectFit="cover"
+                                        rounded="md"
+                                        fallbackSrc="https://placehold.co/50"
+                                    />
+                                </Td>
+                                <Td>
+                                    <Badge
+                                        colorScheme={
+                                            product.category === 'cultivo'
+                                                ? 'green'
+                                                : product.category === 'esterilizacion'
+                                                    ? 'blue'
+                                                    : product.category === 'secado'
+                                                        ? 'orange'
+                                                        : 'purple'
+                                        }
+                                    >
+                                        {product.category.toUpperCase()}
+                                    </Badge>
+                                </Td>
+                                <Td fontSize="sm" color="gray.600">
+                                    {product.dimensions ? (
+                                        `${product.dimensions.length}x${product.dimensions.width}x${product.dimensions.height} ${product.dimensions.unit}`
+                                    ) : '-'}
+                                </Td>
+                                <Td fontSize="sm" color="gray.600">
+                                    {product.temperature ? (
+                                        `${product.temperature.min} - ${product.temperature.max} ${product.temperature.unit}`
+                                    ) : '-'}
                                 </Td>
                             </Reorder.Item>
                         ))}

@@ -57,8 +57,9 @@ export function ProductProvider({ children }: { children: ReactNode }) {
     };
 
     const reorder = async (newOrder: Product[]) => {
-        // Optimistic update
-        setProducts(newOrder);
+        // Optimistic update: Update the 'order' property for each item to match its new index
+        const updatedOrder = newOrder.map((p, index) => ({ ...p, order: index }));
+        setProducts(updatedOrder);
         try {
             const orderData = newOrder.map((p, index) => ({ id: Number(p.id), order: index }));
             await reorderProductsApi(orderData);

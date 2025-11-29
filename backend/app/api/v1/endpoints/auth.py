@@ -62,8 +62,8 @@ def register(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    # Force default role for public registration
-    user_in.role = models.user.UserRole.USUARIO_NACIONAL
+    # Force no role for public registration (manual assignment required)
+    user_in.role = None
     user_in.is_superuser = False
     user = crud.user.create(db, obj_in=user_in)
     return user

@@ -1,0 +1,9 @@
+from sqlalchemy import Column, Integer, String
+from app.db.base_class import Base
+
+class CarouselItem(Base):
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    subtitle = Column(String, nullable=True)
+    image = Column(String, nullable=False)
+    order = Column(Integer, default=0)

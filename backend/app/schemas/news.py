@@ -1,0 +1,23 @@
+from typing import Optional
+from pydantic import BaseModel
+from datetime import date
+
+class NewsBase(BaseModel):
+    title: str
+    date: date
+    category: str
+    excerpt: str
+    image: str
+    content: Optional[str] = None
+
+class NewsCreate(NewsBase):
+    pass
+
+class NewsUpdate(NewsBase):
+    pass
+
+class News(NewsBase):
+    id: int
+
+    class Config:
+        from_attributes = True

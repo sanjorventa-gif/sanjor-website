@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -8,80 +9,158 @@ import {
     Icon,
     Button,
     useColorModeValue,
+    Link,
+    Badge,
+    Spinner,
+    Center,
 } from '@chakra-ui/react';
 import { FaFilePdf, FaDownload } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { getDownloads, type Download } from '../api/downloads';
 
 export default function Downloads() {
-    const manuals = [
-        { title: 'Manual de Usuario - Estufas de Cultivo', size: '2.5 MB' },
-        { title: 'Manual de Usuario - Estufas de Esterilización', size: '2.8 MB' },
-        { title: 'Manual Sistema BLAST', size: '3.1 MB' },
-        { title: 'Guía de Instalación Rápida', size: '1.2 MB' },
-    ];
+    const { user, isAuthenticated } = useAuth();
+    const [downloads, setDownloads] = useState<Download[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const catalogs = [
-        { title: 'Catálogo General 2025', size: '5.4 MB' },
-        { title: 'Ficha Técnica - Serie Cultivo', size: '1.5 MB' },
-        { title: 'Ficha Técnica - Serie Esterilización', size: '1.5 MB' },
-    ];
+    useEffect(() => {
+        fetchDownloads();
+    }, []);
+
+    const fetchDownloads = async () => {
+        try {
+            const data = await getDownloads();
+            setDownloads(data);
+        } catch (error) {
+            console.error("Error fetching downloads", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Filter items based on user role
+    const filteredDownloads = downloads.filter(item => {
+        // If item has no specific roles or empty roles, it's public
+        const isPublic = !item.allowed_roles || item.allowed_roles.length === 0;
+
+        if (isPublic) return true;
+
+        // If user is admin, they see everything
+        if (isAuthenticated && user?.role === 'admin') return true;
+
+        // If authenticated, check if user's role is in allowed_roles
+        if (isAuthenticated && user && item.allowed_roles.includes(user.role)) return true;
+
+        return false;
+    });
+
+    // Group by category
+    const groupedDownloads = filteredDownloads.reduce((acc, item) => {
+        const category = item.category || 'Otros';
+        if (!acc[category]) acc[category] = [];
+        acc[category].push(item);
+        return acc;
+    }, {} as Record<string, Download[]>);
+
+    const getRoleName = (role: string) => {
+        const roles: { [key: string]: string } = {
+            'admin': 'Administrador',
+            'usuario_nacional': 'Usuario Nacional',
+            'usuario_internacional': 'Usuario Internacional',
+            'distribuidor_nacional': 'Distribuidor Nacional',
+            'distribuidor_internacional': 'Distribuidor Internacional'
+        };
+        return roles[role] || role;
+    };
+
+    if (isLoading) {
+        return (
+            <Center h="50vh">
+                <Spinner size="xl" color="brand.500" />
+            </Center>
+        );
+    }
 
     return (
         <Box py={10}>
             <Container maxW={'container.xl'}>
-                <Heading mb={6} color="brand.700">Descargas</Heading>
+                <Stack spacing={2} mb={6}>
+                    <Heading color="brand.700">Descargas</Heading>
+                    {isAuthenticated && user && (
+                        <Text fontSize="xl" color="brand.500" fontWeight="bold">
+                            Bienvenido, {getRoleName(user.role)}
+                        </Text>
+                    )}
+                </Stack>
+
                 <Text fontSize="lg" mb={10} color="gray.600">
                     Acceda a manuales, catálogos y documentación técnica de nuestros productos.
                 </Text>
 
                 <Stack spacing={12}>
-                    <Section title="Manuales de Usuario" items={manuals} />
-                    <Section title="Catálogos y Fichas Técnicas" items={catalogs} />
+                    {Object.entries(groupedDownloads).length > 0 ? (
+                        Object.entries(groupedDownloads).map(([category, items]) => (
+                            <Section key={category} title={category} items={items} />
+                        ))
+                    ) : (
+                        <Text color="gray.500" fontSize="lg">No hay descargas disponibles para su perfil.</Text>
+                    )}
                 </Stack>
             </Container>
         </Box>
     );
 }
 
-const Section = ({ title, items }: { title: string; items: { title: string; size: string }[] }) => {
+const Section = ({ title, items }: { title: string; items: Download[] }) => {
     return (
         <Box>
             <Heading size="lg" mb={6} color="brand.600" borderBottom="2px solid" borderColor="brand.100" pb={2}>
                 {title}
             </Heading>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                {items.map((item, index) => (
-                    <DownloadCard key={index} {...item} />
+                {items.map((item) => (
+                    <DownloadCard key={item.id} item={item} />
                 ))}
             </SimpleGrid>
         </Box>
     );
 };
 
-const DownloadCard = ({ title, size }: { title: string; size: string }) => {
+const DownloadCard = ({ item }: { item: Download }) => {
+    const cardBg = useColorModeValue('white', 'gray.800');
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+
     return (
         <Stack
             direction="row"
-            bg={useColorModeValue('white', 'gray.800')}
+            bg={cardBg}
             p={4}
             rounded="md"
             shadow="sm"
             border="1px solid"
-            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            borderColor={borderColor}
             align="center"
             justify="space-between"
             _hover={{ shadow: 'md', borderColor: 'brand.300' }}
             transition="all 0.2s"
         >
-            <Stack direction="row" align="center" spacing={4}>
-                <Icon as={FaFilePdf} color="red.500" w={6} h={6} />
-                <Box>
-                    <Text fontWeight="600">{title}</Text>
-                    <Text fontSize="sm" color="gray.500">{size}</Text>
+            <Stack direction="row" align="center" spacing={4} overflow="hidden">
+                <Icon as={FaFilePdf} color="red.500" w={6} h={6} flexShrink={0} />
+                <Box overflow="hidden">
+                    <Text fontWeight="600" noOfLines={1} title={item.title}>{item.title}</Text>
+                    <Stack direction="row" align="center" spacing={2}>
+                        <Badge fontSize="xs" variant="outline" colorScheme="blue">{item.language}</Badge>
+                        {item.description && (
+                            <Text fontSize="sm" color="gray.500" noOfLines={1}>{item.description}</Text>
+                        )}
+                    </Stack>
                 </Box>
             </Stack>
-            <Button leftIcon={<FaDownload />} size="sm" variant="ghost" colorScheme="brand">
-                Descargar
-            </Button>
+            <Link href={item.file_url} isExternal style={{ textDecoration: 'none' }}>
+                <Button leftIcon={<FaDownload />} size="sm" variant="ghost" colorScheme="brand">
+                    Descargar
+                </Button>
+            </Link>
         </Stack>
     );
 };

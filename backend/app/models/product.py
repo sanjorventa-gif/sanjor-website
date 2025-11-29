@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, JSON
 from app.db.base_class import Base
 
 class Product(Base):
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, index=True)
     name = Column(String, index=True)
     category = Column(String, index=True)
     description = Column(Text)

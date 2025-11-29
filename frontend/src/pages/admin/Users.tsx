@@ -19,15 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/axios';
+import { getUsers, deleteUser, type User } from '../../api/users';
 
-interface User {
-    id: number;
-    email: string;
-    role: string;
-    is_active: boolean;
-    is_superuser: boolean;
-}
+
 
 export default function Users() {
     const [users, setUsers] = useState<User[]>([]);
@@ -41,8 +35,8 @@ export default function Users() {
 
     const fetchUsers = async () => {
         try {
-            const response = await api.get('/users/');
-            setUsers(response.data);
+            const data = await getUsers();
+            setUsers(data);
         } catch (error) {
             toast({
                 title: 'Error al cargar usuarios',
@@ -59,7 +53,7 @@ export default function Users() {
         if (!window.confirm('¿Está seguro de eliminar este usuario?')) return;
 
         try {
-            await api.delete(`/users/${id}`);
+            await deleteUser(id);
             setUsers(users.filter((u) => u.id !== id));
             toast({
                 title: 'Usuario eliminado',
@@ -91,7 +85,7 @@ export default function Users() {
                 <Heading size="lg">Gestión de Usuarios</Heading>
                 <Button
                     leftIcon={<AddIcon />}
-                    colorScheme="brand"
+                    colorScheme="blue"
                     onClick={() => navigate('/admin/users/new')}
                 >
                     Nuevo Usuario
@@ -115,7 +109,9 @@ export default function Users() {
                                 <Td>{user.id}</Td>
                                 <Td>{user.email}</Td>
                                 <Td>
-                                    <Badge colorScheme="blue">{user.role}</Badge>
+                                    <Badge colorScheme={user.role ? 'blue' : 'gray'}>
+                                        {user.role || 'Pendiente'}
+                                    </Badge>
                                 </Td>
                                 <Td>
                                     <Badge colorScheme={user.is_active ? 'green' : 'red'}>
@@ -128,15 +124,19 @@ export default function Users() {
                                         icon={<EditIcon />}
                                         size="sm"
                                         mr={2}
+                                        colorScheme="blue"
+                                        variant="ghost"
                                         onClick={() => navigate(`/admin/users/edit/${user.id}`)}
+                                        isDisabled={user.is_superuser}
                                     />
                                     <IconButton
                                         aria-label="Eliminar"
                                         icon={<DeleteIcon />}
                                         size="sm"
                                         colorScheme="red"
+                                        variant="ghost"
                                         onClick={() => handleDelete(user.id)}
-                                        isDisabled={user.is_superuser} // Prevent deleting superusers easily
+                                        isDisabled={user.is_superuser}
                                     />
                                 </Td>
                             </Tr>

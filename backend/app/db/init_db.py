@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app import crud, schemas
+from app import crud, schemas, models
 from app.core.config import settings
 from app.db import base  # noqa: F401
 
@@ -22,5 +22,6 @@ def init_db(db: Session) -> None:
             email="admin@sanjor.com.ar",
             password="sanjor2024",
             is_superuser=True,
+            role=models.UserRole.ADMIN,
         )
         user = crud.user.create(db, obj_in=user_in)

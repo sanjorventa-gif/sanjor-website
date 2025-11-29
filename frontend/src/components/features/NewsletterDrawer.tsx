@@ -77,12 +77,13 @@ export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerPr
             setRegData({ email: '', password: '', confirmPassword: '', newsletter: true });
             // Reload to update auth state (simple way) or use AuthContext
             window.location.reload();
-        } catch (error) {
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.detail || 'No se pudo crear la cuenta. Intente nuevamente.';
             toast({
                 title: 'Error',
-                description: 'No se pudo crear la cuenta. Verifique si el email ya está registrado.',
+                description: errorMessage,
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         } finally {
