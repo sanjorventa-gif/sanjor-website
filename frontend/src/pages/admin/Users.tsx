@@ -96,28 +96,16 @@ export default function Users() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
+                            <Th>Acciones</Th>
                             <Th>ID</Th>
                             <Th>Email</Th>
                             <Th>Rol</Th>
                             <Th>Estado</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {users.map((user) => (
                             <Tr key={user.id}>
-                                <Td>{user.id}</Td>
-                                <Td>{user.email}</Td>
-                                <Td>
-                                    <Badge colorScheme={user.role ? 'blue' : 'gray'}>
-                                        {user.role || 'Pendiente'}
-                                    </Badge>
-                                </Td>
-                                <Td>
-                                    <Badge colorScheme={user.is_active ? 'green' : 'red'}>
-                                        {user.is_active ? 'Activo' : 'Inactivo'}
-                                    </Badge>
-                                </Td>
                                 <Td>
                                     <IconButton
                                         aria-label="Editar"
@@ -138,6 +126,18 @@ export default function Users() {
                                         onClick={() => handleDelete(user.id)}
                                         isDisabled={user.is_superuser}
                                     />
+                                </Td>
+                                <Td>{user.id}</Td>
+                                <Td>{user.email}</Td>
+                                <Td>
+                                    <Badge colorScheme={user.role ? 'blue' : 'gray'}>
+                                        {user.role || 'Pendiente'}
+                                    </Badge>
+                                </Td>
+                                <Td>
+                                    <Badge colorScheme={user.is_active ? 'green' : 'red'}>
+                                        {user.is_active ? 'Activo' : 'Inactivo'}
+                                    </Badge>
                                 </Td>
                             </Tr>
                         ))}

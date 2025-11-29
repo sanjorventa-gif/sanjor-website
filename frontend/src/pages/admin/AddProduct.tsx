@@ -50,7 +50,7 @@ export default function AddProduct() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Generate a simple ID based on name
@@ -77,17 +77,28 @@ export default function AddProduct() {
             technicalSheet: formData.technicalSheet,
         };
 
-        addProduct(newProduct);
+        try {
+            await addProduct(newProduct);
 
-        toast({
-            title: 'Producto agregado',
-            description: 'El producto se ha guardado correctamente.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-        });
+            toast({
+                title: 'Producto agregado',
+                description: 'El producto se ha guardado correctamente.',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
 
-        navigate('/admin');
+            navigate('/admin');
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: 'Error',
+                description: 'No se pudo guardar el producto.',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     };
 
     return (
@@ -107,6 +118,7 @@ export default function AddProduct() {
                             <option value="esterilizacion">Esterilización</option>
                             <option value="secado">Secado</option>
                             <option value="cajas">Cajas de Acero</option>
+                            <option value="otro">Otro</option>
                         </Select>
                     </FormControl>
 
@@ -150,16 +162,18 @@ export default function AddProduct() {
                         </FormControl>
                     </Stack>
 
-                    <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-                        <FormControl>
-                            <FormLabel>Temp. Mínima (°C)</FormLabel>
-                            <Input type="number" value={tempMin} onChange={(e) => setTempMin(e.target.value)} />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Temp. Máxima (°C)</FormLabel>
-                            <Input type="number" value={tempMax} onChange={(e) => setTempMax(e.target.value)} />
-                        </FormControl>
-                    </Stack>
+                    {(formData.category !== 'cajas' && formData.category !== 'otro') && (
+                        <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+                            <FormControl>
+                                <FormLabel>Temp. Mínima (°C)</FormLabel>
+                                <Input type="number" value={tempMin} onChange={(e) => setTempMin(e.target.value)} />
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel>Temp. Máxima (°C)</FormLabel>
+                                <Input type="number" value={tempMax} onChange={(e) => setTempMax(e.target.value)} />
+                            </FormControl>
+                        </Stack>
+                    )}
 
                     <FormControl>
                         <FormLabel>Ficha Técnica (PDF)</FormLabel>

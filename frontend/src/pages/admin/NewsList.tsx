@@ -83,31 +83,16 @@ export default function NewsList() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
+                            <Th>Acciones</Th>
                             <Th>Imagen</Th>
                             <Th>Título</Th>
                             <Th>Fecha</Th>
                             <Th>Categoría</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {news.map((item) => (
                             <Tr key={item.id}>
-                                <Td>
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        boxSize="50px"
-                                        objectFit="cover"
-                                        rounded="md"
-                                        fallbackSrc="https://placehold.co/50"
-                                    />
-                                </Td>
-                                <Td fontWeight="medium">{item.title}</Td>
-                                <Td>{item.date}</Td>
-                                <Td>
-                                    <Badge colorScheme="brand">{item.category}</Badge>
-                                </Td>
                                 <Td>
                                     <IconButton
                                         aria-label="Editar"
@@ -126,6 +111,21 @@ export default function NewsList() {
                                         size="sm"
                                         onClick={() => handleDelete(item.id)}
                                     />
+                                </Td>
+                                <Td>
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        boxSize="50px"
+                                        objectFit="cover"
+                                        rounded="md"
+                                        fallbackSrc="https://placehold.co/50"
+                                    />
+                                </Td>
+                                <Td fontWeight="medium">{item.title}</Td>
+                                <Td>{item.date}</Td>
+                                <Td>
+                                    <Badge colorScheme="brand">{item.category}</Badge>
                                 </Td>
                             </Tr>
                         ))}

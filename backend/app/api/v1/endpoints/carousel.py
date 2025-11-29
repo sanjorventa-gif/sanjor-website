@@ -21,7 +21,22 @@ def read_carousel_items(
     # Let's sort in python for now or rely on insertion order if not specified.
     # Better: sort by 'order' field.
     items.sort(key=lambda x: x.order)
+    items.sort(key=lambda x: x.order)
     return items
+
+@router.get("/{id}", response_model=schemas.CarouselItem)
+def read_carousel_item(
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+) -> Any:
+    """
+    Get carousel item by ID.
+    """
+    item = crud.carousel.get(db=db, id=id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
 
 @router.post("/", response_model=schemas.CarouselItem)
 def create_carousel_item(

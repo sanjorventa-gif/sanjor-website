@@ -107,17 +107,36 @@ export default function DownloadsList() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
+                            <Th>Acciones</Th>
                             <Th>Título</Th>
                             <Th>Categoría</Th>
                             <Th>Idioma</Th>
                             <Th>Roles Permitidos</Th>
                             <Th>Archivo</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {filteredDownloads.map((item) => (
                             <Tr key={item.id}>
+                                <Td>
+                                    <IconButton
+                                        aria-label="Editar"
+                                        icon={<EditIcon />}
+                                        colorScheme="blue"
+                                        variant="ghost"
+                                        size="sm"
+                                        mr={2}
+                                        onClick={() => navigate(`/admin/downloads/edit/${item.id}`)}
+                                    />
+                                    <IconButton
+                                        aria-label="Eliminar"
+                                        icon={<DeleteIcon />}
+                                        colorScheme="red"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleDelete(item.id)}
+                                    />
+                                </Td>
                                 <Td fontWeight="medium">{item.title}</Td>
                                 <Td>
                                     <Badge colorScheme="purple">{item.category}</Badge>
@@ -141,25 +160,6 @@ export default function DownloadsList() {
                                         <Icon as={DownloadIcon} mr={1} />
                                         Ver
                                     </Link>
-                                </Td>
-                                <Td>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        size="sm"
-                                        mr={2}
-                                        onClick={() => navigate(`/admin/downloads/edit/${item.id}`)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleDelete(item.id)}
-                                    />
                                 </Td>
                             </Tr>
                         ))}

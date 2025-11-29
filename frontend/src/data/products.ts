@@ -1,7 +1,7 @@
 export interface Product {
     id: string | number;
     name: string;
-    category: 'cultivo' | 'esterilizacion' | 'secado' | 'cajas';
+    category: 'cultivo' | 'esterilizacion' | 'secado' | 'cajas' | 'otro';
     description: string;
     image: string;
     features: string[];

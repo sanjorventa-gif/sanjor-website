@@ -37,7 +37,7 @@ def create_product(
 def reorder_products(
     *,
     db: Session = Depends(deps.get_db),
-    ordered_products: List[Dict[str, int]], # List of {id: int, order: int}
+    ordered_products: List[Dict[str, Any]], # List of {id: str, order: int}
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
@@ -58,7 +58,7 @@ def reorder_products(
 def update_product(
     *,
     db: Session = Depends(deps.get_db),
-    id: int,
+    id: str,
     product_in: schemas.ProductUpdate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
@@ -79,7 +79,7 @@ def update_product(
 def delete_product(
     *,
     db: Session = Depends(deps.get_db),
-    id: int,
+    id: str,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """

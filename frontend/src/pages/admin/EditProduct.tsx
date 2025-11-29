@@ -51,7 +51,7 @@ export default function EditProduct() {
 
     useEffect(() => {
         if (id && products.length > 0) {
-            const product = products.find((p) => p.id == id || p.id == Number(id));
+            const product = products.find((p) => p.id == id);
             if (product) {
                 setFormData(product);
                 setFeaturesInput(product.features.join(', '));
@@ -108,7 +108,7 @@ export default function EditProduct() {
             technicalSheet: formData.technicalSheet,
         };
 
-        await editProduct(Number(id), updatedProduct);
+        await editProduct(id!, updatedProduct);
 
         toast({
             title: 'Producto actualizado',

@@ -6,9 +6,9 @@ import { products as initialProducts } from '../data/products';
 interface ProductContextType {
     products: Product[];
     addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
-    removeProduct: (id: number) => Promise<void>;
+    removeProduct: (id: number | string) => Promise<void>;
     reorder: (products: Product[]) => Promise<void>;
-    editProduct: (id: number, product: Partial<Product>) => Promise<void>;
+    editProduct: (id: number | string, product: Partial<Product>) => Promise<void>;
     isLoading: boolean;
 }
 
@@ -46,7 +46,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const removeProduct = async (id: number) => {
+    const removeProduct = async (id: number | string) => {
         try {
             await deleteProduct(id);
             setProducts((prev) => prev.filter((p) => p.id != id));
@@ -61,7 +61,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
         const updatedOrder = newOrder.map((p, index) => ({ ...p, order: index }));
         setProducts(updatedOrder);
         try {
-            const orderData = newOrder.map((p, index) => ({ id: Number(p.id), order: index }));
+            const orderData = newOrder.map((p, index) => ({ id: p.id, order: index }));
             await reorderProductsApi(orderData);
         } catch (error) {
             console.error('Failed to reorder products:', error);
@@ -70,7 +70,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const editProduct = async (id: number, updatedData: Partial<Product>) => {
+    const editProduct = async (id: number | string, updatedData: Partial<Product>) => {
         try {
             const updatedProduct = await apiUpdateProduct(id, updatedData);
             setProducts((prev) => prev.map((p) => (p.id == id ? updatedProduct : p)));

@@ -4,3 +4,4 @@ from .product import Product, ProductCreate, ProductUpdate
 from .news import News, NewsCreate, NewsUpdate
 from .history import History, HistoryCreate, HistoryUpdate
 from .download import Download, DownloadCreate, DownloadUpdate
+from .carousel import CarouselItem, CarouselItemCreate, CarouselItemUpdate

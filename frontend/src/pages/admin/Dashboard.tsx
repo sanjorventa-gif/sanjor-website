@@ -98,7 +98,7 @@ export default function Dashboard() {
                                         size="sm"
                                         onClick={async () => {
                                             if (window.confirm('¿Está seguro que desea eliminar este producto?')) {
-                                                await removeProduct(Number(product.id));
+                                                await removeProduct(product.id);
                                                 toast({
                                                     title: 'Producto eliminado',
                                                     status: 'success',

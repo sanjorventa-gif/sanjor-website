@@ -82,28 +82,16 @@ export default function CarouselList() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
+                            <Th>Acciones</Th>
                             <Th>Orden</Th>
                             <Th>Imagen</Th>
                             <Th>Título</Th>
                             <Th>Subtítulo</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {items.map((item) => (
                             <Tr key={item.id}>
-                                <Td>{item.order}</Td>
-                                <Td>
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        boxSize="50px"
-                                        objectFit="cover"
-                                        rounded="md"
-                                    />
-                                </Td>
-                                <Td fontWeight="medium">{item.title}</Td>
-                                <Td>{item.subtitle}</Td>
                                 <Td>
                                     <IconButton
                                         aria-label="Editar"
@@ -123,6 +111,18 @@ export default function CarouselList() {
                                         onClick={() => handleDelete(item.id)}
                                     />
                                 </Td>
+                                <Td>{item.order}</Td>
+                                <Td>
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        boxSize="50px"
+                                        objectFit="cover"
+                                        rounded="md"
+                                    />
+                                </Td>
+                                <Td fontWeight="medium">{item.title}</Td>
+                                <Td>{item.subtitle}</Td>
                             </Tr>
                         ))}
                         {items.length === 0 && (

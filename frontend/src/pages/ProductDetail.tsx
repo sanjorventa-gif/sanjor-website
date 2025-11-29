@@ -10,14 +10,25 @@ import {
     List,
     ListItem,
     ListIcon,
+    Spinner,
+    Center,
 } from '@chakra-ui/react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { FaCheckCircle, FaFilePdf } from 'react-icons/fa';
-import { products } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 
 export default function ProductDetail() {
     const { id } = useParams();
-    const product = products.find((p) => p.id === id);
+    const { products, isLoading } = useProducts();
+    const product = products.find((p) => p.id == id);
+
+    if (isLoading) {
+        return (
+            <Center h="50vh">
+                <Spinner size="xl" color="brand.500" />
+            </Center>
+        );
+    }
 
     if (!product) {
         return (
@@ -125,6 +136,7 @@ export default function ProductDetail() {
                                 <Button
                                     as="a"
                                     href={product.technicalSheet}
+                                    download={product.technicalSheet.startsWith('data:') ? `${product.id}-ficha.pdf` : undefined}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     size="lg"
