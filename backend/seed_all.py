@@ -2,19 +2,6 @@ import logging
 import sys
 import os
 
-# Ensure we can import from app
-sys.path.append(os.getcwd())
-
-from app.db.session import SessionLocal, engine
-from app.models.product import Product
-from app.models.user import User
-from app.db.base_class import Base
-# Import all models to ensure they are registered with Base.metadata
-from app.db import base  # noqa
-from app.core.security import get_password_hash
-from app.db.seed_products import seed_products as seed_products_logic
-
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def seed_all():
@@ -679,137 +666,73 @@ def seed_all():
             {"title": "Catálogo de estufas SAN JOR para Secado", "category": "Catálogos", "allowed_roles": all_roles},
             {"title": "Catálogo de estufas SAN JOR para Laboratorio", "category": "Catálogos", "allowed_roles": all_roles},
             {"title": "Catálogo de estufas SAN JOR para Cultivo", "category": "Catálogos", "allowed_roles": all_roles},
-            {"title": "Catálogo de estufas SAN JOR de Esterilización", "category": "Catálogos", "allowed_roles": all_roles},
-            {"title": "Lista de Precios SAN JOR 2021-09", "category": "Lista de Precios", "allowed_roles": distributor_roles},
-            {"title": "IN-03 Reglamentación para Tatuadores", "category": "Información Técnica", "allowed_roles": all_roles},
-            {"title": "IN-02 Esterilizacion de Instrumental Métodos", "category": "Información Técnica", "allowed_roles": all_roles},
-        ]
-
-        for dl_data in downloads_data:
-            dl = Download(
-                title=dl_data["title"],
-                category=dl_data["category"],
-                file_url="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                language="ES",
-                allowed_roles=dl_data["allowed_roles"],
-                description="Folleto"
-            )
-            db.add(dl)
-        
-        db.commit()
-        logger.info("Downloads seeded successfully!")
-
-        # --- SEED HISTORY ---
-        logger.info("Seeding History...")
-        from app.models.history import History
-        
-        history_data = [
-            {
-                "year": 2019,
-                "title": "SAN JOR Internacional",
-                "description": "SAN JOR participa en forma directa o indirecta en 7 ferias internacionales en 4 países, en todas ellas presentando el Sistema BLAST y las estufas EcoLogic.",
-                "order": 0
-            },
-            {
-                "year": 2018,
-                "title": "40 Aniversario SAN JOR",
-                "description": "Es el 40 aniversario de SAN JOR de su planta exclusiva para la fabricación de estufas de esterilización y cultivo, que se celebra en el evento de mayor repercusión en el sector salud en Puerto Madero – Buenos Aires.",
-                "order": 1
-            },
-            {
-                "year": 2012,
-                "title": "Sistema BLAST",
-                "description": "El diseño del Sistema BLAST es reconocido y galardonado por su éxito e inserción en el mercado, en la premiación de JeFeba por la Provincia de Buenos Aires en Argentina.",
-                "order": 2
-            },
-            {
-                "year": 2010,
-                "title": "EcoLogic Control Digital",
-                "description": "En base al diseño de la tecnología “Sistema BLAST” se desarrolla el control digital automático para realizar los ciclos de esterilización de forma fácil para el operador, lanzando al mercado la línea EcoLogic.",
-                "order": 3
-            },
-            {
-                "year": 2009,
-                "title": "Sistema BLAST",
-                "description": "Diseño propio de la tecnología “Sistema BLAST” para la máxima precisión en el control de temperatura para las Estufas utilizadas en laboratorio.",
-                "order": 4
-            },
-            {
-                "year": 2004,
-                "title": "Premios a la exportación Argentina",
-                "description": "SAN JOR es ganador del Premio a la Exportación Argentina como fabricante de Equipos Médicos, Hospitalarios y de Laboratorio otorgado por FedEx.",
-                "order": 5
-            },
-            {
-                "year": 1994,
-                "title": "Ampliación de la empresa",
-                "description": "Aumenta la superficie de la planta de producción, oficinas y depósito en un 30%, mejorando la organización interna y los tiempos de producción.",
-                "order": 6
-            },
-            {
-                "year": 1993,
-                "title": "Grupo COEX de exportación",
-                "description": "SAN JOR es integrante y cofundador del Grupo COEX de Exportación, grupo de empresas fabricantes de equipos para medicina y bioquímica.",
-                "order": 7
-            },
-            {
-                "year": 1984,
-                "title": "Ampliación de la planta",
-                "description": "La ampliación de la planta de fabricación se triplica en superficie con respecto al año 1978, incorporando equipos de trabajo de alta tecnología.",
-                "order": 8
-            },
-            {
-                "year": 1978,
-                "title": "Nueva Planta",
-                "description": "La fabrica se muda a una nueva planta de fabricación con el nombre de “SAN JOR”, liderando el mercado en el rubro de fabricación de Estufas.",
-                "order": 9
-            },
-            {
-                "year": 1950,
-                "title": "Inicio de actividades",
-                "description": "Inicia la fabricación de Estufas, Cajas y tambores de acero inoxidable con el nombre de “Metalúrgica SAN JOR” para el área hospitalaria.",
-                "order": 10
-            }
-        ]
-
-        for item in history_data:
-            history_entry = History(**item)
-            db.add(history_entry)
-        
-        db.commit()
-        logger.info("History seeded successfully!")
-
-        # --- SEED CAROUSEL ---
-        logger.info("Seeding Carousel...")
-        from app.models.carousel import CarouselItem
-        
-        carousel_data = [
-            {
-                "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-                "title": "Excelencia en Equipamiento de Laboratorio",
-                "subtitle": "Más de 50 años brindando precisión y calidad en cada equipo.",
-                "order": 1
-            },
-            {
-                "image": "https://images.unsplash.com/photo-1581093458891-9f30220728b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-                "title": "Innovación y Tecnología",
-                "subtitle": "Sistemas avanzados de control y diseño para resultados confiables.",
-                "order": 2
-            },
-            {
-                "image": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-                "title": "Soluciones a Medida",
-                "subtitle": "Desarrollamos equipos especiales adaptados a sus necesidades específicas.",
-                "order": 3
-            }
-        ]
-
         for item in carousel_data:
             carousel_entry = CarouselItem(**item)
             db.add(carousel_entry)
         
         db.commit()
         logger.info("Carousel seeded successfully!")
+
+        # --- SEED FORMS ---
+        logger.info("Seeding Forms...")
+        from app.models.form import Form
+        
+        forms_data = [
+            {
+                "title": "Solicitud de Service",
+                "slug": "solicitud-de-service",
+                "description": "Formulario para solicitar servicio técnico oficial.",
+                "is_active": True,
+                "fields": [
+                    {"id": "empresa", "label": "Empresa / Institución", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "nombre", "label": "Nombre", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "apellido", "label": "Apellidos", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "telefono", "label": "Teléfono", "type": "tel", "required": True, "placeholder": ""},
+                    {"id": "email", "label": "E-mail", "type": "email", "required": True, "placeholder": ""},
+                    {"id": "ciudad", "label": "Ciudad", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "provincia", "label": "Provincia / Estado", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "pais", "label": "País", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "modelo", "label": "Modelo", "type": "text", "required": True, "placeholder": "Ej: SL30CDB"},
+                    {"id": "serie", "label": "N° de Serie", "type": "text", "required": True, "placeholder": "Ver parte posterior del equipo"},
+                    {"id": "mensaje", "label": "Mensaje", "type": "textarea", "required": True, "placeholder": "Describa el desperfecto..."}
+                ]
+            },
+            {
+                "title": "Registro de Garantía",
+                "slug": "registro-de-garantia",
+                "description": "Registre su producto para activar la garantía extendida.",
+                "is_active": True,
+                "fields": [
+                    {"id": "empresa", "label": "Empresa / Institución", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "nombre", "label": "Nombre", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "apellido", "label": "Apellidos", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "email", "label": "E-mail", "type": "email", "required": True, "placeholder": ""},
+                    {"id": "ciudad", "label": "Ciudad", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "provincia", "label": "Provincia / Estado", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "pais", "label": "País", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "modelo", "label": "Modelo", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "serie", "label": "N° de Serie", "type": "text", "required": True, "placeholder": ""},
+                    {"id": "fecha_compra", "label": "Fecha de Compra", "type": "date", "required": True, "placeholder": "dd/mm/aaaa"},
+                    {"id": "vendedor", "label": "Negocio Vendedor", "type": "text", "required": True, "placeholder": ""}
+                ]
+            }
+        ]
+
+        for form_data in forms_data:
+            # Check if exists
+            existing = db.query(Form).filter(Form.slug == form_data["slug"]).first()
+            if not existing:
+                form = Form(**form_data)
+                db.add(form)
+            else:
+                # Update existing form fields if needed (optional, but good for development)
+                existing.fields = form_data["fields"]
+                existing.title = form_data["title"]
+                existing.description = form_data["description"]
+                logger.info(f"Form {form_data['slug']} updated.")
+        
+        db.commit()
+        logger.info("Forms seeded successfully!")
 
     except Exception as e:
         logger.error(f"Error seeding data: {e}")

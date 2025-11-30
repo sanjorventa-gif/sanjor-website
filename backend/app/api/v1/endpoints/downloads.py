@@ -11,18 +11,11 @@ def read_downloads(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Retrieve downloads.
     """
-    if crud.user.is_superuser(current_user):
-        downloads = crud.download.get_multi(db, skip=skip, limit=limit)
-    else:
-        # Filter by user role
-        downloads = crud.download.get_multi_by_role(
-            db=db, role=current_user.role, skip=skip, limit=limit
-        )
+    downloads = crud.download.get_multi(db, skip=skip, limit=limit)
     return downloads
 
 @router.post("/", response_model=schemas.Download)

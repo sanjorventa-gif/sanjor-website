@@ -5,6 +5,7 @@ import Company from './pages/Company';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Services from './pages/Services';
+import DynamicFormPage from './pages/DynamicFormPage';
 import Downloads from './pages/Downloads';
 import News from './pages/News';
 import Contact from './pages/Contact';
@@ -24,6 +25,11 @@ import DownloadsList from './pages/admin/DownloadsList';
 import DownloadForm from './pages/admin/DownloadForm';
 import CarouselList from './pages/admin/CarouselList';
 import CarouselForm from './pages/admin/CarouselForm';
+import ServiceRequestForm from './pages/ServiceRequestForm';
+import WarrantyForm from './pages/WarrantyForm';
+import AdminForms from './pages/admin/forms/AdminForms';
+import FormEditor from './pages/admin/forms/FormEditor';
+import FormSubmissions from './pages/admin/forms/FormSubmissions';
 
 import UserLogin from './pages/auth/UserLogin';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -43,7 +49,10 @@ function App() {
           <Route path="productos" element={<Products />} />
           <Route path="productos/:category" element={<Products />} />
           <Route path="productos/detalle/:id" element={<ProductDetail />} />
+          <Route path="/forms/:slug" element={<DynamicFormPage />} />
           <Route path="servicios" element={<Services />} />
+          <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
+          <Route path="servicios/garantia" element={<WarrantyForm />} />
           <Route path="descargas" element={<Downloads />} />
           <Route path="novedades" element={<News />} />
           <Route path="contacto" element={<Contact />} />
@@ -73,6 +82,10 @@ function App() {
             <Route path="carousel" element={<CarouselList />} />
             <Route path="carousel/new" element={<CarouselForm />} />
             <Route path="carousel/edit/:id" element={<CarouselForm />} />
+            <Route path="forms" element={<AdminForms />} />
+            <Route path="forms/new" element={<FormEditor />} />
+            <Route path="forms/edit/:id" element={<FormEditor />} />
+            <Route path="forms/:id/submissions" element={<FormSubmissions />} />
           </Route>
         </Route>
       </Routes>

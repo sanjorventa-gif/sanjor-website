@@ -10,14 +10,14 @@ import {
     useDisclosure,
     Drawer,
     DrawerContent,
-    IconButton,
-    DrawerOverlay,
     DrawerCloseButton,
     DrawerBody,
+    IconButton,
+    DrawerOverlay,
     type BoxProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaHistory, FaFilePdf, FaImage } from 'react-icons/fa';
+import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaClock, FaFilePdf, FaImages, FaFileContract } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps extends BoxProps {
@@ -162,9 +162,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     <>
                         <NavItem icon={FaUsers} to="/admin/users">Usuarios</NavItem>
                         <NavItem icon={FaNewspaper} to="/admin/news">Novedades</NavItem>
-                        <NavItem icon={FaHistory} to="/admin/history">Historia</NavItem>
+                        <NavItem icon={FaClock} to="/admin/history">Historia</NavItem>
+                        <NavItem icon={FaImages} to="/admin/carousel">Carrusel Home</NavItem>
+                        <NavItem icon={FaFileContract} to="/admin/forms">Formularios</NavItem>
                         <NavItem icon={FaFilePdf} to="/admin/downloads">Descargas</NavItem>
-                        <NavItem icon={FaImage} to="/admin/carousel">Carrousel</NavItem>
                     </>
                 )}
             </VStack>

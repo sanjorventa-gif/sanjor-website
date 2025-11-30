@@ -21,7 +21,6 @@ export default function Services() {
     return (
         <Box py={10}>
             <Container maxW={'container.xl'}>
-                <Heading mb={6} color="brand.700">Servicios y Soporte</Heading>
                 <Text fontSize="lg" mb={10} color="gray.600">
                     Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
                 </Text>
@@ -32,18 +31,21 @@ export default function Services() {
                         title="Servicio Técnico"
                         text="Mantenimiento preventivo y correctivo realizado por especialistas."
                         action="Solicitar Service"
+                        link="/forms/solicitud-de-service"
                     />
                     <ServiceCard
                         icon={FaFileContract}
                         title="Garantía Extendida"
                         text="Amplíe la protección de su inversión con nuestros planes de garantía."
-                        action="Consultar Planes"
+                        action="Registrar Garantía"
+                        link="/forms/registro-de-garantia"
                     />
                     <ServiceCard
                         icon={FaQuestionCircle}
                         title="Soporte Online"
                         text="Resuelva dudas frecuentes y acceda a documentación técnica."
                         action="Ver FAQ"
+                        link="/descargas"
                     />
                 </SimpleGrid>
 
@@ -76,11 +78,11 @@ export default function Services() {
                     </Button>
                 </Box>
             </Container>
-        </Box>
+        </Box >
     );
 }
 
-const ServiceCard = ({ icon, title, text, action }: { icon: any; title: string; text: string; action: string }) => {
+const ServiceCard = ({ icon, title, text, action, link }: { icon: any; title: string; text: string; action: string; link: string }) => {
     return (
         <Stack
             bg={useColorModeValue('white', 'gray.800')}
@@ -94,7 +96,7 @@ const ServiceCard = ({ icon, title, text, action }: { icon: any; title: string; 
             <Icon as={icon} w={10} h={10} color="brand.500" />
             <Heading size="md">{title}</Heading>
             <Text color={'gray.600'}>{text}</Text>
-            <Button variant="outline" colorScheme="brand" size="sm">
+            <Button as={RouterLink} to={link} variant="outline" colorScheme="brand" size="sm">
                 {action}
             </Button>
         </Stack>

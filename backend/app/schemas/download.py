@@ -28,7 +28,7 @@ class DownloadInDBBase(DownloadBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Properties to return to client
 class Download(DownloadInDBBase):

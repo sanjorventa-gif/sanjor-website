@@ -1,16 +1,16 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
     return (
-        <Flex direction="column" minH="100vh">
+        <Box minH="100vh" display="flex" flexDirection="column">
             <Navbar />
             <Box flex="1">
                 <Outlet />
             </Box>
             <Footer />
-        </Flex>
+        </Box>
     );
 }
