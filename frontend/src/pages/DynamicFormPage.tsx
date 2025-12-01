@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Container, Spinner, Center, useToast } from '@chakra-ui/react';
+import { Box, Container, Spinner, useToast } from '@chakra-ui/react';
 import { getFormBySlug } from '../api/forms';
 import type { Form } from '../api/forms';
 import DynamicFormRenderer from '../components/DynamicFormRenderer';

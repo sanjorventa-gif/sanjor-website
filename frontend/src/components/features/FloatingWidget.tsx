@@ -6,7 +6,7 @@ export default function FloatingWidget() {
     const { onOpenNewsletter } = useUI();
 
     return (
-        <Box position="fixed" bottom="4" right="4" zIndex={1000}>
+        <Box position="fixed" bottom="4" left="4" zIndex={1000}>
             <Button
                 leftIcon={<Icon as={FaBell} />}
                 colorScheme="brand"

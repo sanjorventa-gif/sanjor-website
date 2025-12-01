@@ -400,7 +400,7 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '/descargas',
     },
     {
-        label: 'Novedades',
+        label: 'Noticias',
         href: '/novedades',
     },
 ];

@@ -32,7 +32,7 @@ export default function News() {
     return (
         <Box py={10}>
             <Container maxW={'container.xl'}>
-                <Heading mb={6} color="brand.700">Novedades</Heading>
+                <Heading mb={6} color="brand.700">Noticias</Heading>
                 <Text fontSize="lg" mb={10} color="gray.600">
                     Manténgase informado sobre nuestros últimos lanzamientos, eventos y noticias corporativas.
                 </Text>

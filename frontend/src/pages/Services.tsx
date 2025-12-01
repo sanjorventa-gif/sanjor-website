@@ -14,7 +14,7 @@ import {
     Icon,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { FaTools, FaFileContract, FaQuestionCircle } from 'react-icons/fa';
+import { FaTools, FaShieldAlt, FaQuestionCircle } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function Services() {
@@ -31,14 +31,14 @@ export default function Services() {
                         title="Servicio Técnico"
                         text="Mantenimiento preventivo y correctivo realizado por especialistas."
                         action="Solicitar Service"
-                        link="/forms/solicitud-de-service"
+                        link="/servicios/tecnico"
                     />
                     <ServiceCard
-                        icon={FaFileContract}
+                        icon={FaShieldAlt}
                         title="Garantía Extendida"
                         text="Amplíe la protección de su inversión con nuestros planes de garantía."
                         action="Registrar Garantía"
-                        link="/forms/registro-de-garantia"
+                        link="/servicios/garantia"
                     />
                     <ServiceCard
                         icon={FaQuestionCircle}

@@ -4,26 +4,27 @@ from datetime import datetime
 
 # Shared properties
 class ServiceRequestBase(BaseModel):
-    company: Optional[str] = None
-    first_name: str
-    last_name: str
-    phone: Optional[str] = None
+    name: str
     email: str
-    city: Optional[str] = None
-    province: Optional[str] = None
-    country: Optional[str] = None
-    message: Optional[str] = None
-    stove_model: Optional[str] = None
-    serial_number: Optional[str] = None
+    phone: str
+    city: str
+    address: str
+    stove_model: str
+    purchase_date: str
+    problem_description: str
 
 # Properties to receive on creation
 class ServiceRequestCreate(ServiceRequestBase):
-    pass
+    recaptcha_token: str
 
-# Properties to return to client
-class ServiceRequest(ServiceRequestBase):
+# Properties shared by models stored in DB
+class ServiceRequestInDBBase(ServiceRequestBase):
     id: int
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+# Properties to return to client
+class ServiceRequest(ServiceRequestInDBBase):
+    pass

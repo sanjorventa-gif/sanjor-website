@@ -15,12 +15,23 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function Contact() {
     const toast = useToast();
+    const { executeRecaptcha } = useGoogleReCaptcha();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!executeRecaptcha) {
+            console.log('Execute recaptcha not yet available');
+            return;
+        }
+
+        const token = await executeRecaptcha('contact_form');
+        console.log('ReCAPTCHA Token:', token);
+
         toast({
             title: 'Mensaje enviado.',
             description: "Nos pondremos en contacto con usted a la brevedad.",

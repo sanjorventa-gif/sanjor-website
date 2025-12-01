@@ -1,16 +1,15 @@
 from typing import Any, List
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
 from app import models, schemas
 from app.api import deps
+from app.core.recaptcha import verify_recaptcha
 
 router = APIRouter()
 
 # --- Service Requests ---
 
-@router.post("/request", response_model=schemas.ServiceRequest)
+@router.post("/service-requests", response_model=schemas.ServiceRequest)
 def create_service_request(
     *,
     db: Session = Depends(deps.get_db),
@@ -19,13 +18,18 @@ def create_service_request(
     """
     Create new service request (Public).
     """
-    db_obj = models.ServiceRequest(**request_in.dict())
+    verify_recaptcha(request_in.recaptcha_token)
+    
+    obj_in_data = request_in.dict()
+    del obj_in_data['recaptcha_token']
+    
+    db_obj = models.ServiceRequest(**obj_in_data)
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
     return db_obj
 
-@router.get("/requests", response_model=List[schemas.ServiceRequest])
+@router.get("/service-requests", response_model=List[schemas.ServiceRequest])
 def read_service_requests(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
@@ -37,7 +41,7 @@ def read_service_requests(
     """
     return db.query(models.ServiceRequest).offset(skip).limit(limit).all()
 
-@router.delete("/requests/{id}", response_model=schemas.ServiceRequest)
+@router.delete("/service-requests/{id}", response_model=schemas.ServiceRequest)
 def delete_service_request(
     *,
     db: Session = Depends(deps.get_db),
@@ -56,7 +60,7 @@ def delete_service_request(
 
 # --- Warranty Registrations ---
 
-@router.post("/warranty", response_model=schemas.WarrantyRegistration)
+@router.post("/warranty-registrations", response_model=schemas.WarrantyRegistration)
 def create_warranty_registration(
     *,
     db: Session = Depends(deps.get_db),
@@ -65,13 +69,18 @@ def create_warranty_registration(
     """
     Create new warranty registration (Public).
     """
-    db_obj = models.WarrantyRegistration(**registration_in.dict())
+    verify_recaptcha(registration_in.recaptcha_token)
+
+    obj_in_data = registration_in.dict()
+    del obj_in_data['recaptcha_token']
+
+    db_obj = models.WarrantyRegistration(**obj_in_data)
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
     return db_obj
 
-@router.get("/warranties", response_model=List[schemas.WarrantyRegistration])
+@router.get("/warranty-registrations", response_model=List[schemas.WarrantyRegistration])
 def read_warranty_registrations(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
@@ -83,7 +92,7 @@ def read_warranty_registrations(
     """
     return db.query(models.WarrantyRegistration).offset(skip).limit(limit).all()
 
-@router.delete("/warranties/{id}", response_model=schemas.WarrantyRegistration)
+@router.delete("/warranty-registrations/{id}", response_model=schemas.WarrantyRegistration)
 def delete_warranty_registration(
     *,
     db: Session = Depends(deps.get_db),

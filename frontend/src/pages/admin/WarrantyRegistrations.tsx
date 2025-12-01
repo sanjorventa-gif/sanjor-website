@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Heading,
@@ -8,73 +8,70 @@ import {
     Tr,
     Th,
     Td,
-    IconButton,
     useToast,
-    Button,
+    IconButton,
     Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
     Text,
-    Stack,
+    VStack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
-import api from '../../api/axios';
+import axios from 'axios';
 
 interface WarrantyRegistration {
     id: number;
-    company: string;
-    first_name: string;
-    last_name: string;
+    name: string;
     email: string;
     stove_model: string;
     serial_number: string;
-    purchase_date: string;
     vendor: string;
     created_at: string;
+    [key: string]: any;
 }
 
-export default function WarrantyRegistrations() {
+const WarrantyRegistrations = () => {
     const [registrations, setRegistrations] = useState<WarrantyRegistration[]>([]);
     const [selectedReg, setSelectedReg] = useState<WarrantyRegistration | null>(null);
-    const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-    useEffect(() => {
-        fetchRegistrations();
-    }, []);
+    const toast = useToast();
+    const token = localStorage.getItem('token');
 
     const fetchRegistrations = async () => {
         try {
-            const response = await api.get<WarrantyRegistration[]>('/services/warranties');
+            const response = await axios.get('http://localhost:8000/api/v1/services/warranty-registrations', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             setRegistrations(response.data);
         } catch (error) {
-            console.error('Error fetching warranties:', error);
+            console.error("Error fetching registrations:", error);
+            toast({
+                title: 'Error',
+                description: 'No se pudieron cargar los registros.',
+                status: 'error',
+                duration: 3000,
+            });
         }
     };
+
+    useEffect(() => {
+        fetchRegistrations();
+    }, [token]);
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('¿Está seguro de eliminar este registro?')) return;
         try {
-            await api.delete(`/services/warranties/${id}`);
-            setRegistrations(registrations.filter((r) => r.id !== id));
-            toast({
-                title: 'Registro eliminado',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
+            await axios.delete(`http://localhost:8000/api/v1/services/warranty-registrations/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
             });
+            toast({ title: 'Registro eliminado', status: 'success' });
+            fetchRegistrations();
         } catch (error) {
-            toast({
-                title: 'Error al eliminar',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
+            toast({ title: 'Error al eliminar', status: 'error' });
         }
     };
 
@@ -87,43 +84,44 @@ export default function WarrantyRegistrations() {
         <Box>
             <Heading mb={6}>Registros de Garantía</Heading>
             <Box overflowX="auto">
-                <Table variant="simple" bg="white" shadow="sm" rounded="lg">
-                    <Thead bg="gray.50">
+                <Table variant="simple">
+                    <Thead>
                         <Tr>
-                            <Th>Acciones</Th>
-                            <Th>Fecha Registro</Th>
-                            <Th>Cliente</Th>
+                            <Th>ID</Th>
+                            <Th>Fecha</Th>
+                            <Th>Nombre</Th>
                             <Th>Modelo</Th>
                             <Th>N° Serie</Th>
                             <Th>Vendedor</Th>
+                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {registrations.map((reg) => (
                             <Tr key={reg.id}>
-                                <Td>
-                                    <Stack direction="row" spacing={2}>
-                                        <IconButton
-                                            aria-label="Ver detalle"
-                                            icon={<FaEye />}
-                                            size="sm"
-                                            colorScheme="blue"
-                                            onClick={() => handleView(reg)}
-                                        />
-                                        <IconButton
-                                            aria-label="Eliminar"
-                                            icon={<FaTrash />}
-                                            size="sm"
-                                            colorScheme="red"
-                                            onClick={() => handleDelete(reg.id)}
-                                        />
-                                    </Stack>
-                                </Td>
+                                <Td>{reg.id}</Td>
                                 <Td>{new Date(reg.created_at).toLocaleDateString()}</Td>
-                                <Td>{reg.first_name} {reg.last_name}</Td>
-                                <Td>{reg.stove_model || '-'}</Td>
-                                <Td>{reg.serial_number || '-'}</Td>
-                                <Td>{reg.vendor || '-'}</Td>
+                                <Td>{reg.name}</Td>
+                                <Td>{reg.stove_model}</Td>
+                                <Td>{reg.serial_number}</Td>
+                                <Td>{reg.vendor}</Td>
+                                <Td>
+                                    <IconButton
+                                        aria-label="Ver detalles"
+                                        icon={<FaEye />}
+                                        size="sm"
+                                        colorScheme="blue"
+                                        mr={2}
+                                        onClick={() => handleView(reg)}
+                                    />
+                                    <IconButton
+                                        aria-label="Eliminar"
+                                        icon={<FaTrash />}
+                                        size="sm"
+                                        colorScheme="red"
+                                        onClick={() => handleDelete(reg.id)}
+                                    />
+                                </Td>
                             </Tr>
                         ))}
                     </Tbody>
@@ -133,39 +131,54 @@ export default function WarrantyRegistrations() {
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Detalle de Garantía</ModalHeader>
+                    <ModalHeader>Detalle de Garantía #{selectedReg?.id}</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody pb={6}>
                         {selectedReg && (
-                            <Stack spacing={4}>
+                            <VStack align="stretch" spacing={4}>
                                 <Box>
-                                    <Text fontWeight="bold">Fecha Registro:</Text>
+                                    <Text fontWeight="bold">Fecha de Registro:</Text>
                                     <Text>{new Date(selectedReg.created_at).toLocaleString()}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Cliente:</Text>
-                                    <Text>{selectedReg.first_name} {selectedReg.last_name}</Text>
+                                    <Text fontWeight="bold">Nombre:</Text>
+                                    <Text>{selectedReg.name}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Email:</Text>
                                     <Text>{selectedReg.email}</Text>
-                                    <Text>{selectedReg.company}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Equipo:</Text>
-                                    <Text>Modelo: {selectedReg.stove_model}</Text>
-                                    <Text>Serie: {selectedReg.serial_number}</Text>
+                                    <Text fontWeight="bold">Teléfono:</Text>
+                                    <Text>{selectedReg.phone}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Compra:</Text>
-                                    <Text>Fecha: {selectedReg.purchase_date}</Text>
-                                    <Text>Vendedor: {selectedReg.vendor}</Text>
+                                    <Text fontWeight="bold">Ciudad / Dirección:</Text>
+                                    <Text>{selectedReg.city} - {selectedReg.address}</Text>
                                 </Box>
-                            </Stack>
+                                <Box>
+                                    <Text fontWeight="bold">Modelo de Estufa:</Text>
+                                    <Text>{selectedReg.stove_model}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Número de Serie:</Text>
+                                    <Text>{selectedReg.serial_number}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Fecha de Compra:</Text>
+                                    <Text>{selectedReg.purchase_date}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Vendedor:</Text>
+                                    <Text>{selectedReg.vendor}</Text>
+                                </Box>
+                            </VStack>
                         )}
                     </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="brand" onClick={onClose}>Cerrar</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </Box>
     );
-}
+};
+
+export default WarrantyRegistrations;

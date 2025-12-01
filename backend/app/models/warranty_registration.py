@@ -1,18 +1,18 @@
-from sqlalchemy import Column, Integer, String, DateTime, Date
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
 from app.db.base_class import Base
 
 class WarrantyRegistration(Base):
+    __tablename__ = "warranty_registrations"
+
     id = Column(Integer, primary_key=True, index=True)
-    company = Column(String, index=True, nullable=True)
-    first_name = Column(String, index=True)
-    last_name = Column(String, index=True)
+    name = Column(String, index=True)
     email = Column(String, index=True)
-    city = Column(String, nullable=True)
-    province = Column(String, nullable=True)
-    country = Column(String, nullable=True)
-    stove_model = Column(String, nullable=True)
-    serial_number = Column(String, nullable=True)
-    purchase_date = Column(Date, nullable=True)
-    vendor = Column(String, nullable=True)
+    phone = Column(String)
+    city = Column(String)
+    address = Column(String)
+    stove_model = Column(String)
+    serial_number = Column(String)
+    purchase_date = Column(String)
+    vendor = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

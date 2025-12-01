@@ -86,7 +86,7 @@ export default function ProductAdvisor() {
 
     return (
         <>
-            <Box position="fixed" bottom="20px" right="20px" zIndex={1000}>
+            <Box position="fixed" bottom="4" left="4" zIndex={1000}>
                 <Button
                     leftIcon={<Icon as={FaCalculator} />}
                     colorScheme="brand"

@@ -68,7 +68,7 @@ export default function Footer() {
                             Empresa
                         </Text>
                         <Link as={RouterLink} to={'/empresa'}>Acerca de nosotros</Link>
-                        <Link as={RouterLink} to={'/novedades'}>Novedades</Link>
+                        <Link as={RouterLink} to={'/novedades'}>Noticias</Link>
                         <Link as={RouterLink} to={'/contacto'}>Contacto</Link>
                     </Stack>
 

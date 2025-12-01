@@ -1,154 +1,135 @@
-import { useState } from 'react';
+
 import {
     Box,
+    Button,
     Container,
-    Heading,
     FormControl,
     FormLabel,
     Input,
-    Button,
-    Stack,
-    SimpleGrid,
-    useToast,
+    VStack,
+    Heading,
     Text,
+    useToast,
+    SimpleGrid,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import api from '../api/axios';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-export default function WarrantyForm() {
+interface WarrantyFormData {
+    name: string;
+    email: string;
+    phone: string;
+    city: string;
+    address: string;
+    stove_model: string;
+    serial_number: string;
+    purchase_date: string;
+    vendor: string;
+    recaptcha_token?: string;
+}
+
+const WarrantyForm = () => {
+    const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<WarrantyFormData>();
     const toast = useToast();
-    const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formData, setFormData] = useState({
-        company: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        city: '',
-        province: '',
-        country: '',
-        stove_model: '',
-        serial_number: '',
-        purchase_date: '',
-        vendor: '',
-    });
+    const { executeRecaptcha } = useGoogleReCaptcha();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+    const onSubmit = async (data: WarrantyFormData) => {
+        if (!executeRecaptcha) {
+            console.log('Execute recaptcha not yet available');
+            return;
+        }
 
         try {
-            await api.post('/services/warranty', formData);
+            const token = await executeRecaptcha('warranty_registration');
+            const dataWithToken = { ...data, recaptcha_token: token };
+            await axios.post('http://localhost:8000/api/v1/services/warranty-registrations', dataWithToken);
             toast({
-                title: 'Registro exitoso',
-                description: 'Su estufa ha sido registrada correctamente para la extensión de garantía.',
+                title: 'Garantía Registrada.',
+                description: "Su producto ha sido registrado correctamente.",
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
             });
-            navigate('/servicios');
+            reset();
         } catch (error) {
             toast({
-                title: 'Error',
-                description: 'Hubo un problema al registrar la garantía. Por favor intente nuevamente.',
+                title: 'Error.',
+                description: "Hubo un problema al registrar la garantía.",
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
             });
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
     return (
-        <Box py={10}>
-            <Container maxW={'container.md'}>
-                <Heading mb={2} color="brand.700">Registro de Garantía Extendida</Heading>
-                <Text mb={8} color="gray.600">
-                    Registrando la estufa obtiene 12 meses adicionales a la garantía normal. Para estufas con sistema BLAST, la extensión es por dos años.
-                </Text>
+        <Container maxW="container.md" py={10}>
+            <VStack spacing={8} align="stretch">
+                <Box textAlign="center">
+                    <Heading as="h1" size="xl" mb={2}>Registro de Garantía</Heading>
+                    <Text color="gray.600">Active su garantía extendida registrando su producto.</Text>
+                </Box>
 
-                <Box as="form" onSubmit={handleSubmit} bg="white" p={8} rounded="lg" shadow="md">
-                    <Stack spacing={6}>
-                        <Heading size="md" color="brand.600">Información Personal</Heading>
-
-                        <FormControl>
-                            <FormLabel>Empresa / Institución</FormLabel>
-                            <Input name="company" value={formData.company} onChange={handleChange} />
-                        </FormControl>
-
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                <Box as="form" onSubmit={handleSubmit(onSubmit)} bg="white" p={8} borderRadius="lg" shadow="md">
+                    <VStack spacing={4}>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
                             <FormControl isRequired>
                                 <FormLabel>Nombre</FormLabel>
-                                <Input name="first_name" value={formData.first_name} onChange={handleChange} />
+                                <Input {...register('name', { required: true })} placeholder="Su nombre" />
                             </FormControl>
                             <FormControl isRequired>
-                                <FormLabel>Apellidos</FormLabel>
-                                <Input name="last_name" value={formData.last_name} onChange={handleChange} />
+                                <FormLabel>Email</FormLabel>
+                                <Input type="email" {...register('email', { required: true })} placeholder="correo@ejemplo.com" />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
+                            <FormControl isRequired>
+                                <FormLabel>Teléfono</FormLabel>
+                                <Input {...register('phone', { required: true })} placeholder="Cod. Area + Número" />
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Ciudad</FormLabel>
+                                <Input {...register('city', { required: true })} />
                             </FormControl>
                         </SimpleGrid>
 
                         <FormControl isRequired>
-                            <FormLabel>E-mail</FormLabel>
-                            <Input type="email" name="email" value={formData.email} onChange={handleChange} />
+                            <FormLabel>Dirección</FormLabel>
+                            <Input {...register('address', { required: true })} placeholder="Calle, Número, Piso, Depto" />
                         </FormControl>
 
-                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                            <FormControl>
-                                <FormLabel>Ciudad</FormLabel>
-                                <Input name="city" value={formData.city} onChange={handleChange} />
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
+                            <FormControl isRequired>
+                                <FormLabel>Modelo de Estufa</FormLabel>
+                                <Input {...register('stove_model', { required: true })} placeholder="Ej: SL30CDB" />
                             </FormControl>
-                            <FormControl>
-                                <FormLabel>Provincia / Estado</FormLabel>
-                                <Input name="province" value={formData.province} onChange={handleChange} />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>País</FormLabel>
-                                <Input name="country" value={formData.country} onChange={handleChange} />
+                            <FormControl isRequired>
+                                <FormLabel>Número de Serie</FormLabel>
+                                <Input {...register('serial_number', { required: true })} placeholder="Ver etiqueta posterior" />
                             </FormControl>
                         </SimpleGrid>
 
-                        <Heading size="md" color="brand.600" pt={4}>Datos de la Estufa</Heading>
-
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                            <FormControl>
-                                <FormLabel>Modelo</FormLabel>
-                                <Input name="stove_model" value={formData.stove_model} onChange={handleChange} placeholder="Ej: SL30CDB" />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>N° de Serie</FormLabel>
-                                <Input name="serial_number" value={formData.serial_number} onChange={handleChange} />
-                            </FormControl>
-                        </SimpleGrid>
-
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                            <FormControl>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
+                            <FormControl isRequired>
                                 <FormLabel>Fecha de Compra</FormLabel>
-                                <Input type="date" name="purchase_date" value={formData.purchase_date} onChange={handleChange} />
+                                <Input type="date" {...register('purchase_date', { required: true })} />
                             </FormControl>
-                            <FormControl>
-                                <FormLabel>Negocio Vendedor</FormLabel>
-                                <Input name="vendor" value={formData.vendor} onChange={handleChange} />
+                            <FormControl isRequired>
+                                <FormLabel>Vendedor / Distribuidor</FormLabel>
+                                <Input {...register('vendor', { required: true })} placeholder="Nombre del comercio" />
                             </FormControl>
                         </SimpleGrid>
 
-                        <Button
-                            type="submit"
-                            colorScheme="brand"
-                            size="lg"
-                            mt={4}
-                            isLoading={isSubmitting}
-                        >
+                        <Button type="submit" colorScheme="green" size="lg" width="full" isLoading={isSubmitting}>
                             Registrar Garantía
                         </Button>
-                    </Stack>
+                    </VStack>
                 </Box>
-            </Container>
-        </Box>
+            </VStack>
+        </Container>
     );
-}
+};
+
+export default WarrantyForm;

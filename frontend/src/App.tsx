@@ -27,69 +27,69 @@ import CarouselList from './pages/admin/CarouselList';
 import CarouselForm from './pages/admin/CarouselForm';
 import ServiceRequestForm from './pages/ServiceRequestForm';
 import WarrantyForm from './pages/WarrantyForm';
-import AdminForms from './pages/admin/forms/AdminForms';
-import FormEditor from './pages/admin/forms/FormEditor';
-import FormSubmissions from './pages/admin/forms/FormSubmissions';
+import ServiceRequests from './pages/admin/ServiceRequests';
+import WarrantyRegistrations from './pages/admin/WarrantyRegistrations';
 
 import UserLogin from './pages/auth/UserLogin';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
 import { useUI } from './context/UIContext';
 import NewsletterDrawer from './components/features/NewsletterDrawer';
+import { RecaptchaProvider } from './providers/RecaptchaProvider';
 
 function App() {
   const { isNewsletterOpen, onCloseNewsletter } = useUI();
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="empresa" element={<Company />} />
-          <Route path="productos" element={<Products />} />
-          <Route path="productos/:category" element={<Products />} />
-          <Route path="productos/detalle/:id" element={<ProductDetail />} />
-          <Route path="/forms/:slug" element={<DynamicFormPage />} />
-          <Route path="servicios" element={<Services />} />
-          <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
-          <Route path="servicios/garantia" element={<WarrantyForm />} />
-          <Route path="descargas" element={<Downloads />} />
-          <Route path="novedades" element={<News />} />
-          <Route path="contacto" element={<Contact />} />
-          <Route path="login" element={<UserLogin />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-        </Route>
-
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin" element={<ProtectedRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="new" element={<AddProduct />} />
-            <Route path="edit/:id" element={<EditProduct />} />
-            <Route path="users" element={<Users />} />
-            <Route path="users/new" element={<UserForm />} />
-            <Route path="users/edit/:id" element={<UserForm />} />
-            <Route path="news" element={<NewsList />} />
-            <Route path="news/new" element={<NewsForm />} />
-            <Route path="news/edit/:id" element={<NewsForm />} />
-            <Route path="history" element={<HistoryList />} />
-            <Route path="history/new" element={<HistoryForm />} />
-            <Route path="history/edit/:id" element={<HistoryForm />} />
-            <Route path="downloads" element={<DownloadsList />} />
-            <Route path="downloads/new" element={<DownloadForm />} />
-            <Route path="downloads/edit/:id" element={<DownloadForm />} />
-            <Route path="carousel" element={<CarouselList />} />
-            <Route path="carousel/new" element={<CarouselForm />} />
-            <Route path="carousel/edit/:id" element={<CarouselForm />} />
-            <Route path="forms" element={<AdminForms />} />
-            <Route path="forms/new" element={<FormEditor />} />
-            <Route path="forms/edit/:id" element={<FormEditor />} />
-            <Route path="forms/:id/submissions" element={<FormSubmissions />} />
+      <RecaptchaProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="empresa" element={<Company />} />
+            <Route path="productos" element={<Products />} />
+            <Route path="productos/:category" element={<Products />} />
+            <Route path="productos/detalle/:id" element={<ProductDetail />} />
+            <Route path="/forms/:slug" element={<DynamicFormPage />} />
+            <Route path="servicios" element={<Services />} />
+            <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
+            <Route path="servicios/garantia" element={<WarrantyForm />} />
+            <Route path="descargas" element={<Downloads />} />
+            <Route path="novedades" element={<News />} />
+            <Route path="contacto" element={<Contact />} />
+            <Route path="login" element={<UserLogin />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
-        </Route>
-      </Routes>
-      <NewsletterDrawer isOpen={isNewsletterOpen} onClose={onCloseNewsletter} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin" element={<ProtectedRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="new" element={<AddProduct />} />
+              <Route path="edit/:id" element={<EditProduct />} />
+              <Route path="users" element={<Users />} />
+              <Route path="users/new" element={<UserForm />} />
+              <Route path="users/edit/:id" element={<UserForm />} />
+              <Route path="news" element={<NewsList />} />
+              <Route path="news/new" element={<NewsForm />} />
+              <Route path="news/edit/:id" element={<NewsForm />} />
+              <Route path="history" element={<HistoryList />} />
+              <Route path="history/new" element={<HistoryForm />} />
+              <Route path="history/edit/:id" element={<HistoryForm />} />
+              <Route path="downloads" element={<DownloadsList />} />
+              <Route path="downloads/new" element={<DownloadForm />} />
+              <Route path="downloads/edit/:id" element={<DownloadForm />} />
+              <Route path="carousel" element={<CarouselList />} />
+              <Route path="carousel/new" element={<CarouselForm />} />
+              <Route path="carousel/edit/:id" element={<CarouselForm />} />
+              <Route path="service-requests" element={<ServiceRequests />} />
+              <Route path="warranty-registrations" element={<WarrantyRegistrations />} />
+            </Route>
+          </Route>
+        </Routes>
+        <NewsletterDrawer isOpen={isNewsletterOpen} onClose={onCloseNewsletter} />
+      </RecaptchaProvider>
     </>
   );
 }

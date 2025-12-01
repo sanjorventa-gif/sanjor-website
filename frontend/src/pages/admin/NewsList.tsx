@@ -16,13 +16,17 @@ import {
     Badge,
     Flex,
     Text,
+    Spinner,
+    HStack,
 } from '@chakra-ui/react';
-import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
+
 import { useNavigate } from 'react-router-dom';
 import { getNews, deleteNews, type News } from '../../api/news';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function NewsList() {
     const [news, setNews] = useState<News[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -36,7 +40,30 @@ export default function NewsList() {
             setNews(data);
         } catch (error) {
             toast({
-                title: 'Error al cargar novedades',
+                title: 'Error al cargar noticias',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!window.confirm('¿Está seguro de eliminar esta noticia?')) return;
+        try {
+            await deleteNews(id);
+            setNews(news.filter((item) => item.id !== id));
+            toast({
+                title: 'Noticia eliminada',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            toast({
+                title: 'Error al eliminar noticia',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -44,38 +71,18 @@ export default function NewsList() {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (window.confirm('¿Está seguro que desea eliminar esta novedad?')) {
-            try {
-                await deleteNews(id);
-                setNews(news.filter((item) => item.id !== id));
-                toast({
-                    title: 'Novedad eliminada',
-                    status: 'success',
-                    duration: 2000,
-                    isClosable: true,
-                });
-            } catch (error) {
-                toast({
-                    title: 'Error al eliminar novedad',
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                });
-            }
-        }
-    };
+    if (isLoading) return <Spinner />;
 
     return (
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
-                <Heading size="lg">Gestión de Novedades</Heading>
+                <Heading size="lg">Gestión de Noticias</Heading>
                 <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
+                    leftIcon={<FaPlus />}
+                    colorScheme="brand"
                     onClick={() => navigate('/admin/news/new')}
                 >
-                    Nueva Novedad
+                    Nueva Noticia
                 </Button>
             </Flex>
 
@@ -94,23 +101,21 @@ export default function NewsList() {
                         {news.map((item) => (
                             <Tr key={item.id}>
                                 <Td>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        size="sm"
-                                        mr={2}
-                                        onClick={() => navigate(`/admin/news/edit/${item.id}`)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleDelete(item.id)}
-                                    />
+                                    <HStack spacing={2}>
+                                        <IconButton
+                                            aria-label="Editar"
+                                            icon={<FaEdit />}
+                                            size="sm"
+                                            onClick={() => navigate(`/admin/news/edit/${item.id}`)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<FaTrash />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            onClick={() => handleDelete(item.id)}
+                                        />
+                                    </HStack>
                                 </Td>
                                 <Td>
                                     <Image
@@ -123,7 +128,7 @@ export default function NewsList() {
                                     />
                                 </Td>
                                 <Td fontWeight="medium">{item.title}</Td>
-                                <Td>{item.date}</Td>
+                                <Td>{new Date(item.date).toLocaleDateString()}</Td>
                                 <Td>
                                     <Badge colorScheme="brand">{item.category}</Badge>
                                 </Td>
@@ -132,7 +137,7 @@ export default function NewsList() {
                         {news.length === 0 && (
                             <Tr>
                                 <Td colSpan={5} textAlign="center" py={8}>
-                                    <Text color="gray.500">No hay novedades registradas</Text>
+                                    <Text color="gray.500">No hay noticias registradas</Text>
                                 </Td>
                             </Tr>
                         )}

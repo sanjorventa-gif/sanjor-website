@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Heading,
@@ -8,73 +8,71 @@ import {
     Tr,
     Th,
     Td,
-    IconButton,
     useToast,
-    Button,
+    IconButton,
     Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
     Text,
-    Stack,
+    VStack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
-import api from '../../api/axios';
+import axios from 'axios';
 
 interface ServiceRequest {
     id: number;
-    company: string;
-    first_name: string;
-    last_name: string;
+    name: string;
     email: string;
     phone: string;
-    message: string;
+    city: string;
     stove_model: string;
-    serial_number: string;
+    problem_description: string;
     created_at: string;
+    [key: string]: any;
 }
 
-export default function ServiceRequests() {
+const ServiceRequests = () => {
     const [requests, setRequests] = useState<ServiceRequest[]>([]);
     const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null);
-    const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-    useEffect(() => {
-        fetchRequests();
-    }, []);
+    const toast = useToast();
+    const token = localStorage.getItem('token');
 
     const fetchRequests = async () => {
         try {
-            const response = await api.get<ServiceRequest[]>('/services/requests');
+            const response = await axios.get('http://localhost:8000/api/v1/services/service-requests', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             setRequests(response.data);
         } catch (error) {
-            console.error('Error fetching requests:', error);
+            console.error("Error fetching requests:", error);
+            toast({
+                title: 'Error',
+                description: 'No se pudieron cargar las solicitudes.',
+                status: 'error',
+                duration: 3000,
+            });
         }
     };
+
+    useEffect(() => {
+        fetchRequests();
+    }, [token]);
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('¿Está seguro de eliminar esta solicitud?')) return;
         try {
-            await api.delete(`/services/requests/${id}`);
-            setRequests(requests.filter((r) => r.id !== id));
-            toast({
-                title: 'Solicitud eliminada',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
+            await axios.delete(`http://localhost:8000/api/v1/services/service-requests/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
             });
+            toast({ title: 'Solicitud eliminada', status: 'success' });
+            fetchRequests();
         } catch (error) {
-            toast({
-                title: 'Error al eliminar',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
+            toast({ title: 'Error al eliminar', status: 'error' });
         }
     };
 
@@ -87,43 +85,42 @@ export default function ServiceRequests() {
         <Box>
             <Heading mb={6}>Solicitudes de Service</Heading>
             <Box overflowX="auto">
-                <Table variant="simple" bg="white" shadow="sm" rounded="lg">
-                    <Thead bg="gray.50">
+                <Table variant="simple">
+                    <Thead>
                         <Tr>
-                            <Th>Acciones</Th>
+                            <Th>ID</Th>
                             <Th>Fecha</Th>
                             <Th>Nombre</Th>
-                            <Th>Empresa</Th>
                             <Th>Modelo</Th>
-                            <Th>Email</Th>
+                            <Th>Problema</Th>
+                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {requests.map((request) => (
-                            <Tr key={request.id}>
+                        {requests.map((req) => (
+                            <Tr key={req.id}>
+                                <Td>{req.id}</Td>
+                                <Td>{new Date(req.created_at).toLocaleDateString()}</Td>
+                                <Td>{req.name}</Td>
+                                <Td>{req.stove_model}</Td>
+                                <Td maxW="300px" isTruncated>{req.problem_description}</Td>
                                 <Td>
-                                    <Stack direction="row" spacing={2}>
-                                        <IconButton
-                                            aria-label="Ver detalle"
-                                            icon={<FaEye />}
-                                            size="sm"
-                                            colorScheme="blue"
-                                            onClick={() => handleView(request)}
-                                        />
-                                        <IconButton
-                                            aria-label="Eliminar"
-                                            icon={<FaTrash />}
-                                            size="sm"
-                                            colorScheme="red"
-                                            onClick={() => handleDelete(request.id)}
-                                        />
-                                    </Stack>
+                                    <IconButton
+                                        aria-label="Ver detalles"
+                                        icon={<FaEye />}
+                                        size="sm"
+                                        colorScheme="blue"
+                                        mr={2}
+                                        onClick={() => handleView(req)}
+                                    />
+                                    <IconButton
+                                        aria-label="Eliminar"
+                                        icon={<FaTrash />}
+                                        size="sm"
+                                        colorScheme="red"
+                                        onClick={() => handleDelete(req.id)}
+                                    />
                                 </Td>
-                                <Td>{new Date(request.created_at).toLocaleDateString()}</Td>
-                                <Td>{request.first_name} {request.last_name}</Td>
-                                <Td>{request.company || '-'}</Td>
-                                <Td>{request.stove_model || '-'}</Td>
-                                <Td>{request.email}</Td>
                             </Tr>
                         ))}
                     </Tbody>
@@ -133,43 +130,50 @@ export default function ServiceRequests() {
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Detalle de Solicitud</ModalHeader>
+                    <ModalHeader>Detalle de Solicitud #{selectedRequest?.id}</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody pb={6}>
                         {selectedRequest && (
-                            <Stack spacing={4}>
+                            <VStack align="stretch" spacing={4}>
                                 <Box>
                                     <Text fontWeight="bold">Fecha:</Text>
                                     <Text>{new Date(selectedRequest.created_at).toLocaleString()}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Solicitante:</Text>
-                                    <Text>{selectedRequest.first_name} {selectedRequest.last_name}</Text>
+                                    <Text fontWeight="bold">Nombre:</Text>
+                                    <Text>{selectedRequest.name}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Empresa:</Text>
-                                    <Text>{selectedRequest.company || '-'}</Text>
+                                    <Text fontWeight="bold">Email:</Text>
+                                    <Text>{selectedRequest.email}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Contacto:</Text>
-                                    <Text>{selectedRequest.email} / {selectedRequest.phone}</Text>
+                                    <Text fontWeight="bold">Teléfono:</Text>
+                                    <Text>{selectedRequest.phone}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Equipo:</Text>
-                                    <Text>Modelo: {selectedRequest.stove_model} / Serie: {selectedRequest.serial_number}</Text>
+                                    <Text fontWeight="bold">Ciudad / Dirección:</Text>
+                                    <Text>{selectedRequest.city} - {selectedRequest.address}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Mensaje:</Text>
-                                    <Text whiteSpace="pre-wrap" p={2} bg="gray.50" rounded="md">{selectedRequest.message}</Text>
+                                    <Text fontWeight="bold">Modelo de Estufa:</Text>
+                                    <Text>{selectedRequest.stove_model}</Text>
                                 </Box>
-                            </Stack>
+                                <Box>
+                                    <Text fontWeight="bold">Fecha de Compra:</Text>
+                                    <Text>{selectedRequest.purchase_date}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Descripción del Problema:</Text>
+                                    <Text p={4} bg="gray.50" borderRadius="md">{selectedRequest.problem_description}</Text>
+                                </Box>
+                            </VStack>
                         )}
                     </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="brand" onClick={onClose}>Cerrar</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </Box>
     );
-}
+};
+
+export default ServiceRequests;

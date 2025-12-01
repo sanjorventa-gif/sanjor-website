@@ -17,7 +17,7 @@ import {
     type BoxProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaClock, FaFilePdf, FaImages, FaFileContract } from 'react-icons/fa';
+import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaClock, FaFilePdf, FaImages, FaTools, FaShieldAlt } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps extends BoxProps {
@@ -161,10 +161,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 {user?.role === 'admin' && (
                     <>
                         <NavItem icon={FaUsers} to="/admin/users">Usuarios</NavItem>
-                        <NavItem icon={FaNewspaper} to="/admin/news">Novedades</NavItem>
+                        <NavItem icon={FaNewspaper} to="/admin/news">Noticias</NavItem>
                         <NavItem icon={FaClock} to="/admin/history">Historia</NavItem>
                         <NavItem icon={FaImages} to="/admin/carousel">Carrusel Home</NavItem>
-                        <NavItem icon={FaFileContract} to="/admin/forms">Formularios</NavItem>
+                        <NavItem icon={FaTools} to="/admin/service-requests">Solicitudes Service</NavItem>
+                        <NavItem icon={FaShieldAlt} to="/admin/warranty-registrations">Garantías</NavItem>
                         <NavItem icon={FaFilePdf} to="/admin/downloads">Descargas</NavItem>
                     </>
                 )}
