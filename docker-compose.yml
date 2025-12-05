@@ -1,0 +1,22 @@
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: sanjor_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - SQLALCHEMY_DATABASE_URI=sqlite:///./data/sql_app.db
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: sanjor_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always

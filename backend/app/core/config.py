@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     ]
 
     # Database
-    SQLALCHEMY_DATABASE_URI: str = "sqlite:///./sql_app.db"
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///./data/sql_app.db"
 
     class Config:
         case_sensitive = True
