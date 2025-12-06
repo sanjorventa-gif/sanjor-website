@@ -43,7 +43,7 @@ const ServiceRequestForm = () => {
         try {
             const token = await executeRecaptcha('service_request');
             const dataWithToken = { ...data, recaptcha_token: token };
-            await axios.post('http://localhost:8000/api/v1/services/service-requests', dataWithToken);
+            await axios.post(`${import.meta.env.VITE_API_URL}/services/service-requests`, dataWithToken);
             toast({
                 title: 'Solicitud enviada.',
                 description: "Nos pondremos en contacto a la brevedad.",

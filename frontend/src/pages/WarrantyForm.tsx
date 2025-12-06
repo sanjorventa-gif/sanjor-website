@@ -43,7 +43,7 @@ const WarrantyForm = () => {
         try {
             const token = await executeRecaptcha('warranty_registration');
             const dataWithToken = { ...data, recaptcha_token: token };
-            await axios.post('http://localhost:8000/api/v1/services/warranty-registrations', dataWithToken);
+            await axios.post(`${import.meta.env.VITE_API_URL}/services/warranty-registrations`, dataWithToken);
             toast({
                 title: 'Garantía Registrada.',
                 description: "Su producto ha sido registrado correctamente.",

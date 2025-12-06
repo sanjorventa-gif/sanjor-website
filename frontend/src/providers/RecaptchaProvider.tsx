@@ -8,7 +8,7 @@ interface RecaptchaProviderProps {
 export const RecaptchaProvider: React.FC<RecaptchaProviderProps> = ({ children }) => {
     return (
         <GoogleReCaptchaProvider
-            reCaptchaKey="6LchMx4sAAAAAMGyvShBVEd4KioI476IBu9ylPLO"
+            reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
             scriptProps={{
                 async: false,
                 defer: false,

@@ -43,7 +43,7 @@ const WarrantyRegistrations = () => {
 
     const fetchRegistrations = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/services/warranty-registrations', {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/warranty-registrations`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRegistrations(response.data);
@@ -65,7 +65,7 @@ const WarrantyRegistrations = () => {
     const handleDelete = async (id: number) => {
         if (!window.confirm('¿Está seguro de eliminar este registro?')) return;
         try {
-            await axios.delete(`http://localhost:8000/api/v1/services/warranty-registrations/${id}`, {
+            await axios.delete(`${import.meta.env.VITE_API_URL}/services/warranty-registrations/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             toast({ title: 'Registro eliminado', status: 'success' });
