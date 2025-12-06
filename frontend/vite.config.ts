@@ -5,4 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   envDir: '..',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+          ui: ['@chakra-ui/react', '@chakra-ui/icons', '@emotion/react', '@emotion/styled'],
+        },
+      },
+    },
+  },
 })
