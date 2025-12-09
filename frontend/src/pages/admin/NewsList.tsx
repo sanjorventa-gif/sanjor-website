@@ -17,12 +17,11 @@ import {
     Flex,
     Text,
     Spinner,
-    HStack,
 } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
 import { getNews, deleteNews, type News } from '../../api/news';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 export default function NewsList() {
     const [news, setNews] = useState<News[]>([]);
@@ -78,8 +77,8 @@ export default function NewsList() {
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Noticias</Heading>
                 <Button
-                    leftIcon={<FaPlus />}
-                    colorScheme="brand"
+                    leftIcon={<AddIcon />}
+                    colorScheme="blue"
                     onClick={() => navigate('/admin/news/new')}
                 >
                     Nueva Noticia
@@ -101,21 +100,23 @@ export default function NewsList() {
                         {news.map((item) => (
                             <Tr key={item.id}>
                                 <Td>
-                                    <HStack spacing={2}>
-                                        <IconButton
-                                            aria-label="Editar"
-                                            icon={<FaEdit />}
-                                            size="sm"
-                                            onClick={() => navigate(`/admin/news/edit/${item.id}`)}
-                                        />
-                                        <IconButton
-                                            aria-label="Eliminar"
-                                            icon={<FaTrash />}
-                                            size="sm"
-                                            colorScheme="red"
-                                            onClick={() => handleDelete(item.id)}
-                                        />
-                                    </HStack>
+                                    <IconButton
+                                        aria-label="Editar"
+                                        icon={<EditIcon />}
+                                        size="sm"
+                                        colorScheme="blue"
+                                        variant="ghost"
+                                        mr={2}
+                                        onClick={() => navigate(`/admin/news/edit/${item.id}`)}
+                                    />
+                                    <IconButton
+                                        aria-label="Eliminar"
+                                        icon={<DeleteIcon />}
+                                        size="sm"
+                                        colorScheme="red"
+                                        variant="ghost"
+                                        onClick={() => handleDelete(item.id)}
+                                    />
                                 </Td>
                                 <Td>
                                     <Image

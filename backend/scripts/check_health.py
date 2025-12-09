@@ -1,18 +1,29 @@
-import requests
+import sys
+import os
 import time
+import urllib.request
+import urllib.error
 
-def check_health():
-    url = "http://localhost:8000/"
-    for i in range(10):
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+def wait_for_backend(url="http://localhost:8000/", timeout=5):
+    start_time = time.time()
+    print("Waiting for backend...")
+    while time.time() - start_time < timeout:
         try:
-            response = requests.get(url)
-            if response.status_code == 200:
-                print("Backend is UP!")
-                return
-        except requests.exceptions.ConnectionError:
-            print(f"Waiting for backend... ({i+1}/10)")
-            time.sleep(1)
-    print("Backend failed to start.")
+            with urllib.request.urlopen(url) as response:
+                if response.status == 200:
+                    print("Backend is up!")
+                    return True
+        except urllib.error.URLError:
+            pass
+        except Exception as e:
+            print(f"Error: {e}")
+        time.sleep(1)
+        print(".", end="", flush=True)
+    print("\nBackend failed to start (or is not running locally).")
+    return False
 
 if __name__ == "__main__":
-    check_health()
+    if not wait_for_backend():
+        sys.exit(1)
