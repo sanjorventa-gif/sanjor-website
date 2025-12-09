@@ -44,7 +44,7 @@ const ServiceRequests = () => {
 
     const fetchRequests = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/services/service-requests', {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/service-requests`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRequests(response.data);
