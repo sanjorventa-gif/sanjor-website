@@ -74,7 +74,7 @@ export default function ProductCard({ title, image, description, href, dimension
                         {title}
                     </Heading>
                     <Text color={'gray.500'} fontSize="sm" noOfLines={3}>
-                        {description}
+                        {description.replace(/<[^>]*>?/gm, '')}
                     </Text>
 
                     {dimensions && (

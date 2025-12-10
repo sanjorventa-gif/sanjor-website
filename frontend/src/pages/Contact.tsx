@@ -45,46 +45,6 @@ export default function Contact() {
         <Box py={10}>
             <Container maxW={'container.xl'}>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={16}>
-                    {/* Contact Info */}
-                    <Stack spacing={8}>
-                        <Box>
-                            <Heading mb={4} color="brand.700">Contáctenos</Heading>
-                            <Text fontSize="lg" color="gray.600">
-                                Estamos a su disposición para responder consultas técnicas, comerciales o de servicio.
-                            </Text>
-                        </Box>
-
-                        <Stack spacing={6}>
-                            <ContactItem
-                                icon={FaMapMarkerAlt}
-                                title="Dirección"
-                                text="Av. Siempreviva 1234, CABA, Argentina"
-                            />
-                            <ContactItem
-                                icon={FaPhone}
-                                title="Teléfono"
-                                text="+54 11 1234-5678"
-                            />
-                            <ContactItem
-                                icon={FaEnvelope}
-                                title="Email"
-                                text="info@sanjor.com.ar"
-                            />
-                        </Stack>
-
-                        {/* Map Placeholder */}
-                        <Box
-                            bg="gray.200"
-                            h="300px"
-                            rounded="md"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <Text color="gray.500">Mapa de Google Maps</Text>
-                        </Box>
-                    </Stack>
-
                     {/* Contact Form */}
                     <Box
                         bg={useColorModeValue('white', 'gray.800')}
@@ -127,6 +87,46 @@ export default function Contact() {
                             </Stack>
                         </form>
                     </Box>
+
+                    {/* Contact Info */}
+                    <Stack spacing={8}>
+                        <Box>
+                            <Heading mb={4} color="brand.700">Contáctenos</Heading>
+                            <Text fontSize="lg" color="gray.600">
+                                Estamos a su disposición para responder consultas técnicas, comerciales o de servicio.
+                            </Text>
+                        </Box>
+
+                        <Stack spacing={6}>
+                            <ContactItem
+                                icon={FaMapMarkerAlt}
+                                title="Dirección"
+                                text="Av. Siempreviva 1234, CABA, Argentina"
+                            />
+                            <ContactItem
+                                icon={FaPhone}
+                                title="Teléfono"
+                                text="+54 11 1234-5678"
+                            />
+                            <ContactItem
+                                icon={FaEnvelope}
+                                title="Email"
+                                text="info@sanjor.com.ar"
+                            />
+                        </Stack>
+
+                        {/* Map Placeholder */}
+                        <Box
+                            bg="gray.200"
+                            h="300px"
+                            rounded="md"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Text color="gray.500">Mapa de Google Maps</Text>
+                        </Box>
+                    </Stack>
                 </SimpleGrid>
             </Container>
         </Box>

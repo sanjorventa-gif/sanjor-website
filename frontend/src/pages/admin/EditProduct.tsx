@@ -19,6 +19,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
 import type { Product } from '../../data/products';
 import FileUpload from '../../components/ui/FileUpload';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function EditProduct() {
     const { products, editProduct } = useProducts();
@@ -151,7 +153,13 @@ export default function EditProduct() {
 
                     <FormControl isRequired>
                         <FormLabel>Descripción</FormLabel>
-                        <Textarea name="description" value={formData.description} onChange={handleChange} />
+                        <Box bg="white" color="black">
+                            <ReactQuill
+                                theme="snow"
+                                value={formData.description || ''}
+                                onChange={(value) => setFormData((prev) => ({ ...prev, description: value }))}
+                            />
+                        </Box>
                     </FormControl>
 
                     <FormControl>

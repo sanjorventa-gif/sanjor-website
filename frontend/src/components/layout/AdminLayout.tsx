@@ -131,7 +131,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     };
 
     return (
-        <Box
+        <Flex
+            direction="column"
             transition="3s ease"
             bg={bg}
             borderRight="1px"
@@ -141,7 +142,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             h="full"
             {...rest}
         >
-            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" flexShrink={0}>
                 <Text
                     fontSize="2xl"
                     fontFamily="monospace"
@@ -155,7 +156,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     SAN JOR
                 </Text>
             </Flex>
-            <VStack spacing={2} align="stretch" mt={4}>
+            <VStack spacing={2} align="stretch" mt={4} flex="1" overflowY="auto" pb={4}>
                 <NavItem icon={FaBox} to="/admin">Productos</NavItem>
                 <NavItem icon={FaPlus} to="/admin/new">Nuevo Producto</NavItem>
                 {user?.role === 'admin' && (
@@ -170,7 +171,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     </>
                 )}
             </VStack>
-            <Box position="absolute" bottom={8} w="full" px={4}>
+            <Box p={4} flexShrink={0} bg={bg} borderTop="1px" borderTopColor={borderColor}>
                 <Button
                     leftIcon={<FaSignOutAlt />}
                     colorScheme="red"
@@ -181,6 +182,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     Cerrar Sesión
                 </Button>
             </Box>
-        </Box>
+        </Flex>
     );
 };

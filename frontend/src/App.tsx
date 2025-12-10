@@ -36,6 +36,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import { useUI } from './context/UIContext';
 import NewsletterDrawer from './components/features/NewsletterDrawer';
 import { RecaptchaProvider } from './providers/RecaptchaProvider';
+import ScrollToTop from './components/utils/ScrollToTop';
 
 function App() {
   const { isNewsletterOpen, onCloseNewsletter } = useUI();
@@ -43,6 +44,7 @@ function App() {
   return (
     <>
       <RecaptchaProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

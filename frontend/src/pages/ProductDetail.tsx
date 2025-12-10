@@ -83,9 +83,15 @@ export default function ProductDetail() {
                             </Heading>
                         </Box>
 
-                        <Text color={'gray.600'} fontSize={'lg'}>
-                            {product.description}
-                        </Text>
+                        <Box
+                            className="rich-text-content"
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                            sx={{
+                                'ul, ol': { marginLeft: '20px', marginBottom: '10px' },
+                                'h1, h2, h3': { marginTop: '10px', marginBottom: '10px', fontWeight: 'bold' },
+                                'p': { marginBottom: '10px' }
+                            }}
+                        />
 
                         <Box>
                             <Heading size="md" mb={4}>Características Principales</Heading>
