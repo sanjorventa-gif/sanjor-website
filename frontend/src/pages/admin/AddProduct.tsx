@@ -1,20 +1,5 @@
 import { useState } from 'react';
 import {
-    Box,
-    Button,
-    Container,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Textarea,
-    Stack,
-    Heading,
-    useToast,
-    FormHelperText,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { useProducts } from '../../context/ProductContext';
 import type { Product } from '../../data/products';
 import FileUpload from '../../components/ui/FileUpload';
 import ReactQuill from 'react-quill-new';

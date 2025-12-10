@@ -1,19 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    Box,
-    Button,
-    Container,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Textarea,
-    Stack,
-    Heading,
-    useToast,
-    FormHelperText,
-    Spinner,
-    Center,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
