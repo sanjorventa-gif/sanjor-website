@@ -23,6 +23,8 @@ import { AddIcon, EditIcon, DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { getDownloads, deleteDownload, type Download } from '../../api/downloads';
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function DownloadsList() {
     const [downloads, setDownloads] = useState<Download[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -75,17 +77,33 @@ export default function DownloadsList() {
         ? downloads.filter((d) => d.category === selectedCategory)
         : downloads;
 
+    const exportColumns = [
+        { header: 'Título', key: 'title' },
+        { header: 'Categoría', key: 'category' },
+        { header: 'Idioma', key: 'language' },
+        { header: 'Roles', key: 'allowed_roles', formatter: (val: string[]) => val && val.length ? val.join(', ') : 'Todos' },
+        { header: 'URL', key: 'file_url' },
+    ];
+
     return (
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Descargas</Heading>
-                <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={() => navigate('/admin/downloads/new')}
-                >
-                    Nuevo Archivo
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={filteredDownloads}
+                        columns={exportColumns}
+                        fileName="descargas_sanjor"
+                        title="Reporte de Descargas"
+                    />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme="blue"
+                        onClick={() => navigate('/admin/downloads/new')}
+                    >
+                        Nuevo Archivo
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box mb={6} maxW="300px">

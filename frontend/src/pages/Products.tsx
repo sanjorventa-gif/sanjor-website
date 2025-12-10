@@ -14,7 +14,8 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import ProductCard from '../components/ui/ProductCard';
-import ProductAdvisor from '../components/features/ProductAdvisor';
+// import ProductAdvisor from '../components/features/ProductAdvisor';
+import StoveSearch from '../components/features/StoveSearch';
 import { useProducts } from '../context/ProductContext';
 
 export default function Products() {
@@ -26,7 +27,8 @@ export default function Products() {
         { id: 'cultivo', label: 'Cultivo' },
         { id: 'esterilizacion', label: 'Esterilización' },
         { id: 'secado', label: 'Secado' },
-        { id: 'cajas', label: 'Cajas de Acero' },
+        { id: 'cajas', label: 'Acero Inoxidable' },
+        { id: 'asesor', label: 'Buscador' },
     ];
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -51,7 +53,7 @@ export default function Products() {
 
     return (
         <Box py={10}>
-            <ProductAdvisor />
+            {/* <ProductAdvisor /> */}
             <Container maxW={'container.xl'}>
                 <Heading mb={6} color="brand.700">Catálogo de Productos</Heading>
                 <Text fontSize="lg" mb={10} color="gray.600">
@@ -71,43 +73,49 @@ export default function Products() {
                     <TabPanels>
                         {categories.map((cat) => (
                             <TabPanel key={cat.id}>
-                                {cat.id === 'cultivo' && (
-                                    <CategoryGuide
-                                        title="Estufas de Cultivo"
-                                        purpose="Diseñadas para el crecimiento de cultivos bacteriológicos, microbiología y análisis de alimentos."
-                                        usage="Mantienen una temperatura constante y precisa (generalmente entre 20°C y 80°C) por periodos prolongados para favorecer el desarrollo de microorganismos."
-                                    />
-                                )}
-                                {cat.id === 'esterilizacion' && (
-                                    <CategoryGuide
-                                        title="Estufas de Esterilización"
-                                        purpose="Utilizadas para la eliminación de microorganismos por calor seco en instrumental quirúrgico, vidrio y materiales termoestables."
-                                        usage="Operan a altas temperaturas (160°C - 180°C) durante un tiempo determinado para asegurar la esterilidad completa."
-                                    />
-                                )}
-                                {cat.id === 'secado' && (
-                                    <CategoryGuide
-                                        title="Estufas de Secado"
-                                        purpose="Ideales para la eliminación de humedad, secado de material de laboratorio y ensayos de sólidos."
-                                        usage="Permiten la evaporación eficiente mediante ventilación (convección natural o forzada) para la salida de vapores."
-                                    />
-                                )}
-                                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
-                                    {products
-                                        .filter((p) => p.category === cat.id)
-                                        .sort((a, b) => (a.order || 0) - (b.order || 0))
-                                        .map((product) => (
-                                            <ProductCard
-                                                key={product.id}
-                                                title={product.name}
-                                                description={product.description}
-                                                image={product.image}
-                                                href={`/productos/detalle/${product.id}`}
-                                                dimensions={product.dimensions}
-                                                temperature={product.temperature}
+                                {cat.id === 'asesor' ? (
+                                    <StoveSearch />
+                                ) : (
+                                    <>
+                                        {cat.id === 'cultivo' && (
+                                            <CategoryGuide
+                                                title="Estufas de Cultivo"
+                                                purpose="Diseñadas para el crecimiento de cultivos bacteriológicos, microbiología y análisis de alimentos."
+                                                usage="Mantienen una temperatura constante y precisa (generalmente entre 20°C y 80°C) por periodos prolongados para favorecer el desarrollo de microorganismos."
                                             />
-                                        ))}
-                                </SimpleGrid>
+                                        )}
+                                        {cat.id === 'esterilizacion' && (
+                                            <CategoryGuide
+                                                title="Estufas de Esterilización"
+                                                purpose="Utilizadas para la eliminación de microorganismos por calor seco en instrumental quirúrgico, vidrio y materiales termoestables."
+                                                usage="Operan a altas temperaturas (160°C - 180°C) durante un tiempo determinado para asegurar la esterilidad completa."
+                                            />
+                                        )}
+                                        {cat.id === 'secado' && (
+                                            <CategoryGuide
+                                                title="Estufas de Secado"
+                                                purpose="Ideales para la eliminación de humedad, secado de material de laboratorio y ensayos de sólidos."
+                                                usage="Permiten la evaporación eficiente mediante ventilación (convección natural o forzada) para la salida de vapores."
+                                            />
+                                        )}
+                                        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+                                            {products
+                                                .filter((p) => p.category === cat.id)
+                                                .sort((a, b) => (a.order || 0) - (b.order || 0))
+                                                .map((product) => (
+                                                    <ProductCard
+                                                        key={product.id}
+                                                        title={product.name}
+                                                        description={product.description}
+                                                        image={product.image}
+                                                        href={`/productos/detalle/${product.id}`}
+                                                        dimensions={product.dimensions}
+                                                        temperature={product.temperature}
+                                                    />
+                                                ))}
+                                        </SimpleGrid>
+                                    </>
+                                )}
                             </TabPanel>
                         ))}
                     </TabPanels>

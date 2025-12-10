@@ -23,6 +23,8 @@ import { useNavigate } from 'react-router-dom';
 import { getNews, deleteNews, type News } from '../../api/news';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function NewsList() {
     const [news, setNews] = useState<News[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -70,19 +72,34 @@ export default function NewsList() {
         }
     };
 
+    const exportColumns = [
+        { header: 'ID', key: 'id' },
+        { header: 'Título', key: 'title' },
+        { header: 'Fecha', key: 'date', formatter: (val: string) => new Date(val).toLocaleDateString() },
+        { header: 'Categoría', key: 'category' },
+    ];
+
     if (isLoading) return <Spinner />;
 
     return (
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Noticias</Heading>
-                <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={() => navigate('/admin/news/new')}
-                >
-                    Nueva Noticia
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={news}
+                        columns={exportColumns}
+                        fileName="noticias_sanjor"
+                        title="Reporte de Noticias"
+                    />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme="blue"
+                        onClick={() => navigate('/admin/news/new')}
+                    >
+                        Nueva Noticia
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box bg="white" rounded="lg" shadow="sm" overflowX="auto">

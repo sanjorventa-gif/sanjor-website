@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
 import { Reorder } from 'framer-motion';
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function Dashboard() {
     const { products, removeProduct, reorder } = useProducts();
     const [localProducts, setLocalProducts] = useState(products);
@@ -40,13 +42,29 @@ export default function Dashboard() {
         reorder(localProducts);
     };
 
+    const exportColumns = [
+        { header: 'ID', key: 'id' },
+        { header: 'Nombre', key: 'name' },
+        { header: 'Categoría', key: 'category' },
+        { header: 'Dimensiones', key: 'dimensions', formatter: (val: any) => val ? `${val.length}x${val.width}x${val.height} ${val.unit}` : '-' },
+        { header: 'Temperatura', key: 'temperature', formatter: (val: any) => val ? `${val.min} - ${val.max} ${val.unit}` : '-' },
+    ];
+
     return (
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={6}>
                 <Heading size="lg">Panel de Administración</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="blue" onClick={() => navigate('/admin/new')}>
-                    Nuevo Producto
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={localProducts}
+                        columns={exportColumns}
+                        fileName="productos_sanjor"
+                        title="Reporte de Productos"
+                    />
+                    <Button leftIcon={<AddIcon />} colorScheme="blue" onClick={() => navigate('/admin/new')}>
+                        Nuevo Producto
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box overflowX="auto" bg="white" shadow="md" rounded="lg">

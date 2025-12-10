@@ -23,6 +23,8 @@ import { getUsers, deleteUser, type User } from '../../api/users';
 
 
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function Users() {
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +73,13 @@ export default function Users() {
         }
     };
 
+    const exportColumns = [
+        { header: 'ID', key: 'id' },
+        { header: 'Email', key: 'email' },
+        { header: 'Rol', key: 'role' },
+        { header: 'Estado', key: 'is_active', formatter: (val: boolean) => val ? 'Activo' : 'Inactivo' },
+    ];
+
     if (isLoading) {
         return (
             <Center h="200px">
@@ -83,13 +92,21 @@ export default function Users() {
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Usuarios</Heading>
-                <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={() => navigate('/admin/users/new')}
-                >
-                    Nuevo Usuario
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={users}
+                        columns={exportColumns}
+                        fileName="usuarios_sanjor"
+                        title="Reporte de Usuarios"
+                    />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme="blue"
+                        onClick={() => navigate('/admin/users/new')}
+                    >
+                        Nuevo Usuario
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box bg="white" shadow="sm" rounded="lg" overflow="hidden">

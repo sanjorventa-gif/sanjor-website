@@ -149,15 +149,17 @@ const DesktopNav = () => {
                         <PopoverTrigger>
                             <Link
                                 p={2}
-                                as={RouterLink}
-                                to={navItem.href ?? '#'}
                                 fontSize={'sm'}
                                 fontWeight={500}
                                 color={linkColor}
                                 _hover={{
                                     textDecoration: 'none',
                                     color: linkHoverColor,
+                                    cursor: 'pointer'
                                 }}
+                                as={navItem.href ? RouterLink : 'span'}
+                                {...(navItem.href ? { to: navItem.href } : {})}
+                                display="block"
                             >
                                 {navItem.label}
                             </Link>
@@ -352,6 +354,7 @@ const MobileNavItem = ({ label, children, href, onToggleMenu }: NavItem & { onTo
 interface NavItem {
     label: string;
     subLabel?: string;
+    shortLabel?: string;
     children?: Array<NavItem>;
     href?: string;
 }
@@ -367,27 +370,37 @@ const NAV_ITEMS: Array<NavItem> = [
     },
     {
         label: 'Productos',
-        href: '/productos',
+        // href: '/productos', // Removed to prevent clicking
         children: [
             {
-                label: 'Cultivo',
-                subLabel: 'Estufas de cultivo bacteriológico',
+                label: 'Estufas de Cultivo',
+                shortLabel: 'Cultivo',
+                subLabel: 'Bacteriología y microbiología',
                 href: '/productos/cultivo',
             },
             {
-                label: 'Esterilización',
-                subLabel: 'Estufas de esterilización y secado',
+                label: 'Estufas de Esterilización',
+                shortLabel: 'Esterilización',
+                subLabel: 'Calor seco para instrumental',
                 href: '/productos/esterilizacion',
             },
             {
-                label: 'Secado',
-                subLabel: 'Estufas de secado y esterilización',
+                label: 'Estufas de Secado',
+                shortLabel: 'Secado',
+                subLabel: 'Eliminación de humedad y ensayos',
                 href: '/productos/secado',
             },
             {
-                label: 'Especiales',
-                subLabel: 'Equipos a medida y otras aplicaciones',
-                href: '/productos/especiales',
+                label: 'Productos de Acero Inoxidable',
+                shortLabel: 'Acero Inoxidable',
+                subLabel: 'Cajas y accesorios',
+                href: '/productos/cajas',
+            },
+            {
+                label: 'Asesor de Estufas',
+                shortLabel: 'Buscador / Asesor',
+                subLabel: 'Encuentre su equipo ideal',
+                href: '/productos/asesor',
             },
         ],
     },

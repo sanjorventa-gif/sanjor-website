@@ -19,6 +19,7 @@ import {
     Text,
     VStack,
     useDisclosure,
+    Flex,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
@@ -34,6 +35,8 @@ interface ServiceRequest {
     created_at: string;
     [key: string]: any;
 }
+
+import ExportButtons from '../../components/common/ExportButtons';
 
 const ServiceRequests = () => {
     const [requests, setRequests] = useState<ServiceRequest[]>([]);
@@ -81,9 +84,27 @@ const ServiceRequests = () => {
         onOpen();
     };
 
+    const exportColumns = [
+        { header: 'ID', key: 'id' },
+        { header: 'Fecha', key: 'created_at', formatter: (val: string) => new Date(val).toLocaleDateString() },
+        { header: 'Nombre', key: 'name' },
+        { header: 'Email', key: 'email' },
+        { header: 'Teléfono', key: 'phone' },
+        { header: 'Ciudad', key: 'city' },
+        { header: 'Modelo', key: 'stove_model' },
+    ];
+
     return (
         <Box>
-            <Heading mb={6}>Solicitudes de Service</Heading>
+            <Flex justify="space-between" align="center" mb={6}>
+                <Heading>Solicitudes de Service</Heading>
+                <ExportButtons
+                    data={requests}
+                    columns={exportColumns}
+                    fileName="service_requests_sanjor"
+                    title="Reporte de Solicitudes de Service"
+                />
+            </Flex>
             <Box overflowX="auto">
                 <Table variant="simple">
                     <Thead>

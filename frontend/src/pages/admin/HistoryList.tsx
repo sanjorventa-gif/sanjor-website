@@ -23,6 +23,8 @@ import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { getHistory, deleteHistory, type History } from '../../api/history';
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function HistoryList() {
     const [history, setHistory] = useState<History[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +73,12 @@ export default function HistoryList() {
         }
     };
 
+    const exportColumns = [
+        { header: 'Año', key: 'year' },
+        { header: 'Título', key: 'title' },
+        { header: 'Descripción', key: 'description' },
+    ];
+
     if (isLoading) {
         return (
             <Center h="200px">
@@ -83,13 +91,21 @@ export default function HistoryList() {
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Historia</Heading>
-                <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={() => navigate('/admin/history/new')}
-                >
-                    Nuevo Evento
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={history}
+                        columns={exportColumns}
+                        fileName="historia_sanjor"
+                        title="Reporte de Historia"
+                    />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme="blue"
+                        onClick={() => navigate('/admin/history/new')}
+                    >
+                        Nuevo Evento
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box bg="white" shadow="sm" rounded="lg" overflow="hidden">

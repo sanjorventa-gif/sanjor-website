@@ -19,6 +19,7 @@ import {
     Text,
     VStack,
     useDisclosure,
+    Flex,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
@@ -33,6 +34,8 @@ interface WarrantyRegistration {
     created_at: string;
     [key: string]: any;
 }
+
+import ExportButtons from '../../components/common/ExportButtons';
 
 const WarrantyRegistrations = () => {
     const [registrations, setRegistrations] = useState<WarrantyRegistration[]>([]);
@@ -80,9 +83,27 @@ const WarrantyRegistrations = () => {
         onOpen();
     };
 
+    const exportColumns = [
+        { header: 'ID', key: 'id' },
+        { header: 'Fecha', key: 'created_at', formatter: (val: string) => new Date(val).toLocaleDateString() },
+        { header: 'Nombre', key: 'name' },
+        { header: 'Email', key: 'email' },
+        { header: 'Modelo', key: 'stove_model' },
+        { header: 'Serie', key: 'serial_number' },
+        { header: 'Vendedor', key: 'vendor' },
+    ];
+
     return (
         <Box>
-            <Heading mb={6}>Registros de Garantía</Heading>
+            <Flex justify="space-between" align="center" mb={6}>
+                <Heading>Registros de Garantía</Heading>
+                <ExportButtons
+                    data={registrations}
+                    columns={exportColumns}
+                    fileName="garantias_sanjor"
+                    title="Reporte de Garantías"
+                />
+            </Flex>
             <Box overflowX="auto">
                 <Table variant="simple">
                     <Thead>

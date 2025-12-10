@@ -6,3 +6,4 @@ from .download import Download
 from .carousel import CarouselItem
 from .service_request import ServiceRequest
 from .warranty_registration import WarrantyRegistration
+from .newsletter import Newsletter

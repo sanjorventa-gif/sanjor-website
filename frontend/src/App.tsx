@@ -37,6 +37,7 @@ import { useUI } from './context/UIContext';
 import NewsletterDrawer from './components/features/NewsletterDrawer';
 import { RecaptchaProvider } from './providers/RecaptchaProvider';
 import ScrollToTop from './components/utils/ScrollToTop';
+import AdminNewsletter from './pages/admin/Newsletter';
 
 function App() {
   const { isNewsletterOpen, onCloseNewsletter } = useUI();
@@ -87,6 +88,7 @@ function App() {
               <Route path="carousel/edit/:id" element={<CarouselForm />} />
               <Route path="service-requests" element={<ServiceRequests />} />
               <Route path="warranty-registrations" element={<WarrantyRegistrations />} />
+              <Route path="newsletter" element={<AdminNewsletter />} />
             </Route>
           </Route>
         </Routes>

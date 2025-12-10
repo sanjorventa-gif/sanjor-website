@@ -13,14 +13,15 @@ import {
     Checkbox,
     useToast,
     Text,
+    HStack,
     Heading,
     Box,
-    VStack,
     Divider,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { register, login } from '../../api/auth';
+import { subscribeNewsletter } from '../../api/newsletter';
 
 interface NewsletterDrawerProps {
     isOpen: boolean;
@@ -94,19 +95,28 @@ export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerPr
     const handleNewsletterSubscribe = async () => {
         if (!newsEmail) return;
         setIsNewsLoading(true);
-        // Simulate API call
-        setTimeout(() => {
-            setIsNewsLoading(false);
+        try {
+            await subscribeNewsletter(newsEmail);
             toast({
                 title: 'Suscripción exitosa',
-                description: 'Gracias por suscribirse a nuestro newsletter.',
+                description: 'Gracias por su interés en SAN JOR.',
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
             });
             setNewsEmail('');
             onClose();
-        }, 1000);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: 'No se pudo completar la suscripción.',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setIsNewsLoading(false);
+        }
     };
 
     return (
@@ -180,34 +190,41 @@ export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerPr
 
                     <Divider display={{ base: 'none', md: 'block' }} />
 
-                    {/* Bottom Section: Newsletter */}
+                    {/* Bottom Section: Newsletter - More compact */}
                     <Box
-                        flex={{ base: '0 0 auto', md: '35' }}
+                        flex={{ base: '0 0 auto', md: 'auto' }}
                         bg={bgColor}
-                        p={6}
+                        p={5}
+                        borderTopWidth="1px"
                     >
-                        <Stack spacing={4} justify="center" h="full">
-                            <VStack spacing={2} align="start">
-                                <Heading size="sm">Suscripción al Newsletter</Heading>
-                                <Text fontSize="sm" color="gray.600">
-                                    Reciba las últimas novedades sin crear una cuenta.
+                        <Stack spacing={3}>
+                            <Box>
+                                <Heading size="xs" textTransform="uppercase" color="gray.500">Newsletter</Heading>
+                                <Text fontSize="xs" color="gray.500">
+                                    Reciba novedades sin crear cuenta.
                                 </Text>
-                            </VStack>
+                            </Box>
 
-                            <Stack spacing={4}>
-                                <FormControl isRequired>
-                                    <Input
-                                        bg="white"
-                                        type="email"
-                                        placeholder="su@email.com"
-                                        value={newsEmail}
-                                        onChange={(e) => setNewsEmail(e.target.value)}
-                                    />
-                                </FormControl>
-                                <Button variant="outline" colorScheme="brand" onClick={handleNewsletterSubscribe} isLoading={isNewsLoading} w="full">
+                            <HStack>
+                                <Input
+                                    bg="white"
+                                    type="email"
+                                    placeholder="su@email.com"
+                                    value={newsEmail}
+                                    onChange={(e) => setNewsEmail(e.target.value)}
+                                    size="sm"
+                                    rounded="md"
+                                />
+                                <Button
+                                    size="sm"
+                                    colorScheme="brand"
+                                    onClick={handleNewsletterSubscribe}
+                                    isLoading={isNewsLoading}
+                                    px={6}
+                                >
                                     Suscribirse
                                 </Button>
-                            </Stack>
+                            </HStack>
                         </Stack>
                     </Box>
                 </DrawerBody>

@@ -7,3 +7,4 @@ from .download import Download, DownloadCreate, DownloadUpdate
 from .carousel import CarouselItem, CarouselItemCreate, CarouselItemUpdate
 from .service_request import ServiceRequest, ServiceRequestCreate
 from .warranty_registration import WarrantyRegistration, WarrantyRegistrationCreate
+from .newsletter import Newsletter, NewsletterCreate

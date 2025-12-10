@@ -20,6 +20,8 @@ import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { getCarouselItems, deleteCarouselItem, type CarouselItem } from '../../api/carousel';
 
+import ExportButtons from '../../components/common/ExportButtons';
+
 export default function CarouselList() {
     const [items, setItems] = useState<CarouselItem[]>([]);
     const navigate = useNavigate();
@@ -65,17 +67,32 @@ export default function CarouselList() {
         }
     };
 
+    const exportColumns = [
+        { header: 'Orden', key: 'order' },
+        { header: 'Título', key: 'title' },
+        { header: 'Subtítulo', key: 'subtitle' },
+        { header: 'Link', key: 'link' },
+    ];
+
     return (
         <Container maxW="container.xl" py={8}>
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Carrousel</Heading>
-                <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={() => navigate('/admin/carousel/new')}
-                >
-                    Nuevo Slide
-                </Button>
+                <Flex gap={2}>
+                    <ExportButtons
+                        data={items}
+                        columns={exportColumns}
+                        fileName="carrusel_sanjor"
+                        title="Reporte de Carrousel"
+                    />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme="blue"
+                        onClick={() => navigate('/admin/carousel/new')}
+                    >
+                        Nuevo Slide
+                    </Button>
+                </Flex>
             </Flex>
 
             <Box bg="white" rounded="lg" shadow="sm" overflowX="auto">

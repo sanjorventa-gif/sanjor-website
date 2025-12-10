@@ -18,6 +18,8 @@
     "@types/react-dropzone": "^4.2.2",
     "axios": "^1.13.2",
     "framer-motion": "^12.23.24",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
     "react": "^19.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.2.0",
@@ -26,7 +28,8 @@
     "react-hook-form": "^7.67.0",
     "react-icons": "^5.5.0",
     "react-quill-new": "^3.6.0",
-    "react-router-dom": "^7.9.6"
+    "react-router-dom": "^7.9.6",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
