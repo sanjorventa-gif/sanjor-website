@@ -8,6 +8,7 @@ export interface News {
     excerpt: string;
     image: string;
     content?: string;
+    allowed_roles?: string[];
 }
 
 export interface NewsCreate {
@@ -17,6 +18,7 @@ export interface NewsCreate {
     excerpt: string;
     image: string;
     content?: string;
+    allowed_roles?: string[];
 }
 
 export interface NewsUpdate {
@@ -26,6 +28,7 @@ export interface NewsUpdate {
     excerpt?: string;
     image?: string;
     content?: string;
+    allowed_roles?: string[];
 }
 
 export const getNews = async () => {

@@ -13,9 +13,12 @@ import {
 
 import { useEffect, useState } from 'react';
 import { getNews, type News as NewsType } from '../api/news';
+import { useAuth } from '../context/AuthContext';
 
 export default function News() {
     const [news, setNews] = useState<NewsType[]>([]);
+
+    const { user, isAuthenticated } = useAuth();
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -29,6 +32,22 @@ export default function News() {
         fetchNews();
     }, []);
 
+    // Filter items based on user role
+    const filteredNews = news.filter(item => {
+        // If item has no specific roles or empty roles, it's public
+        const isPublic = !item.allowed_roles || item.allowed_roles.length === 0;
+
+        if (isPublic) return true;
+
+        // If user is admin, they see everything
+        if (isAuthenticated && user?.role === 'admin') return true;
+
+        // If authenticated, check if user's role is in allowed_roles
+        if (isAuthenticated && user && item.allowed_roles?.includes(user.role)) return true;
+
+        return false;
+    });
+
     return (
         <Box py={10}>
             <Container maxW={'container.xl'}>
@@ -38,7 +57,7 @@ export default function News() {
                 </Text>
 
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
-                    {news.map((item) => (
+                    {filteredNews.map((item) => (
                         <NewsCard key={item.id} {...item} />
                     ))}
                 </SimpleGrid>

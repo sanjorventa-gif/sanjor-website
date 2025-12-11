@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from datetime import date
 
@@ -9,6 +9,7 @@ class NewsBase(BaseModel):
     excerpt: str
     image: str
     content: Optional[str] = None
+    allowed_roles: Optional[List[str]] = []
 
 class NewsCreate(NewsBase):
     pass

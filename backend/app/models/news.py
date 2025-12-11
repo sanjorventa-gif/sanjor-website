@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Date
+from sqlalchemy import Column, Integer, String, Text, Date, JSON
 from app.db.base_class import Base
 
 class News(Base):
@@ -9,3 +9,4 @@ class News(Base):
     excerpt = Column(Text)
     image = Column(String)
     content = Column(Text, nullable=True)
+    allowed_roles = Column(JSON, default=list)

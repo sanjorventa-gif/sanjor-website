@@ -12,6 +12,8 @@ import {
     Textarea,
     Image,
     SimpleGrid,
+    Checkbox,
+    CheckboxGroup,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getNewsItem, createNews, updateNews } from '../../api/news';
@@ -30,6 +32,7 @@ export default function NewsForm() {
         excerpt: '',
         image: '',
         content: '',
+        allowed_roles: [] as string[],
     });
 
     useEffect(() => {
@@ -49,6 +52,7 @@ export default function NewsForm() {
                     excerpt: item.excerpt,
                     image: item.image,
                     content: item.content || '',
+                    allowed_roles: item.allowed_roles || [],
                 });
             }
         } catch (error) {
@@ -170,6 +174,23 @@ export default function NewsForm() {
                                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                 rows={6}
                             />
+                        </FormControl>
+
+                        <FormControl id="roles">
+                            <FormLabel>Roles Permitidos (Dejar vacío para público)</FormLabel>
+                            <CheckboxGroup
+                                colorScheme="brand"
+                                value={formData.allowed_roles}
+                                onChange={(values) => setFormData({ ...formData, allowed_roles: values as string[] })}
+                            >
+                                <Stack spacing={2} direction="column">
+                                    <Checkbox value="admin">Admin</Checkbox>
+                                    <Checkbox value="usuario_nacional">Usuario Nacional</Checkbox>
+                                    <Checkbox value="usuario_internacional">Usuario Internacional</Checkbox>
+                                    <Checkbox value="distribuidor_nacional">Distribuidor Nacional</Checkbox>
+                                    <Checkbox value="distribuidor_internacional">Distribuidor Internacional</Checkbox>
+                                </Stack>
+                            </CheckboxGroup>
                         </FormControl>
 
                         <Button

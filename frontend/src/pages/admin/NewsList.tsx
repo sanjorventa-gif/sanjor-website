@@ -77,6 +77,7 @@ export default function NewsList() {
         { header: 'Título', key: 'title' },
         { header: 'Fecha', key: 'date', formatter: (val: string) => new Date(val).toLocaleDateString() },
         { header: 'Categoría', key: 'category' },
+        { header: 'Roles', key: 'allowed_roles', formatter: (val: string[]) => val && val.length ? val.join(', ') : 'Todos' },
     ];
 
     if (isLoading) return <Spinner />;
@@ -111,6 +112,7 @@ export default function NewsList() {
                             <Th>Título</Th>
                             <Th>Fecha</Th>
                             <Th>Categoría</Th>
+                            <Th>Roles Permitidos</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -150,11 +152,22 @@ export default function NewsList() {
                                 <Td>
                                     <Badge colorScheme="brand">{item.category}</Badge>
                                 </Td>
+                                <Td>
+                                    {item.allowed_roles && item.allowed_roles.length > 0 ? (
+                                        item.allowed_roles.map((role) => (
+                                            <Badge key={role} mr={1} fontSize="xs" colorScheme="gray">
+                                                {role.replace('_', ' ')}
+                                            </Badge>
+                                        ))
+                                    ) : (
+                                        <Badge colorScheme="green">Todos (Público)</Badge>
+                                    )}
+                                </Td>
                             </Tr>
                         ))}
                         {news.length === 0 && (
                             <Tr>
-                                <Td colSpan={5} textAlign="center" py={8}>
+                                <Td colSpan={6} textAlign="center" py={8}>
                                     <Text color="gray.500">No hay noticias registradas</Text>
                                 </Td>
                             </Tr>

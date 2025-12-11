@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     Box,
     Button,
@@ -14,9 +14,16 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
+    Icon,
+    Flex,
+    Text,
+    Image,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createCarouselItem, getCarouselItem, updateCarouselItem } from '../../api/carousel';
+import { useDropzone } from 'react-dropzone';
+import { uploadFile } from '../../api/upload';
+import { FaCloudUploadAlt, FaFileImage } from 'react-icons/fa';
 
 export default function CarouselForm() {
     const { id } = useParams();
@@ -36,6 +43,43 @@ export default function CarouselForm() {
             fetchItem();
         }
     }, [id]);
+
+    const [isUploading, setIsUploading] = useState(false);
+
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        const file = acceptedFiles[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        try {
+            const response = await uploadFile(file);
+            setFormData((prev) => ({ ...prev, image: response.url }));
+            toast({
+                title: 'Imagen subida',
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+            });
+        } catch (error) {
+            toast({
+                title: 'Error al subir imagen',
+                description: 'Intente nuevamente.',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setIsUploading(false);
+        }
+    }, [toast]);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        multiple: false,
+        accept: {
+            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp']
+        }
+    });
 
     const fetchItem = async () => {
         try {
@@ -113,12 +157,63 @@ export default function CarouselForm() {
                         </FormControl>
 
                         <FormControl isRequired>
-                            <FormLabel>URL de Imagen</FormLabel>
-                            <Input
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                placeholder="https://..."
-                            />
+                            <FormLabel>Imagen</FormLabel>
+                            <Box
+                                {...getRootProps()}
+                                border="2px dashed"
+                                borderColor={isDragActive ? 'brand.500' : 'gray.300'}
+                                rounded="md"
+                                p={6}
+                                cursor="pointer"
+                                bg={isDragActive ? 'brand.50' : 'gray.50'}
+                                transition="all 0.2s"
+                                _hover={{ borderColor: 'brand.500', bg: 'brand.50' }}
+                                textAlign="center"
+                            >
+                                <input {...getInputProps()} />
+                                <VStack spacing={2}>
+                                    <Icon as={FaCloudUploadAlt} w={10} h={10} color="gray.400" />
+                                    <Text color="gray.600">
+                                        {isDragActive
+                                            ? 'Suelte la imagen aquí...'
+                                            : 'Arrastre y suelte una imagen aquí, o haga clic para seleccionar'}
+                                    </Text>
+                                </VStack>
+                            </Box>
+
+                            {formData.image && (
+                                <Box mt={3} p={3} bg="gray.50" rounded="md" border="1px solid" borderColor="gray.200">
+                                    <Flex align="center" direction="column">
+                                        <Image
+                                            src={formData.image}
+                                            alt="Preview"
+                                            maxH="200px"
+                                            objectFit="contain"
+                                            mb={2}
+                                            rounded="md"
+                                        />
+                                        <Flex width="100%" justify="space-between" align="center">
+                                            <Flex align="center">
+                                                <Icon as={FaFileImage} color="blue.500" mr={2} />
+                                                <Text fontSize="sm" noOfLines={1} maxW="200px">
+                                                    {formData.image.split('/').pop()}
+                                                </Text>
+                                            </Flex>
+                                            <Button
+                                                size="xs"
+                                                colorScheme="red"
+                                                variant="ghost"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setFormData({ ...formData, image: '' });
+                                                }}
+                                            >
+                                                Eliminar
+                                            </Button>
+                                        </Flex>
+                                    </Flex>
+                                </Box>
+                            )}
                         </FormControl>
 
                         <FormControl>
@@ -136,7 +231,7 @@ export default function CarouselForm() {
                             </NumberInput>
                         </FormControl>
 
-                        <Button type="submit" colorScheme="blue" width="full" mt={4}>
+                        <Button type="submit" colorScheme="blue" width="full" mt={4} isLoading={isUploading}>
                             Guardar
                         </Button>
                         <Button variant="ghost" width="full" onClick={() => navigate('/admin/carousel')}>
