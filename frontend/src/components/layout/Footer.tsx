@@ -9,7 +9,8 @@ import {
     chakra,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { Link as RouterLink } from 'react-router-dom';
 
 const SocialButton = ({
@@ -103,16 +104,19 @@ export default function Footer() {
                     py={4}
                     direction={{ base: 'column', md: 'row' }}
                     spacing={4}
-                    justify={{ md: 'space-between' }}
-                    align={{ md: 'center' }}
+                    justify={'center'}
+                    align={'center'}
                 >
                     <Text>© {new Date().getFullYear()} SAN JOR. Todos los derechos reservados.</Text>
                     <Stack direction={'row'} spacing={6}>
-                        <SocialButton label={'LinkedIn'} href={'#'}>
-                            <FaLinkedin />
+                        <SocialButton label={'Facebook'} href={'https://www.facebook.com/sanjorenlared'}>
+                            <FaFacebook />
                         </SocialButton>
-                        <SocialButton label={'Instagram'} href={'#'}>
+                        <SocialButton label={'Instagram'} href={'https://www.instagram.com/sanjorenlared/'}>
                             <FaInstagram />
+                        </SocialButton>
+                        <SocialButton label={'X'} href={'https://x.com/sanjorenlared'}>
+                            <FaXTwitter />
                         </SocialButton>
                     </Stack>
                 </Container>

@@ -366,7 +366,18 @@ const NAV_ITEMS: Array<NavItem> = [
     },
     {
         label: 'Empresa',
-        href: '/empresa',
+        children: [
+            {
+                label: 'La Empresa',
+                subLabel: 'Conozca nuestra trayectoria y valores',
+                href: '/empresa',
+            },
+            {
+                label: 'Historia',
+                subLabel: 'Nuestra evolución a través del tiempo',
+                href: '/historia',
+            },
+        ]
     },
     {
         label: 'Productos',

@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductDetail';
 import Services from './pages/Services';
 import DynamicFormPage from './pages/DynamicFormPage';
 import Downloads from './pages/Downloads';
+import History from './pages/History';
 import News from './pages/News';
 import Contact from './pages/Contact';
 import Login from './pages/admin/Login';
@@ -50,6 +51,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="empresa" element={<Company />} />
+            <Route path="historia" element={<History />} />
             <Route path="productos" element={<Products />} />
             <Route path="productos/:category" element={<Products />} />
             <Route path="productos/detalle/:id" element={<ProductDetail />} />

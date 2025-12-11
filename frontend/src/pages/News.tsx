@@ -9,6 +9,14 @@ import {
     Tag,
     Button,
     useColorModeValue,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
 } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
@@ -46,7 +54,16 @@ export default function News() {
         if (isAuthenticated && user && item.allowed_roles?.includes(user.role)) return true;
 
         return false;
+        return false;
     });
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [selectedNews, setSelectedNews] = useState<NewsType | null>(null);
+
+    const handleOpenNews = (item: NewsType) => {
+        setSelectedNews(item);
+        onOpen();
+    };
 
     return (
         <Box py={10}>
@@ -58,15 +75,57 @@ export default function News() {
 
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
                     {filteredNews.map((item) => (
-                        <NewsCard key={item.id} {...item} />
+                        <NewsCard key={item.id} {...item} onReadMore={() => handleOpenNews(item)} />
                     ))}
                 </SimpleGrid>
+
+                <Modal isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside">
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>{selectedNews?.title}</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody pb={6}>
+                            {selectedNews?.image && (
+                                <Image
+                                    src={selectedNews.image}
+                                    alt={selectedNews.title}
+                                    w="100%"
+                                    h="300px"
+                                    objectFit="cover"
+                                    rounded="md"
+                                    mb={6}
+                                />
+                            )}
+                            <Box mb={4}>
+                                <Tag colorScheme="brand" mr={2}>{selectedNews?.category}</Tag>
+                                <Text as="span" fontSize="sm" color="gray.500">
+                                    {selectedNews?.date && new Date(selectedNews.date).toLocaleDateString()}
+                                </Text>
+                            </Box>
+
+                            <Box
+                                className="news-content"
+                                dangerouslySetInnerHTML={{ __html: selectedNews?.content || selectedNews?.excerpt || '' }}
+                                sx={{
+                                    'img': { maxWidth: '100%', height: 'auto', margin: '20px 0' },
+                                    'p': { marginBottom: '1rem' },
+                                    'ul, ol': { marginLeft: '20px', marginBottom: '1rem' }
+                                }}
+                            />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button colorScheme="blue" onClick={onClose}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
             </Container>
         </Box>
     );
 }
 
-const NewsCard = ({ title, date, category, excerpt, image }: any) => {
+const NewsCard = ({ title, date, category, excerpt, image, onReadMore }: any) => {
     return (
         <Box
             bg={useColorModeValue('white', 'gray.800')}
@@ -88,7 +147,7 @@ const NewsCard = ({ title, date, category, excerpt, image }: any) => {
                 <Text color="gray.600" fontSize="sm" mb={4} noOfLines={3}>
                     {excerpt}
                 </Text>
-                <Button variant="link" colorScheme="brand" size="sm">
+                <Button variant="link" colorScheme="brand" size="sm" onClick={onReadMore}>
                     Leer más
                 </Button>
             </Box>

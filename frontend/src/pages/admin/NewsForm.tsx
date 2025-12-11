@@ -15,6 +15,8 @@ import {
     Checkbox,
     CheckboxGroup,
 } from '@chakra-ui/react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getNewsItem, createNews, updateNews } from '../../api/news';
 
@@ -168,12 +170,24 @@ export default function NewsForm() {
                         </FormControl>
 
                         <FormControl id="content">
-                            <FormLabel>Contenido Completo (Opcional)</FormLabel>
-                            <Textarea
-                                value={formData.content}
-                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                rows={6}
-                            />
+                            <FormLabel>Contenido Completo</FormLabel>
+                            <Box bg="white" color="black">
+                                <ReactQuill
+                                    theme="snow"
+                                    value={formData.content}
+                                    onChange={(content) => setFormData({ ...formData, content })}
+                                    style={{ height: '300px', marginBottom: '50px' }}
+                                    modules={{
+                                        toolbar: [
+                                            [{ 'header': [1, 2, false] }],
+                                            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+                                            ['link', 'image'],
+                                            ['clean']
+                                        ],
+                                    }}
+                                />
+                            </Box>
                         </FormControl>
 
                         <FormControl id="roles">
