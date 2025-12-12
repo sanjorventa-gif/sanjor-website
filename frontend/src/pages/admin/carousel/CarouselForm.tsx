@@ -36,6 +36,8 @@ export default function CarouselForm() {
         subtitle: '',
         image: '',
         order: 0,
+        button_text: '',
+        button_link: '',
     });
 
     useEffect(() => {
@@ -89,6 +91,8 @@ export default function CarouselForm() {
                 subtitle: data.subtitle || '',
                 image: data.image,
                 order: data.order,
+                button_text: data.button_text || '',
+                button_link: data.button_link || '',
             });
         } catch (error) {
             toast({
@@ -229,6 +233,24 @@ export default function CarouselForm() {
                                     <NumberDecrementStepper />
                                 </NumberInputStepper>
                             </NumberInput>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Texto del Botón (Opcional)</FormLabel>
+                            <Input
+                                value={formData.button_text}
+                                onChange={(e) => setFormData({ ...formData, button_text: e.target.value })}
+                                placeholder="Ej: Ver Más"
+                            />
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Enlace del Botón (Opcional)</FormLabel>
+                            <Input
+                                value={formData.button_link}
+                                onChange={(e) => setFormData({ ...formData, button_link: e.target.value })}
+                                placeholder="Ej: /productos/cultivo"
+                            />
                         </FormControl>
 
                         <Button type="submit" colorScheme="blue" width="full" mt={4} isLoading={isUploading}>

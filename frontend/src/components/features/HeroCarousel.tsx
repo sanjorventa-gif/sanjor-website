@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Text, Flex, Heading, Stack, Container, IconButton, Skeleton } from '@chakra-ui/react';
+import { Box, Text, Flex, Heading, Stack, Container, IconButton, Skeleton, Button } from '@chakra-ui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { getCarouselItems, type CarouselItem } from '../../api/carousel';
@@ -142,6 +142,28 @@ export default function HeroCarousel() {
                                             {slides[currentSlide].subtitle}
                                         </Text>
                                     </motion.div>
+
+                                    {slides[currentSlide].button_text && (
+                                        <motion.div
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{ delay: 1.1, duration: 0.8 }}
+                                        >
+                                            <Button
+                                                as="a"
+                                                href={slides[currentSlide].button_link || '#'}
+                                                size="lg"
+                                                colorScheme="brand"
+                                                mt={4}
+                                                _hover={{
+                                                    transform: 'translateY(-2px)',
+                                                    boxShadow: 'lg',
+                                                }}
+                                            >
+                                                {slides[currentSlide].button_text}
+                                            </Button>
+                                        </motion.div>
+                                    )}
                                 </Stack>
                             </Flex>
                         </Container>

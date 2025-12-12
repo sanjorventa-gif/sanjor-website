@@ -7,3 +7,5 @@ class CarouselItem(Base):
     subtitle = Column(String, nullable=True)
     image = Column(String, nullable=False)
     order = Column(Integer, default=0)
+    button_text = Column(String, nullable=True)
+    button_link = Column(String, nullable=True)

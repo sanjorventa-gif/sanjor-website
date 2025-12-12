@@ -6,6 +6,8 @@ export interface CarouselItem {
     subtitle?: string;
     image: string;
     order: number;
+    button_text?: string;
+    button_link?: string;
 }
 
 export interface CarouselItemCreate {
@@ -13,6 +15,8 @@ export interface CarouselItemCreate {
     subtitle?: string;
     image: string;
     order?: number;
+    button_text?: string;
+    button_link?: string;
 }
 
 export interface CarouselItemUpdate {
@@ -20,6 +24,8 @@ export interface CarouselItemUpdate {
     subtitle?: string;
     image?: string;
     order?: number;
+    button_text?: string;
+    button_link?: string;
 }
 
 export const getCarouselItems = async (): Promise<CarouselItem[]> => {

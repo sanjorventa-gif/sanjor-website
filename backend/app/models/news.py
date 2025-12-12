@@ -9,4 +9,5 @@ class News(Base):
     excerpt = Column(Text)
     image = Column(String)
     content = Column(Text, nullable=True)
+    slug = Column(String, unique=True, index=True, nullable=True)
     allowed_roles = Column(JSON, default=list)

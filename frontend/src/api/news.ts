@@ -7,6 +7,7 @@ export interface News {
     category: string;
     excerpt: string;
     image: string;
+    slug?: string;
     content?: string;
     allowed_roles?: string[];
 }
@@ -38,6 +39,11 @@ export const getNews = async () => {
 
 export const getNewsItem = async (id: number) => {
     const response = await api.get<News>(`/news/${id}`);
+    return response.data;
+};
+
+export const getNewsBySlug = async (slug: string) => {
+    const response = await api.get<News>(`/news/slug/${slug}`);
     return response.data;
 };
 

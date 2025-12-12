@@ -62,6 +62,20 @@ def read_news_item(
         raise HTTPException(status_code=404, detail="News item not found")
     return news
 
+@router.get("/slug/{slug}", response_model=schemas.News)
+def read_news_item_by_slug(
+    *,
+    db: Session = Depends(deps.get_db),
+    slug: str,
+) -> Any:
+    """
+    Get news item by Slug.
+    """
+    news = db.query(models.News).filter(models.News.slug == slug).first()
+    if not news:
+        raise HTTPException(status_code=404, detail="News item not found")
+    return news
+
 @router.delete("/{id}", response_model=schemas.News)
 def delete_news(
     *,

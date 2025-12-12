@@ -7,11 +7,15 @@ class CarouselItemBase(BaseModel):
     subtitle: Optional[str] = None
     image: Optional[str] = None
     order: Optional[int] = 0
+    button_text: Optional[str] = None
+    button_link: Optional[str] = None
 
 # Properties to receive on item creation
 class CarouselItemCreate(CarouselItemBase):
     title: str
     image: str
+    button_text: Optional[str] = None
+    button_link: Optional[str] = None
 
 # Properties to receive on item update
 class CarouselItemUpdate(CarouselItemBase):

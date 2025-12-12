@@ -15,7 +15,15 @@ import {
     useBreakpointValue,
     useDisclosure,
     Container,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuDivider,
+    Avatar,
 } from '@chakra-ui/react';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import {
     HamburgerIcon,
     CloseIcon,
@@ -29,6 +37,13 @@ import { FaInstagram, FaFacebook, FaLinkedin } from 'react-icons/fa';
 
 export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
+    const { isAuthenticated, user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <Box>
@@ -87,17 +102,49 @@ export default function Navbar() {
                         direction={'row'}
                         spacing={6}
                     >
-                        <Button
-                            as={RouterLink}
-                            to="/login"
-                            display={{ base: 'none', md: 'inline-flex' }}
-                            fontSize={'sm'}
-                            fontWeight={600}
-                            variant={'link'}
-                            color={useColorModeValue('gray.600', 'gray.200')}
-                        >
-                            Ingresar
-                        </Button>
+                        {isAuthenticated ? (
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    rounded={'full'}
+                                    variant={'link'}
+                                    cursor={'pointer'}
+                                    minW={0}
+                                >
+                                    <Avatar
+                                        size={'sm'}
+                                        name={user?.email}
+                                        src={'https://bit.ly/broken-link'}
+                                    />
+                                </MenuButton>
+                                <MenuList zIndex={1001}>
+                                    <MenuItem cursor="default" fontWeight="bold">
+                                        {user?.email}
+                                    </MenuItem>
+                                    <MenuDivider />
+                                    {user?.role === 'admin' && (
+                                        <MenuItem as={RouterLink} to="/admin">
+                                            Panel Admin
+                                        </MenuItem>
+                                    )}
+                                    <MenuItem onClick={handleLogout}>
+                                        Cerrar Sesión
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                        ) : (
+                            <Button
+                                as={RouterLink}
+                                to="/login"
+                                display={{ base: 'none', md: 'inline-flex' }}
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                variant={'link'}
+                                color={useColorModeValue('gray.600', 'gray.200')}
+                            >
+                                Ingresar
+                            </Button>
+                        )}
                         <Button
                             as={RouterLink}
                             to="/contacto"
@@ -227,6 +274,9 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 };
 
 const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
+    const { isAuthenticated, user, logout } = useAuth();
+    const navigate = useNavigate();
+
     return (
         <Stack
             bg={useColorModeValue('whiteAlpha.900', 'gray.800')}
@@ -243,7 +293,28 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
 
             <Box borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')} my={2} />
 
-            <MobileNavItem label="Ingresar" href="/login" onToggleMenu={onToggle} />
+            {isAuthenticated ? (
+                <>
+                    <Box px={4} py={2}>
+                        <Text fontWeight="bold" color={useColorModeValue('gray.600', 'gray.200')}>
+                            Hola, {user?.email}
+                        </Text>
+                    </Box>
+                    {user?.role === 'admin' && (
+                        <MobileNavItem label="Panel Admin" href="/admin" onToggleMenu={onToggle} />
+                    )}
+                    <Stack spacing={4} onClick={() => { logout(); navigate('/'); onToggle(); }} cursor="pointer" p={4}>
+                        <Flex justify={'space-between'} align={'center'}>
+                            <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
+                                Cerrar Sesión
+                            </Text>
+                        </Flex>
+                    </Stack>
+                </>
+            ) : (
+                <MobileNavItem label="Ingresar" href="/login" onToggleMenu={onToggle} />
+            )}
+
             <MobileNavItem label="Contacto" href="/contacto" onToggleMenu={onToggle} />
 
             <Stack direction="row" spacing={6} justify="center" mt={6} pt={4} borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')}>

@@ -9,6 +9,7 @@ import DynamicFormPage from './pages/DynamicFormPage';
 import Downloads from './pages/Downloads';
 import History from './pages/History';
 import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 import Contact from './pages/Contact';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
@@ -61,6 +62,7 @@ function App() {
             <Route path="servicios/garantia" element={<WarrantyForm />} />
             <Route path="descargas" element={<Downloads />} />
             <Route path="novedades" element={<News />} />
+            <Route path="novedades/:slug" element={<NewsDetail />} />
             <Route path="contacto" element={<Contact />} />
             <Route path="login" element={<UserLogin />} />
             <Route path="forgot-password" element={<ForgotPassword />} />

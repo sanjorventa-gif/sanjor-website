@@ -9,15 +9,8 @@ import {
     Tag,
     Button,
     useColorModeValue,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
 import { getNews, type News as NewsType } from '../api/news';
@@ -57,12 +50,14 @@ export default function News() {
         return false;
     });
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [selectedNews, setSelectedNews] = useState<NewsType | null>(null);
+    const navigate = useNavigate();
 
     const handleOpenNews = (item: NewsType) => {
-        setSelectedNews(item);
-        onOpen();
+        if (item.slug) {
+            navigate(`/novedades/${item.slug}`);
+        } else {
+            console.error('News item missing slug:', item);
+        }
     };
 
     return (
@@ -78,48 +73,6 @@ export default function News() {
                         <NewsCard key={item.id} {...item} onReadMore={() => handleOpenNews(item)} />
                     ))}
                 </SimpleGrid>
-
-                <Modal isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside">
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>{selectedNews?.title}</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody pb={6}>
-                            {selectedNews?.image && (
-                                <Image
-                                    src={selectedNews.image}
-                                    alt={selectedNews.title}
-                                    w="100%"
-                                    h="300px"
-                                    objectFit="cover"
-                                    rounded="md"
-                                    mb={6}
-                                />
-                            )}
-                            <Box mb={4}>
-                                <Tag colorScheme="brand" mr={2}>{selectedNews?.category}</Tag>
-                                <Text as="span" fontSize="sm" color="gray.500">
-                                    {selectedNews?.date && new Date(selectedNews.date).toLocaleDateString()}
-                                </Text>
-                            </Box>
-
-                            <Box
-                                className="news-content"
-                                dangerouslySetInnerHTML={{ __html: selectedNews?.content || selectedNews?.excerpt || '' }}
-                                sx={{
-                                    'img': { maxWidth: '100%', height: 'auto', margin: '20px 0' },
-                                    'p': { marginBottom: '1rem' },
-                                    'ul, ol': { marginLeft: '20px', marginBottom: '1rem' }
-                                }}
-                            />
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button colorScheme="blue" onClick={onClose}>
-                                Cerrar
-                            </Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
             </Container>
         </Box>
     );
@@ -139,7 +92,7 @@ const NewsCard = ({ title, date, category, excerpt, image, onReadMore }: any) =>
             <Box p={6}>
                 <Stack direction="row" align="center" mb={2}>
                     <Tag size="sm" colorScheme="brand">{category}</Tag>
-                    <Text fontSize="xs" color="gray.500">{date}</Text>
+                    <Text fontSize="xs" color="gray.500">{date ? new Date(date).toLocaleDateString() : ''}</Text>
                 </Stack>
                 <Heading size="md" mb={2} lineHeight="tight">
                     {title}

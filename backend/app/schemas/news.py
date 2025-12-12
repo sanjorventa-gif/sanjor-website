@@ -8,6 +8,7 @@ class NewsBase(BaseModel):
     category: str
     excerpt: str
     image: str
+    slug: Optional[str] = None
     content: Optional[str] = None
     allowed_roles: Optional[List[str]] = []
 
