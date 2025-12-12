@@ -16,9 +16,9 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getHistory, createHistory, updateHistory } from '../../api/history';
+import { getHistory, createHistory, updateHistory } from '../../../api/history';
 import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../api/upload';
+import { uploadFile } from '../../../api/upload';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 export default function HistoryForm() {

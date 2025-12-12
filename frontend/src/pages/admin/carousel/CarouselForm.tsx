@@ -20,9 +20,9 @@ import {
     Image,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createCarouselItem, getCarouselItem, updateCarouselItem } from '../../api/carousel';
+import { createCarouselItem, getCarouselItem, updateCarouselItem } from '../../../api/carousel';
 import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../api/upload';
+import { uploadFile } from '../../../api/upload';
 import { FaCloudUploadAlt, FaFileImage } from 'react-icons/fa';
 
 export default function CarouselForm() {

@@ -24,38 +24,37 @@ import {
 import { FaTrash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
 
-interface ServiceRequest {
+interface WarrantyRegistration {
     id: number;
     name: string;
     email: string;
-    phone: string;
-    city: string;
     stove_model: string;
-    problem_description: string;
+    serial_number: string;
+    vendor: string;
     created_at: string;
     [key: string]: any;
 }
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
-const ServiceRequests = () => {
-    const [requests, setRequests] = useState<ServiceRequest[]>([]);
-    const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null);
+const WarrantyRegistrations = () => {
+    const [registrations, setRegistrations] = useState<WarrantyRegistration[]>([]);
+    const [selectedReg, setSelectedReg] = useState<WarrantyRegistration | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const token = localStorage.getItem('token');
 
-    const fetchRequests = async () => {
+    const fetchRegistrations = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/service-requests`, {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/warranty-registrations`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setRequests(response.data);
+            setRegistrations(response.data);
         } catch (error) {
-            console.error("Error fetching requests:", error);
+            console.error("Error fetching registrations:", error);
             toast({
                 title: 'Error',
-                description: 'No se pudieron cargar las solicitudes.',
+                description: 'No se pudieron cargar los registros.',
                 status: 'error',
                 duration: 3000,
             });
@@ -63,24 +62,24 @@ const ServiceRequests = () => {
     };
 
     useEffect(() => {
-        fetchRequests();
+        fetchRegistrations();
     }, [token]);
 
     const handleDelete = async (id: number) => {
-        if (!window.confirm('¿Está seguro de eliminar esta solicitud?')) return;
+        if (!window.confirm('¿Está seguro de eliminar este registro?')) return;
         try {
-            await axios.delete(`http://localhost:8000/api/v1/services/service-requests/${id}`, {
+            await axios.delete(`${import.meta.env.VITE_API_URL}/services/warranty-registrations/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast({ title: 'Solicitud eliminada', status: 'success' });
-            fetchRequests();
+            toast({ title: 'Registro eliminado', status: 'success' });
+            fetchRegistrations();
         } catch (error) {
             toast({ title: 'Error al eliminar', status: 'error' });
         }
     };
 
-    const handleView = (request: ServiceRequest) => {
-        setSelectedRequest(request);
+    const handleView = (reg: WarrantyRegistration) => {
+        setSelectedReg(reg);
         onOpen();
     };
 
@@ -89,20 +88,20 @@ const ServiceRequests = () => {
         { header: 'Fecha', key: 'created_at', formatter: (val: string) => new Date(val).toLocaleDateString() },
         { header: 'Nombre', key: 'name' },
         { header: 'Email', key: 'email' },
-        { header: 'Teléfono', key: 'phone' },
-        { header: 'Ciudad', key: 'city' },
         { header: 'Modelo', key: 'stove_model' },
+        { header: 'Serie', key: 'serial_number' },
+        { header: 'Vendedor', key: 'vendor' },
     ];
 
     return (
         <Box>
             <Flex justify="space-between" align="center" mb={6}>
-                <Heading>Solicitudes de Service</Heading>
+                <Heading>Registros de Garantía</Heading>
                 <ExportButtons
-                    data={requests}
+                    data={registrations}
                     columns={exportColumns}
-                    fileName="service_requests_sanjor"
-                    title="Reporte de Solicitudes de Service"
+                    fileName="garantias_sanjor"
+                    title="Reporte de Garantías"
                 />
             </Flex>
             <Box overflowX="auto">
@@ -113,18 +112,20 @@ const ServiceRequests = () => {
                             <Th>Fecha</Th>
                             <Th>Nombre</Th>
                             <Th>Modelo</Th>
-                            <Th>Problema</Th>
+                            <Th>N° Serie</Th>
+                            <Th>Vendedor</Th>
                             <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {requests.map((req) => (
-                            <Tr key={req.id}>
-                                <Td>{req.id}</Td>
-                                <Td>{new Date(req.created_at).toLocaleDateString()}</Td>
-                                <Td>{req.name}</Td>
-                                <Td>{req.stove_model}</Td>
-                                <Td maxW="300px" isTruncated>{req.problem_description}</Td>
+                        {registrations.map((reg) => (
+                            <Tr key={reg.id}>
+                                <Td>{reg.id}</Td>
+                                <Td>{new Date(reg.created_at).toLocaleDateString()}</Td>
+                                <Td>{reg.name}</Td>
+                                <Td>{reg.stove_model}</Td>
+                                <Td>{reg.serial_number}</Td>
+                                <Td>{reg.vendor}</Td>
                                 <Td>
                                     <IconButton
                                         aria-label="Ver detalles"
@@ -132,14 +133,14 @@ const ServiceRequests = () => {
                                         size="sm"
                                         colorScheme="blue"
                                         mr={2}
-                                        onClick={() => handleView(req)}
+                                        onClick={() => handleView(reg)}
                                     />
                                     <IconButton
                                         aria-label="Eliminar"
                                         icon={<FaTrash />}
                                         size="sm"
                                         colorScheme="red"
-                                        onClick={() => handleDelete(req.id)}
+                                        onClick={() => handleDelete(reg.id)}
                                     />
                                 </Td>
                             </Tr>
@@ -151,42 +152,46 @@ const ServiceRequests = () => {
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Detalle de Solicitud #{selectedRequest?.id}</ModalHeader>
+                    <ModalHeader>Detalle de Garantía #{selectedReg?.id}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        {selectedRequest && (
+                        {selectedReg && (
                             <VStack align="stretch" spacing={4}>
                                 <Box>
-                                    <Text fontWeight="bold">Fecha:</Text>
-                                    <Text>{new Date(selectedRequest.created_at).toLocaleString()}</Text>
+                                    <Text fontWeight="bold">Fecha de Registro:</Text>
+                                    <Text>{new Date(selectedReg.created_at).toLocaleString()}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Nombre:</Text>
-                                    <Text>{selectedRequest.name}</Text>
+                                    <Text>{selectedReg.name}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Email:</Text>
-                                    <Text>{selectedRequest.email}</Text>
+                                    <Text>{selectedReg.email}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Teléfono:</Text>
-                                    <Text>{selectedRequest.phone}</Text>
+                                    <Text>{selectedReg.phone}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Ciudad / Dirección:</Text>
-                                    <Text>{selectedRequest.city} - {selectedRequest.address}</Text>
+                                    <Text>{selectedReg.city} - {selectedReg.address}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Modelo de Estufa:</Text>
-                                    <Text>{selectedRequest.stove_model}</Text>
+                                    <Text>{selectedReg.stove_model}</Text>
+                                </Box>
+                                <Box>
+                                    <Text fontWeight="bold">Número de Serie:</Text>
+                                    <Text>{selectedReg.serial_number}</Text>
                                 </Box>
                                 <Box>
                                     <Text fontWeight="bold">Fecha de Compra:</Text>
-                                    <Text>{selectedRequest.purchase_date}</Text>
+                                    <Text>{selectedReg.purchase_date}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Descripción del Problema:</Text>
-                                    <Text p={4} bg="gray.50" borderRadius="md">{selectedRequest.problem_description}</Text>
+                                    <Text fontWeight="bold">Vendedor:</Text>
+                                    <Text>{selectedReg.vendor}</Text>
                                 </Box>
                             </VStack>
                         )}
@@ -197,4 +202,4 @@ const ServiceRequests = () => {
     );
 };
 
-export default ServiceRequests;
+export default WarrantyRegistrations;

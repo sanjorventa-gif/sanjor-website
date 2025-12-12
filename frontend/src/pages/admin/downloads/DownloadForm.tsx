@@ -19,9 +19,9 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDownloads, createDownload, updateDownload } from '../../api/downloads';
+import { getDownloads, createDownload, updateDownload } from '../../../api/downloads';
 import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../api/upload';
+import { uploadFile } from '../../../api/upload';
 import { FaCloudUploadAlt, FaFileAlt } from 'react-icons/fa';
 
 const ROLES = [

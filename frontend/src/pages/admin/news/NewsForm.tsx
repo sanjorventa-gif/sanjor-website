@@ -18,7 +18,7 @@ import {
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getNewsItem, createNews, updateNews } from '../../api/news';
+import { getNewsItem, createNews, updateNews } from '../../../api/news';
 
 export default function NewsForm() {
     const { id } = useParams();

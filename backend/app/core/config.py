@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     # Database
     SQLALCHEMY_DATABASE_URI: str
 
+    # Uploads
+    BACKEND_URL: str = "http://localhost:8000"
+
     class Config:
         case_sensitive = True
         env_file = "../../../.env"

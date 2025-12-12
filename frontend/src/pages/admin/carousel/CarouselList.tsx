@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { getCarouselItems, deleteCarouselItem, type CarouselItem } from '../../api/carousel';
+import { getCarouselItems, deleteCarouselItem, type CarouselItem } from '../../../api/carousel';
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function CarouselList() {
     const [items, setItems] = useState<CarouselItem[]>([]);

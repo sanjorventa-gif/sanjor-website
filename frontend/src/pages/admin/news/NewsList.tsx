@@ -20,10 +20,10 @@ import {
 } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
-import { getNews, deleteNews, type News } from '../../api/news';
+import { getNews, deleteNews, type News } from '../../../api/news';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function NewsList() {
     const [news, setNews] = useState<News[]>([]);

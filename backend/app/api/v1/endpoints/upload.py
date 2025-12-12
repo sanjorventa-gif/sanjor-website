@@ -28,9 +28,8 @@ async def upload_file(
             shutil.copyfileobj(file.file, buffer)
             
         # Return URL
-        # Assuming the server is running on localhost:8000 for now, or use a relative path
-        # Ideally, we should return a full URL or a path that the frontend can construct
-        # Returning relative path for now: /static/uploads/filename
-        return {"url": f"http://localhost:8000/static/uploads/{unique_filename}"}
+        # Use BACKEND_URL from settings to construct the full URL
+        # This ensures it works in both dev (localhost) and prod (actual domain)
+        return {"url": f"{settings.BACKEND_URL}/static/uploads/{unique_filename}"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Could not upload file: {str(e)}")

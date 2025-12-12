@@ -23,10 +23,10 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { FaTrash } from 'react-icons/fa';
-import { getNewsletters, deleteNewsletter } from '../../api/newsletter';
-import type { Newsletter } from '../../api/newsletter';
+import { getNewsletters, deleteNewsletter } from '../../../api/newsletter';
+import type { Newsletter } from '../../../api/newsletter';
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function AdminNewsletter() {
     const [newsletters, setNewsletters] = useState<Newsletter[]>([]);

@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { getHistory, deleteHistory, type History } from '../../api/history';
+import { getHistory, deleteHistory, type History } from '../../../api/history';
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function HistoryList() {
     const [history, setHistory] = useState<History[]>([]);

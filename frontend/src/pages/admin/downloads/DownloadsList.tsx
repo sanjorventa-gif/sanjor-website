@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { getDownloads, deleteDownload, type Download } from '../../api/downloads';
+import { getDownloads, deleteDownload, type Download } from '../../../api/downloads';
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function DownloadsList() {
     const [downloads, setDownloads] = useState<Download[]>([]);

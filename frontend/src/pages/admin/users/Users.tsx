@@ -19,11 +19,11 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { getUsers, deleteUser, type User } from '../../api/users';
+import { getUsers, deleteUser, type User } from '../../../api/users';
 
 
 
-import ExportButtons from '../../components/common/ExportButtons';
+import ExportButtons from '../../../components/common/ExportButtons';
 
 export default function Users() {
     const [users, setUsers] = useState<User[]>([]);

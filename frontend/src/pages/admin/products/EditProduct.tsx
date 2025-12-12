@@ -15,9 +15,9 @@ import {
     Center,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useProducts } from '../../context/ProductContext';
-import type { Product } from '../../data/products';
-import FileUpload from '../../components/ui/FileUpload';
+import { useProducts } from '../../../context/ProductContext';
+import type { Product } from '../../../data/products';
+import FileUpload from '../../../components/ui/FileUpload';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
