@@ -1033,7 +1033,25 @@ def seed_all():
             }
         ]
 
+        from app.crud.news import slugify
+        
+        # Keep track of slugs used in this session to avoid duplicates from the list itself
+        used_slugs = set()
+
         for item in news_data:
+            if "slug" not in item:
+                base_slug = slugify(item["title"])
+                slug = base_slug
+                counter = 1
+                
+                # Check both DB and locally used slugs
+                while (slug in used_slugs) or (db.query(News).filter(News.slug == slug).first()):
+                    slug = f"{base_slug}-{counter}"
+                    counter += 1
+                
+                item["slug"] = slug
+                used_slugs.add(slug)
+            
             news_entry = News(**item)
             db.add(news_entry)
         
