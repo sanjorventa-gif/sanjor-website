@@ -15,4 +15,5 @@ class WarrantyRegistration(Base):
     serial_number = Column(String)
     purchase_date = Column(String)
     vendor = Column(String)
+    registration_type = Column(String, default="standard") # 'standard' or 'extension'
     created_at = Column(DateTime(timezone=True), server_default=func.now())

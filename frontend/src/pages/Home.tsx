@@ -103,19 +103,19 @@ export default function Home() {
                             title="Registro de Estufas"
                             text="Registrando la estufa ya obtiene 6 meses adicionales a la garantía normal, en caso de ser las estufas con sistema BLAST la extensión es por un año adicional."
                             action="IR A FORMULARIO"
-                            href="/servicios"
+                            href="/servicios/registro"
                         />
                         <ServiceHighlight
                             title="Service"
                             text="“SAN JOR” capacita a la red de distribuidores y a los técnicos contratados para brindar una rápida solución al momento del service."
                             action="IR A FORMULARIO"
-                            href="/servicios"
+                            href="/servicios/tecnico"
                         />
                         <ServiceHighlight
                             title="Extensión de Garantía Gratuita"
                             text="Registrando la estufa ya obtiene la extensión de 12 meses adicionales a la garantía normal de fábrica, en caso de ser las estufas con sistema BLAST..."
                             action="IR A FORMULARIO"
-                            href="/servicios"
+                            href="/servicios/garantia"
                         />
                         <ServiceHighlight
                             title="Preguntas Frecuentes"

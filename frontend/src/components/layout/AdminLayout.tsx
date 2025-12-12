@@ -166,7 +166,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                         <NavItem icon={FaClock} to="/admin/history">Historia</NavItem>
                         <NavItem icon={FaImages} to="/admin/carousel">Carrusel Home</NavItem>
                         <NavItem icon={FaTools} to="/admin/service-requests">Solicitudes Service</NavItem>
-                        <NavItem icon={FaShieldAlt} to="/admin/warranty-registrations">Garantías</NavItem>
+                        <NavItem icon={FaShieldAlt} to="/admin/warranty-registrations">Registro Estufas</NavItem>
+                        <NavItem icon={FaShieldAlt} to="/admin/warranty-extensions">Extensiones</NavItem>
                         <NavItem icon={FaFilePdf} to="/admin/downloads">Descargas</NavItem>
                         <NavItem icon={FaEnvelope} to="/admin/newsletter">Newsletter</NavItem>
                     </>

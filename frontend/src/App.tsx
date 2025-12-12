@@ -32,6 +32,7 @@ import ServiceRequestForm from './pages/ServiceRequestForm';
 import WarrantyForm from './pages/WarrantyForm';
 import ServiceRequests from './pages/admin/services/ServiceRequests';
 import WarrantyRegistrations from './pages/admin/services/WarrantyRegistrations';
+import WarrantyExtensions from './pages/admin/services/WarrantyExtensions';
 
 import UserLogin from './pages/auth/UserLogin';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -60,7 +61,9 @@ function App() {
             <Route path="/forms/:slug" element={<DynamicFormPage />} />
             <Route path="servicios" element={<Services />} />
             <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
-            <Route path="servicios/garantia" element={<WarrantyForm />} />
+            <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
+            <Route path="servicios/registro" element={<WarrantyForm type="standard" />} />
+            <Route path="servicios/garantia" element={<WarrantyForm type="extension" />} />
             <Route path="descargas" element={<Downloads />} />
             <Route path="novedades" element={<News />} />
             <Route path="novedades/:slug" element={<NewsDetail />} />
@@ -94,6 +97,7 @@ function App() {
               <Route path="carousel/edit/:id" element={<CarouselForm />} />
               <Route path="service-requests" element={<ServiceRequests />} />
               <Route path="warranty-registrations" element={<WarrantyRegistrations />} />
+              <Route path="warranty-extensions" element={<WarrantyExtensions />} />
               <Route path="newsletter" element={<AdminNewsletter />} />
             </Route>
           </Route>

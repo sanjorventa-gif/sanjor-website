@@ -32,12 +32,13 @@ interface WarrantyRegistration {
     serial_number: string;
     vendor: string;
     created_at: string;
+    registration_type: string;
     [key: string]: any;
 }
 
 import ExportButtons from '../../../components/common/ExportButtons';
 
-const WarrantyRegistrations = () => {
+const WarrantyExtensions = () => {
     const [registrations, setRegistrations] = useState<WarrantyRegistration[]>([]);
     const [selectedReg, setSelectedReg] = useState<WarrantyRegistration | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,7 +47,7 @@ const WarrantyRegistrations = () => {
 
     const fetchRegistrations = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/warranty-registrations?type=standard`, {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/warranty-registrations?type=extension`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRegistrations(response.data);
@@ -96,12 +97,12 @@ const WarrantyRegistrations = () => {
     return (
         <Box>
             <Flex justify="space-between" align="center" mb={6}>
-                <Heading>Registros de Garantía</Heading>
+                <Heading>Extensiones de Garantía</Heading>
                 <ExportButtons
                     data={registrations}
                     columns={exportColumns}
-                    fileName="garantias_sanjor"
-                    title="Reporte de Garantías"
+                    fileName="extensiones_garantia_sanjor"
+                    title="Reporte de Extensiones de Garantía"
                 />
             </Flex>
             <Box overflowX="auto">
@@ -152,13 +153,13 @@ const WarrantyRegistrations = () => {
             <Modal isOpen={isOpen} onClose={onClose} size="xl">
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Detalle de Garantía #{selectedReg?.id}</ModalHeader>
+                    <ModalHeader>Detalle de Extensión #{selectedReg?.id}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         {selectedReg && (
                             <VStack align="stretch" spacing={4}>
                                 <Box>
-                                    <Text fontWeight="bold">Fecha de Registro:</Text>
+                                    <Text fontWeight="bold">Fecha de Solicitud:</Text>
                                     <Text>{new Date(selectedReg.created_at).toLocaleString()}</Text>
                                 </Box>
                                 <Box>
@@ -202,4 +203,4 @@ const WarrantyRegistrations = () => {
     );
 };
 
-export default WarrantyRegistrations;
+export default WarrantyExtensions;

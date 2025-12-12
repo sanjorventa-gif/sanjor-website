@@ -144,10 +144,10 @@ const DownloadCard = ({ item }: { item: Download }) => {
             _hover={{ shadow: 'md', borderColor: 'brand.300' }}
             transition="all 0.2s"
         >
-            <Stack direction="row" align="center" spacing={4} overflow="hidden">
+            <Stack direction="row" align="center" spacing={4}>
                 <Icon as={FaFilePdf} color="red.500" w={6} h={6} flexShrink={0} />
-                <Box overflow="hidden">
-                    <Text fontWeight="600" noOfLines={1} title={item.title}>{item.title}</Text>
+                <Box>
+                    <Text fontWeight="600" title={item.title}>{item.title}</Text>
                     <Stack direction="row" align="center" spacing={2}>
                         <Badge fontSize="xs" variant="outline" colorScheme="blue">{item.language}</Badge>
                         {item.description && (

@@ -13,6 +13,7 @@ class WarrantyRegistrationBase(BaseModel):
     serial_number: str
     purchase_date: str
     vendor: str
+    registration_type: Optional[str] = "standard"
 
 # Properties to receive on creation
 class WarrantyRegistrationCreate(WarrantyRegistrationBase):

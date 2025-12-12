@@ -494,6 +494,23 @@ const NAV_ITEMS: Array<NavItem> = [
     {
         label: 'Servicios',
         href: '/servicios',
+        children: [
+            {
+                label: 'Servicio Técnico',
+                subLabel: 'Solicite asistencia especializada',
+                href: '/servicios/tecnico',
+            },
+            {
+                label: 'Registro de Estufas',
+                subLabel: 'Registre su nuevo equipo',
+                href: '/servicios/registro',
+            },
+            {
+                label: 'Extensión de Garantía',
+                subLabel: 'Active su garantía extendida',
+                href: '/servicios/garantia',
+            },
+        ],
     },
     {
         label: 'Descargas',

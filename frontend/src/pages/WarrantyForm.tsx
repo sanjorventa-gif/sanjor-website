@@ -29,7 +29,11 @@ interface WarrantyFormData {
     recaptcha_token?: string;
 }
 
-const WarrantyForm = () => {
+interface WarrantyFormProps {
+    type?: 'standard' | 'extension';
+}
+
+const WarrantyForm = ({ type = 'standard' }: WarrantyFormProps) => {
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<WarrantyFormData>();
     const toast = useToast();
     const { executeRecaptcha } = useGoogleReCaptcha();
@@ -42,11 +46,11 @@ const WarrantyForm = () => {
 
         try {
             const token = await executeRecaptcha('warranty_registration');
-            const dataWithToken = { ...data, recaptcha_token: token };
+            const dataWithToken = { ...data, recaptcha_token: token, registration_type: type };
             await axios.post(`${import.meta.env.VITE_API_URL}/services/warranty-registrations`, dataWithToken);
             toast({
-                title: 'Garantía Registrada.',
-                description: "Su producto ha sido registrado correctamente.",
+                title: type === 'extension' ? 'Extensión Solicitada.' : 'Garantía Registrada.',
+                description: "Su solicitud se ha enviado correctamente.",
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
@@ -55,7 +59,7 @@ const WarrantyForm = () => {
         } catch (error) {
             toast({
                 title: 'Error.',
-                description: "Hubo un problema al registrar la garantía.",
+                description: "Hubo un problema al procesar la solicitud.",
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
@@ -67,8 +71,14 @@ const WarrantyForm = () => {
         <Container maxW="container.md" py={10}>
             <VStack spacing={8} align="stretch">
                 <Box textAlign="center">
-                    <Heading as="h1" size="xl" mb={2}>Registro de Garantía</Heading>
-                    <Text color="gray.600">Active su garantía extendida registrando su producto.</Text>
+                    <Heading as="h1" size="xl" mb={2}>
+                        {type === 'extension' ? 'Extensión de Garantía Gratuita' : 'Registro de Estufas'}
+                    </Heading>
+                    <Text color="gray.600">
+                        {type === 'extension'
+                            ? 'Complete el formulario para solicitar su extensión de garantía.'
+                            : 'Registre su equipo para activar la garantía de fábrica.'}
+                    </Text>
                 </Box>
 
                 <Box as="form" onSubmit={handleSubmit(onSubmit)} bg="white" p={8} borderRadius="lg" shadow="md">
@@ -123,12 +133,12 @@ const WarrantyForm = () => {
                         </SimpleGrid>
 
                         <Button type="submit" colorScheme="green" size="lg" width="full" isLoading={isSubmitting}>
-                            Registrar Garantía
+                            {type === 'extension' ? 'Solicitar Extensión' : 'Registrar Garantía'}
                         </Button>
                     </VStack>
                 </Box>
             </VStack>
-        </Container>
+        </Container >
     );
 };
 

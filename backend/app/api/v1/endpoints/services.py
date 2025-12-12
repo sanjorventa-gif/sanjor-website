@@ -122,12 +122,16 @@ def read_warranty_registrations(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
+    type: str = "standard",
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Retrieve warranty registrations (Admin only).
     """
-    return db.query(models.WarrantyRegistration).offset(skip).limit(limit).all()
+    query = db.query(models.WarrantyRegistration)
+    if type:
+        query = query.filter(models.WarrantyRegistration.registration_type == type)
+    return query.offset(skip).limit(limit).all()
 
 @router.delete("/warranty-registrations/{id}", response_model=schemas.WarrantyRegistration)
 def delete_warranty_registration(

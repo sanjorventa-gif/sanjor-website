@@ -25,7 +25,7 @@ export default function Services() {
                     Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
                 </Text>
 
-                <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={16}>
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mb={16}>
                     <ServiceCard
                         icon={FaTools}
                         title="Servicio Técnico"
@@ -35,9 +35,16 @@ export default function Services() {
                     />
                     <ServiceCard
                         icon={FaShieldAlt}
-                        title="Garantía Extendida"
+                        title="Registro de Estufas"
+                        text="Registre su nuevo equipo para validar la garantía original."
+                        action="Registrar Equipo"
+                        link="/servicios/registro"
+                    />
+                    <ServiceCard
+                        icon={FaShieldAlt}
+                        title="Extensión de Garantía"
                         text="Amplíe la protección de su inversión con nuestros planes de garantía."
-                        action="Registrar Garantía"
+                        action="Extender Garantía"
                         link="/servicios/garantia"
                     />
                     <ServiceCard
@@ -92,11 +99,12 @@ const ServiceCard = ({ icon, title, text, action, link }: { icon: any; title: st
             align={'center'}
             textAlign={'center'}
             spacing={4}
+            h="100%"
         >
             <Icon as={icon} w={10} h={10} color="brand.500" />
             <Heading size="md">{title}</Heading>
             <Text color={'gray.600'}>{text}</Text>
-            <Button as={RouterLink} to={link} variant="outline" colorScheme="brand" size="sm">
+            <Button as={RouterLink} to={link} variant="outline" colorScheme="brand" size="sm" mt="auto">
                 {action}
             </Button>
         </Stack>
