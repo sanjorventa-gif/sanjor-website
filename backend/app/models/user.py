@@ -9,6 +9,7 @@ class UserRole(str, enum.Enum):
     USUARIO_INTERNACIONAL = "usuario_internacional"
     DISTRIBUIDOR_NACIONAL = "distribuidor_nacional"
     DISTRIBUIDOR_INTERNACIONAL = "distribuidor_internacional"
+    SERVICIO_TECNICO = "servicio_tecnico"
 
 class User(Base):
     id = Column(Integer, primary_key=True, index=True)

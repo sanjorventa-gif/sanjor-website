@@ -157,10 +157,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 </Text>
             </Flex>
             <VStack spacing={2} align="stretch" mt={4} flex="1" overflowY="auto" pb={4}>
-                <NavItem icon={FaBox} to="/admin">Productos</NavItem>
-                <NavItem icon={FaPlus} to="/admin/new">Nuevo Producto</NavItem>
                 {user?.role === 'admin' && (
                     <>
+                        <NavItem icon={FaBox} to="/admin">Productos</NavItem>
+                        <NavItem icon={FaPlus} to="/admin/new">Nuevo Producto</NavItem>
                         <NavItem icon={FaUsers} to="/admin/users">Usuarios</NavItem>
                         <NavItem icon={FaNewspaper} to="/admin/news">Noticias</NavItem>
                         <NavItem icon={FaClock} to="/admin/history">Historia</NavItem>
@@ -170,6 +170,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                         <NavItem icon={FaShieldAlt} to="/admin/warranty-extensions">Extensiones</NavItem>
                         <NavItem icon={FaFilePdf} to="/admin/downloads">Descargas</NavItem>
                         <NavItem icon={FaEnvelope} to="/admin/newsletter">Newsletter</NavItem>
+                    </>
+                )}
+                {user?.role === 'servicio_tecnico' && (
+                    <>
+                        <NavItem icon={FaTools} to="/admin/service-requests">Solicitudes Service</NavItem>
+                        <NavItem icon={FaShieldAlt} to="/admin/warranty-registrations">Registro Estufas</NavItem>
+                        <NavItem icon={FaShieldAlt} to="/admin/warranty-extensions">Extensiones</NavItem>
                     </>
                 )}
             </VStack>

@@ -16,6 +16,8 @@ import {
     Badge,
     Spinner,
     Center,
+    Text,
+    Select,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
@@ -50,6 +52,15 @@ export default function Users() {
             setIsLoading(false);
         }
     };
+
+    const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
+
+    const filteredUsers = users.filter((user) => {
+        if (filterStatus === 'all') return true;
+        if (filterStatus === 'active') return user.is_active;
+        if (filterStatus === 'inactive') return !user.is_active;
+        return true;
+    });
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('¿Está seguro de eliminar este usuario?')) return;
@@ -93,8 +104,18 @@ export default function Users() {
             <Flex justify="space-between" align="center" mb={8}>
                 <Heading size="lg">Gestión de Usuarios</Heading>
                 <Flex gap={2}>
+                    <Select
+                        w="200px"
+                        value={filterStatus}
+                        onChange={(e) => setFilterStatus(e.target.value as any)}
+                        bg="white"
+                    >
+                        <option value="all">Todos</option>
+                        <option value="active">Activos</option>
+                        <option value="inactive">Pendientes (Inactivos)</option>
+                    </Select>
                     <ExportButtons
-                        data={users}
+                        data={filteredUsers}
                         columns={exportColumns}
                         fileName="usuarios_sanjor"
                         title="Reporte de Usuarios"
@@ -121,8 +142,8 @@ export default function Users() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {users.map((user) => (
-                            <Tr key={user.id}>
+                        {filteredUsers.map((user) => (
+                            <Tr key={user.id} bg={!user.is_active ? 'red.50' : undefined}>
                                 <Td>
                                     <IconButton
                                         aria-label="Editar"
@@ -144,8 +165,16 @@ export default function Users() {
                                         isDisabled={user.is_superuser}
                                     />
                                 </Td>
-                                <Td>{user.id}</Td>
-                                <Td>{user.email}</Td>
+                                <Td>
+                                    <Text fontWeight={!user.is_active ? 'bold' : 'normal'}>
+                                        {user.id}
+                                    </Text>
+                                </Td>
+                                <Td>
+                                    <Text fontWeight={!user.is_active ? 'bold' : 'normal'}>
+                                        {user.email}
+                                    </Text>
+                                </Td>
                                 <Td>
                                     <Badge colorScheme={user.role ? 'blue' : 'gray'}>
                                         {user.role || 'Pendiente'}
@@ -153,7 +182,7 @@ export default function Users() {
                                 </Td>
                                 <Td>
                                     <Badge colorScheme={user.is_active ? 'green' : 'red'}>
-                                        {user.is_active ? 'Activo' : 'Inactivo'}
+                                        {user.is_active ? 'Activo' : 'Pendiente'}
                                     </Badge>
                                 </Td>
                             </Tr>

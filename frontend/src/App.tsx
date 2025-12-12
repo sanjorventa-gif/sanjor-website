@@ -17,6 +17,7 @@ import Dashboard from './pages/admin/Dashboard';
 import AddProduct from './pages/admin/products/AddProduct';
 import EditProduct from './pages/admin/products/EditProduct';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import AdminLayout from './components/layout/AdminLayout';
 import Users from './pages/admin/users/Users';
 import UserForm from './pages/admin/users/UserForm';
@@ -35,6 +36,7 @@ import WarrantyRegistrations from './pages/admin/services/WarrantyRegistrations'
 import WarrantyExtensions from './pages/admin/services/WarrantyExtensions';
 
 import UserLogin from './pages/auth/UserLogin';
+import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
 import { useUI } from './context/UIContext';
@@ -69,36 +71,45 @@ function App() {
             <Route path="novedades/:slug" element={<NewsDetail />} />
             <Route path="contacto" element={<Contact />} />
             <Route path="login" element={<UserLogin />} />
+            <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="mis-solicitudes" element={<ServiceHistory />} />
           </Route>
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />
+
           <Route path="/admin" element={<ProtectedRoute />}>
             <Route element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="new" element={<AddProduct />} />
-              <Route path="edit/:id" element={<EditProduct />} />
-              <Route path="users" element={<Users />} />
-              <Route path="users/new" element={<UserForm />} />
-              <Route path="users/edit/:id" element={<UserForm />} />
-              <Route path="news" element={<NewsList />} />
-              <Route path="news/new" element={<NewsForm />} />
-              <Route path="news/edit/:id" element={<NewsForm />} />
-              <Route path="history" element={<HistoryList />} />
-              <Route path="history/new" element={<HistoryForm />} />
-              <Route path="history/edit/:id" element={<HistoryForm />} />
-              <Route path="downloads" element={<DownloadsList />} />
-              <Route path="downloads/new" element={<DownloadForm />} />
-              <Route path="downloads/edit/:id" element={<DownloadForm />} />
-              <Route path="carousel" element={<CarouselList />} />
-              <Route path="carousel/new" element={<CarouselForm />} />
-              <Route path="carousel/edit/:id" element={<CarouselForm />} />
-              <Route path="service-requests" element={<ServiceRequests />} />
-              <Route path="warranty-registrations" element={<WarrantyRegistrations />} />
-              <Route path="warranty-extensions" element={<WarrantyExtensions />} />
-              <Route path="newsletter" element={<AdminNewsletter />} />
+              {/* Shared Routes (Admin & Technician) */}
+              <Route element={<RoleProtectedRoute allowedRoles={['admin', 'servicio_tecnico']} />}>
+                <Route path="service-requests" element={<ServiceRequests />} />
+                <Route path="warranty-registrations" element={<WarrantyRegistrations />} />
+                <Route path="warranty-extensions" element={<WarrantyExtensions />} />
+              </Route>
+
+              {/* Admin Only Routes */}
+              <Route element={<RoleProtectedRoute allowedRoles={['admin']} />}>
+                <Route index element={<Dashboard />} />
+                <Route path="new" element={<AddProduct />} />
+                <Route path="edit/:id" element={<EditProduct />} />
+                <Route path="users" element={<Users />} />
+                <Route path="users/new" element={<UserForm />} />
+                <Route path="users/edit/:id" element={<UserForm />} />
+                <Route path="news" element={<NewsList />} />
+                <Route path="news/new" element={<NewsForm />} />
+                <Route path="news/edit/:id" element={<NewsForm />} />
+                <Route path="history" element={<HistoryList />} />
+                <Route path="history/new" element={<HistoryForm />} />
+                <Route path="history/edit/:id" element={<HistoryForm />} />
+                <Route path="downloads" element={<DownloadsList />} />
+                <Route path="downloads/new" element={<DownloadForm />} />
+                <Route path="downloads/edit/:id" element={<DownloadForm />} />
+                <Route path="carousel" element={<CarouselList />} />
+                <Route path="carousel/new" element={<CarouselForm />} />
+                <Route path="carousel/edit/:id" element={<CarouselForm />} />
+                <Route path="newsletter" element={<AdminNewsletter />} />
+              </Route>
             </Route>
           </Route>
         </Routes>

@@ -71,7 +71,7 @@ const ServiceHistory = () => {
             {requests.length === 0 && !error ? (
                 <Box textAlign="center" py={10} bg={cardBg} borderRadius="lg" shadow="sm">
                     <Text fontSize="lg" mb={4}>No tienes solicitudes registradas.</Text>
-                    <Button as={Link} to="/servicio-tecnico" colorScheme="blue">
+                    <Button as={Link} to="/servicios/tecnico" colorScheme="blue">
                         Solicitar Service
                     </Button>
                 </Box>

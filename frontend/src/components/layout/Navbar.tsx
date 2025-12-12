@@ -130,6 +130,11 @@ export default function Navbar() {
                                             Panel Admin
                                         </MenuItem>
                                     )}
+                                    {user?.role === 'servicio_tecnico' && (
+                                        <MenuItem as={RouterLink} to="/admin/service-requests">
+                                            Panel Técnico
+                                        </MenuItem>
+                                    )}
                                     <MenuItem onClick={handleLogout}>
                                         Cerrar Sesión
                                     </MenuItem>
@@ -298,29 +303,40 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
 
             {isAuthenticated ? (
                 <>
-                    <Box px={4} py={2}>
-                        <Text fontWeight="bold" color={useColorModeValue('gray.600', 'gray.200')}>
-                            Hola, {user?.email}
+                    <Box py={2}>
+                        <Text fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="wider" color="gray.500" mb={1}>
+                            Cuenta
+                        </Text>
+                        <Text fontWeight="medium" color={useColorModeValue('gray.900', 'white')} isTruncated>
+                            {user?.email}
                         </Text>
                     </Box>
                     <MobileNavItem label="Mis Solicitudes" href="/mis-solicitudes" onToggleMenu={onToggle} />
                     {user?.role === 'admin' && (
                         <MobileNavItem label="Panel Admin" href="/admin" onToggleMenu={onToggle} />
                     )}
-                    <Stack spacing={4} onClick={() => { logout(); navigate('/'); onToggle(); }} cursor="pointer" p={4}>
-                        <Flex justify={'space-between'} align={'center'}>
-                            <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
+                    {user?.role === 'servicio_tecnico' && (
+                        <MobileNavItem label="Panel Técnico" href="/admin/service-requests" onToggleMenu={onToggle} />
+                    )}
+                </>
+            ) : (
+                <MobileNavItem label="Ingresar" href="/login" onToggleMenu={onToggle} />
+            )}
+
+            <MobileNavItem label="Contacto" href="/contacto" onToggleMenu={onToggle} />
+
+            {isAuthenticated && (
+                <>
+                    <Box borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')} my={2} />
+                    <Stack spacing={4} onClick={() => { logout(); navigate('/'); onToggle(); }} cursor="pointer" py={2}>
+                        <Flex justify={'space-between'} align={'center'} px={4}>
+                            <Text fontWeight={600} color="red.500">
                                 Cerrar Sesión
                             </Text>
                         </Flex>
                     </Stack>
                 </>
-            ) : (
-                <MobileNavItem label="Ingresar" href="/login" onToggleMenu={onToggle} />
-            )
-            }
-
-            <MobileNavItem label="Contacto" href="/contacto" onToggleMenu={onToggle} />
+            )}
 
             <Stack direction="row" spacing={6} justify="center" mt={6} pt={4} borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')}>
                 <IconButton

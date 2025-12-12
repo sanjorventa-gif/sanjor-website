@@ -149,6 +149,7 @@ export default function UserForm() {
                                 <option value="usuario_internacional">Usuario Internacional</option>
                                 <option value="distribuidor_nacional">Distribuidor Nacional</option>
                                 <option value="distribuidor_internacional">Distribuidor Internacional</option>
+                                <option value="servicio_tecnico">Servicio Técnico</option>
                             </Select>
                         </FormControl>
 

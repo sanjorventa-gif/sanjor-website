@@ -37,6 +37,22 @@ def seed_all():
         db.commit()
         logger.info(f"Admin user created: {admin_email} / {admin_password}")
 
+        # --- SEED SERVICE USER ---
+        logger.info("Seeding Service User...")
+        service_email = "soporte@sanjor.com.ar"
+        service_password = "sanjor2025"
+        
+        service_user = User(
+            email=service_email,
+            hashed_password=get_password_hash(service_password),
+            is_superuser=False,
+            is_active=True,
+            role="servicio_tecnico"
+        )
+        db.add(service_user)
+        db.commit()
+        logger.info(f"Service user created: {service_email} / {service_password}")
+
         # --- SEED PRODUCTS ---
         # We can reuse the logic from seed_products.py but we need to adapt it 
         # because seed_products.py also does drop_all/create_all.

@@ -16,13 +16,11 @@ import {
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useUI } from '../../context/UIContext';
 
 export default function UserLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login, isLoading } = useAuth();
-    const { onOpenNewsletter } = useUI();
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -103,10 +101,7 @@ export default function UserLogin() {
                         </Stack>
                         <Stack pt={6}>
                             <Text align={'center'}>
-                                ¿No tiene usuario? <Link as={RouterLink} to="#" onClick={(e) => {
-                                    e.preventDefault();
-                                    onOpenNewsletter();
-                                }} color={'brand.500'}>Regístrese</Link>
+                                ¿No tiene usuario? <Link as={RouterLink} to="/register" color={'brand.500'}>Regístrese</Link>
                             </Text>
                         </Stack>
                     </Stack>

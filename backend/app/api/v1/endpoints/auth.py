@@ -63,8 +63,31 @@ def register(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    # Force no role for public registration (manual assignment required)
-    user_in.role = None
+    # Validar que no se intente crear un admin
+    if user_in.role == models.UserRole.ADMIN:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot register as admin.",
+        )
+
+    # Si el rol es None, forzar usuario nacional por defecto (seguridad)
+    if not user_in.role:
+        user_in.role = models.UserRole.USUARIO_NACIONAL
+
+    # Lógica de activación:
+    # Usuarios (nacional/internacional): Activos por defecto
+    # Distribuidores: Inactivos por defecto (requieren aprobación)
+    # Comparacion robusta (Enum o String)
+    if user_in.role in [
+        models.UserRole.DISTRIBUIDOR_NACIONAL, 
+        models.UserRole.DISTRIBUIDOR_INTERNACIONAL,
+        "distribuidor_nacional",
+        "distribuidor_internacional"
+    ]:
+        user_in.is_active = False
+    else:
+        user_in.is_active = True
+    
     user_in.is_superuser = False
     user = crud.user.create(db, obj_in=user_in)
     return user

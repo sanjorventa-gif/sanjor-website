@@ -1,5 +1,5 @@
 from .product import Product
-from .user import User
+from .user import User, UserRole
 from .news import News
 from .history import History
 from .download import Download

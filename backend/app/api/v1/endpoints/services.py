@@ -38,11 +38,13 @@ def read_service_requests(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Retrieve service requests (Admin only).
+    Retrieve service requests (Admin or Service Technician).
     """
+    if not current_user.is_superuser and current_user.role != models.UserRole.SERVICIO_TECNICO:
+        raise HTTPException(status_code=400, detail="Not enough privileges")
     return db.query(models.ServiceRequest).offset(skip).limit(limit).all()
 
 @router.get("/service-requests/me", response_model=List[schemas.ServiceRequest])
@@ -63,11 +65,13 @@ def update_service_request_status(
     db: Session = Depends(deps.get_db),
     id: int,
     status_in: schemas.ServiceRequestUpdateStatus,
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Update service request status (Admin only).
+    Update service request status (Admin or Service Technician).
     """
+    if not current_user.is_superuser and current_user.role != models.UserRole.SERVICIO_TECNICO:
+        raise HTTPException(status_code=400, detail="Not enough privileges")
     obj = db.query(models.ServiceRequest).get(id)
     if not obj:
         raise HTTPException(status_code=404, detail="Service request not found")
@@ -123,11 +127,14 @@ def read_warranty_registrations(
     skip: int = 0,
     limit: int = 100,
     type: str = "standard",
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Retrieve warranty registrations (Admin only).
+    Retrieve warranty registrations (Admin or Service Technician).
     """
+    if not current_user.is_superuser and current_user.role != models.UserRole.SERVICIO_TECNICO:
+        raise HTTPException(status_code=400, detail="Not enough privileges")
+    
     query = db.query(models.WarrantyRegistration)
     if type:
         query = query.filter(models.WarrantyRegistration.registration_type == type)

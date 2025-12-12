@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { login as apiLogin, getMe } from '../api/auth';
+import { login as apiLogin, getMe, register as apiRegister } from '../api/auth';
 
 interface User {
     email: string;
@@ -12,6 +12,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     user: User | null;
     login: (email: string, password: string) => Promise<boolean>;
+    register: (email: string, password: string, role: string) => Promise<boolean>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -55,6 +56,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const register = async (email: string, password: string, role: string) => {
+        try {
+            setIsLoading(true);
+            await apiRegister({ email, password, role });
+            return true;
+            // Note: We don't auto-login here because user might be inactive (distributor)
+        } catch (error) {
+            console.error('Registration failed:', error);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
@@ -62,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, login, logout, isLoading }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, login, register, logout, isLoading }}>
             {children}
         </AuthContext.Provider>
     );
