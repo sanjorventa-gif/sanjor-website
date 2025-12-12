@@ -1,5 +1,6 @@
 import enum
-from sqlalchemy import Column, Integer, String, Boolean, Enum
+from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 
 class UserRole(str, enum.Enum):
@@ -16,3 +17,5 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
     role = Column(String, default=UserRole.USUARIO_NACIONAL.value)
+
+    service_requests = relationship("ServiceRequest", back_populates="user")

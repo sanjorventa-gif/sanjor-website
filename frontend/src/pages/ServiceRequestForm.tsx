@@ -14,8 +14,8 @@ import {
     SimpleGrid,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { createServiceRequest } from '../api/services';
 
 interface ServiceRequestFormData {
     name: string;
@@ -42,8 +42,8 @@ const ServiceRequestForm = () => {
 
         try {
             const token = await executeRecaptcha('service_request');
-            const dataWithToken = { ...data, recaptcha_token: token };
-            await axios.post(`${import.meta.env.VITE_API_URL}/services/service-requests`, dataWithToken);
+            const dataWithToken = { ...data, recaptcha_token: token }; // Ensure token is passed
+            await createServiceRequest(dataWithToken);
             toast({
                 title: 'Solicitud enviada.',
                 description: "Nos pondremos en contacto a la brevedad.",
@@ -53,6 +53,7 @@ const ServiceRequestForm = () => {
             });
             reset();
         } catch (error) {
+            console.error(error);
             toast({
                 title: 'Error.',
                 description: "Hubo un problema al enviar la solicitud.",

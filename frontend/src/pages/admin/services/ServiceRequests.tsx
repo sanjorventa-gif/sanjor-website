@@ -20,37 +20,23 @@ import {
     VStack,
     useDisclosure,
     Flex,
+    Badge,
+    Select,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
-import axios from 'axios';
-
-interface ServiceRequest {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    city: string;
-    stove_model: string;
-    problem_description: string;
-    created_at: string;
-    [key: string]: any;
-}
-
 import ExportButtons from '../../../components/common/ExportButtons';
+import { getServiceRequests, deleteServiceRequest, updateServiceRequestStatus, type ServiceRequest } from '../../../api/services';
 
 const ServiceRequests = () => {
     const [requests, setRequests] = useState<ServiceRequest[]>([]);
     const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
-    const token = localStorage.getItem('token');
 
     const fetchRequests = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services/service-requests`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setRequests(response.data);
+            const data = await getServiceRequests();
+            setRequests(data);
         } catch (error) {
             console.error("Error fetching requests:", error);
             toast({
@@ -64,18 +50,29 @@ const ServiceRequests = () => {
 
     useEffect(() => {
         fetchRequests();
-    }, [token]);
+    }, []);
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('¿Está seguro de eliminar esta solicitud?')) return;
         try {
-            await axios.delete(`http://localhost:8000/api/v1/services/service-requests/${id}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            await deleteServiceRequest(id);
             toast({ title: 'Solicitud eliminada', status: 'success' });
             fetchRequests();
         } catch (error) {
             toast({ title: 'Error al eliminar', status: 'error' });
+        }
+    };
+
+    const handleStatusChange = async (id: number, newStatus: string) => {
+        try {
+            await updateServiceRequestStatus(id, newStatus);
+            toast({ title: 'Estado actualizado', status: 'success' });
+            fetchRequests();
+            if (selectedRequest && selectedRequest.id === id) {
+                setSelectedRequest({ ...selectedRequest, status: newStatus });
+            }
+        } catch (error) {
+            toast({ title: 'Error al actualizar estado', status: 'error' });
         }
     };
 
@@ -84,9 +81,20 @@ const ServiceRequests = () => {
         onOpen();
     };
 
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'Pendiente': return 'yellow';
+            case 'En Proceso': return 'blue';
+            case 'Finalizado': return 'green';
+            case 'Rechazado': return 'red';
+            default: return 'gray';
+        }
+    };
+
     const exportColumns = [
         { header: 'ID', key: 'id' },
         { header: 'Fecha', key: 'created_at', formatter: (val: string) => new Date(val).toLocaleDateString() },
+        { header: 'Estado', key: 'status' },
         { header: 'Nombre', key: 'name' },
         { header: 'Email', key: 'email' },
         { header: 'Teléfono', key: 'phone' },
@@ -111,6 +119,7 @@ const ServiceRequests = () => {
                         <Tr>
                             <Th>ID</Th>
                             <Th>Fecha</Th>
+                            <Th>Estado</Th>
                             <Th>Nombre</Th>
                             <Th>Modelo</Th>
                             <Th>Problema</Th>
@@ -122,6 +131,11 @@ const ServiceRequests = () => {
                             <Tr key={req.id}>
                                 <Td>{req.id}</Td>
                                 <Td>{new Date(req.created_at).toLocaleDateString()}</Td>
+                                <Td>
+                                    <Badge colorScheme={getStatusColor(req.status || 'Pendiente')}>
+                                        {req.status || 'Pendiente'}
+                                    </Badge>
+                                </Td>
                                 <Td>{req.name}</Td>
                                 <Td>{req.stove_model}</Td>
                                 <Td maxW="300px" isTruncated>{req.problem_description}</Td>
@@ -156,6 +170,20 @@ const ServiceRequests = () => {
                     <ModalBody pb={6}>
                         {selectedRequest && (
                             <VStack align="stretch" spacing={4}>
+                                <Flex justify="space-between" align="center" bg="gray.100" p={2} borderRadius="md">
+                                    <Text fontWeight="bold">Estado Actual:</Text>
+                                    <Select
+                                        w="200px"
+                                        bg="white"
+                                        value={selectedRequest.status || 'Pendiente'}
+                                        onChange={(e) => handleStatusChange(selectedRequest.id, e.target.value)}
+                                    >
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En Proceso">En Proceso</option>
+                                        <option value="Finalizado">Finalizado</option>
+                                        <option value="Rechazado">Rechazado</option>
+                                    </Select>
+                                </Flex>
                                 <Box>
                                     <Text fontWeight="bold">Fecha:</Text>
                                     <Text>{new Date(selectedRequest.created_at).toLocaleString()}</Text>

@@ -20,6 +20,8 @@ class ServiceRequestCreate(ServiceRequestBase):
 # Properties shared by models stored in DB
 class ServiceRequestInDBBase(ServiceRequestBase):
     id: int
+    status: str = "Pendiente"
+    user_id: Optional[int] = None
     created_at: datetime
 
     class Config:
@@ -28,3 +30,6 @@ class ServiceRequestInDBBase(ServiceRequestBase):
 # Properties to return to client
 class ServiceRequest(ServiceRequestInDBBase):
     pass
+
+class ServiceRequestUpdateStatus(BaseModel):
+    status: str

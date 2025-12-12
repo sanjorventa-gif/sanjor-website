@@ -5,6 +5,6 @@ from .news import News, NewsCreate, NewsUpdate
 from .history import History, HistoryCreate, HistoryUpdate
 from .download import Download, DownloadCreate, DownloadUpdate
 from .carousel import CarouselItem, CarouselItemCreate, CarouselItemUpdate
-from .service_request import ServiceRequest, ServiceRequestCreate
+from .service_request import ServiceRequest, ServiceRequestCreate, ServiceRequestUpdateStatus
 from .warranty_registration import WarrantyRegistration, WarrantyRegistrationCreate
 from .newsletter import Newsletter, NewsletterCreate

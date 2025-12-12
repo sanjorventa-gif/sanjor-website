@@ -11,6 +11,7 @@ import History from './pages/History';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Contact from './pages/Contact';
+import ServiceHistory from './pages/ServiceHistory';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import AddProduct from './pages/admin/products/AddProduct';
@@ -66,6 +67,7 @@ function App() {
             <Route path="contacto" element={<Contact />} />
             <Route path="login" element={<UserLogin />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="mis-solicitudes" element={<ServiceHistory />} />
           </Route>
 
           {/* Admin Routes */}

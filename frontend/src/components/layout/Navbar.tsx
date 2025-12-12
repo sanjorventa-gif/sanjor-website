@@ -122,6 +122,9 @@ export default function Navbar() {
                                         {user?.email}
                                     </MenuItem>
                                     <MenuDivider />
+                                    <MenuItem as={RouterLink} to="/mis-solicitudes">
+                                        Mis Solicitudes
+                                    </MenuItem>
                                     {user?.role === 'admin' && (
                                         <MenuItem as={RouterLink} to="/admin">
                                             Panel Admin
@@ -300,6 +303,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
                             Hola, {user?.email}
                         </Text>
                     </Box>
+                    <MobileNavItem label="Mis Solicitudes" href="/mis-solicitudes" onToggleMenu={onToggle} />
                     {user?.role === 'admin' && (
                         <MobileNavItem label="Panel Admin" href="/admin" onToggleMenu={onToggle} />
                     )}
@@ -313,7 +317,8 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
                 </>
             ) : (
                 <MobileNavItem label="Ingresar" href="/login" onToggleMenu={onToggle} />
-            )}
+            )
+            }
 
             <MobileNavItem label="Contacto" href="/contacto" onToggleMenu={onToggle} />
 
@@ -346,7 +351,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
                     colorScheme="brand"
                 />
             </Stack>
-        </Stack>
+        </Stack >
     );
 };
 

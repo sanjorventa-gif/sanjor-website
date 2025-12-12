@@ -14,6 +14,7 @@ def create_service_request(
     *,
     db: Session = Depends(deps.get_db),
     request_in: schemas.ServiceRequestCreate,
+    current_user: models.User | None = Depends(deps.get_current_user_optional)
 ) -> Any:
     """
     Create new service request (Public).
@@ -22,6 +23,9 @@ def create_service_request(
     
     obj_in_data = request_in.dict()
     del obj_in_data['recaptcha_token']
+    
+    if current_user:
+        obj_in_data['user_id'] = current_user.id
     
     db_obj = models.ServiceRequest(**obj_in_data)
     db.add(db_obj)
@@ -40,6 +44,39 @@ def read_service_requests(
     Retrieve service requests (Admin only).
     """
     return db.query(models.ServiceRequest).offset(skip).limit(limit).all()
+
+@router.get("/service-requests/me", response_model=List[schemas.ServiceRequest])
+def read_my_service_requests(
+    db: Session = Depends(deps.get_db),
+    skip: int = 0,
+    limit: int = 100,
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Retrieve service requests for the current user.
+    """
+    return db.query(models.ServiceRequest).filter(models.ServiceRequest.user_id == current_user.id).offset(skip).limit(limit).all()
+
+@router.put("/service-requests/{id}/status", response_model=schemas.ServiceRequest)
+def update_service_request_status(
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    status_in: schemas.ServiceRequestUpdateStatus,
+    current_user: models.User = Depends(deps.get_current_active_superuser),
+) -> Any:
+    """
+    Update service request status (Admin only).
+    """
+    obj = db.query(models.ServiceRequest).get(id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Service request not found")
+    
+    obj.status = status_in.status
+    db.add(obj)
+    db.commit()
+    db.refresh(obj)
+    return obj
 
 @router.delete("/service-requests/{id}", response_model=schemas.ServiceRequest)
 def delete_service_request(

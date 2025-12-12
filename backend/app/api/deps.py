@@ -15,12 +15,34 @@ reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
 )
 
+reusable_oauth2_optional = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token",
+    auto_error=False
+)
+
 def get_db() -> Generator:
     try:
         db = SessionLocal()
         yield db
     finally:
         db.close()
+
+def get_current_user_optional(
+    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2_optional)
+) -> models.User | None:
+    if not token:
+        return None
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        token_data = schemas.TokenPayload(**payload)
+    except (JWTError, ValidationError):
+        return None
+    user = crud.user.get(db, id=token_data.sub)
+    if not user:
+        return None
+    return user
 
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
