@@ -18,5 +18,6 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
     role = Column(String, default=UserRole.USUARIO_NACIONAL.value)
+    newsletter_subscribed = Column(Boolean, default=False)
 
     service_requests = relationship("ServiceRequest", back_populates="user")

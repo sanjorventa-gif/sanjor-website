@@ -28,9 +28,9 @@ export default function Services() {
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mb={16}>
                     <ServiceCard
                         icon={FaTools}
-                        title="Servicio Técnico"
+                        title="Soporte Técnico"
                         text="Mantenimiento preventivo y correctivo realizado por especialistas."
-                        action="Solicitar Service"
+                        action="Solicitar Soporte"
                         link="/servicios/tecnico"
                     />
                     <ServiceCard

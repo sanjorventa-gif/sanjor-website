@@ -12,7 +12,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     user: User | null;
     login: (email: string, password: string) => Promise<boolean>;
-    register: (email: string, password: string, role: string) => Promise<boolean>;
+    register: (email: string, password: string, role: string, newsletter_subscribed?: boolean) => Promise<boolean>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -56,10 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const register = async (email: string, password: string, role: string) => {
+    const register = async (email: string, password: string, role: string, newsletter_subscribed: boolean = false) => {
         try {
             setIsLoading(true);
-            await apiRegister({ email, password, role });
+            await apiRegister({ email, password, role, newsletter_subscribed });
             return true;
             // Note: We don't auto-login here because user might be inactive (distributor)
         } catch (error) {

@@ -13,6 +13,7 @@ import {
     Select,
     Alert,
     AlertIcon,
+    Checkbox,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,15 +25,17 @@ export default function Register() {
         password: '',
         confirmPassword: '',
         role: 'usuario_nacional',
+        newsletter_subscribed: false,
     });
     const { register, isLoading } = useAuth();
     const navigate = useNavigate();
     const toast = useToast();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [e.target.name]: value,
         });
     };
 
@@ -48,7 +51,7 @@ export default function Register() {
             return;
         }
 
-        const success = await register(formData.email, formData.password, formData.role);
+        const success = await register(formData.email, formData.password, formData.role, formData.newsletter_subscribed);
         if (success) {
             if (formData.role.startsWith('distribuidor')) {
                 toast({
@@ -139,6 +142,17 @@ export default function Register() {
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                             />
+                        </FormControl>
+
+                        <FormControl id="newsletter">
+                            <Checkbox
+                                name="newsletter_subscribed"
+                                isChecked={formData.newsletter_subscribed}
+                                onChange={handleChange}
+                                colorScheme="brand"
+                            >
+                                Quiero recibir novedades y promociones (Newsletter)
+                            </Checkbox>
                         </FormControl>
 
                         <Stack spacing={10} pt={2}>

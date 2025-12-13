@@ -68,8 +68,8 @@ const ServiceRequestForm = () => {
         <Container maxW="container.md" py={10}>
             <VStack spacing={8} align="stretch">
                 <Box textAlign="center">
-                    <Heading as="h1" size="xl" mb={2}>Solicitud de Service</Heading>
-                    <Text color="gray.600">Complete el formulario para solicitar servicio técnico oficial.</Text>
+                    <Heading as="h1" size="xl" mb={2}>Solicitud de Soporte Técnico</Heading>
+                    <Text color="gray.600">Complete el formulario para solicitar soporte técnico oficial.</Text>
                 </Box>
 
                 <Box as="form" onSubmit={handleSubmit(onSubmit)} bg="white" p={8} borderRadius="lg" shadow="md">

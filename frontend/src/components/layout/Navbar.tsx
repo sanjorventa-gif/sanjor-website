@@ -384,7 +384,7 @@ const MobileNavItem = ({ label, children, href, onToggleMenu }: NavItem & { onTo
     };
 
     return (
-        <Stack spacing={4} onClick={handleToggle}>
+        <Stack spacing={0} onClick={handleToggle}>
             <Flex
                 py={2}
                 as={children ? 'div' : RouterLink}
@@ -415,7 +415,7 @@ const MobileNavItem = ({ label, children, href, onToggleMenu }: NavItem & { onTo
 
             <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
                 <Stack
-                    mt={2}
+                    mt={0}
                     pl={4}
                     borderLeft={1}
                     borderStyle={'solid'}
@@ -453,78 +453,73 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
     {
-        label: 'Inicio',
-        href: '/',
-    },
-    {
-        label: 'Empresa',
-        children: [
-            {
-                label: 'La Empresa',
-                subLabel: 'Conozca nuestra trayectoria y valores',
-                href: '/empresa',
-            },
-            {
-                label: 'Historia',
-                subLabel: 'Nuestra evolución a través del tiempo',
-                href: '/historia',
-            },
-        ]
-    },
-    {
         label: 'Productos',
         // href: '/productos', // Removed to prevent clicking
         children: [
             {
                 label: 'Estufas de Cultivo',
                 shortLabel: 'Cultivo',
-                subLabel: 'Bacteriología y microbiología',
                 href: '/productos/cultivo',
             },
             {
                 label: 'Estufas de Esterilización',
                 shortLabel: 'Esterilización',
-                subLabel: 'Calor seco para instrumental',
                 href: '/productos/esterilizacion',
             },
             {
                 label: 'Estufas de Secado',
                 shortLabel: 'Secado',
-                subLabel: 'Eliminación de humedad y ensayos',
                 href: '/productos/secado',
+            },
+            {
+                label: 'Buscando su Estufa ideal',
+                shortLabel: 'Buscador',
+                href: '/productos/asesor',
+            },
+            {
+                label: 'Sistema BLAST',
+                shortLabel: 'Sistema BLAST',
+                href: '/productos/sistema-blast',
             },
             {
                 label: 'Productos de Acero Inoxidable',
                 shortLabel: 'Acero Inoxidable',
-                subLabel: 'Cajas y accesorios',
                 href: '/productos/cajas',
             },
-            {
-                label: 'Asesor de Estufas',
-                shortLabel: 'Buscador / Asesor',
-                subLabel: 'Encuentre su equipo ideal',
-                href: '/productos/asesor',
-            },
         ],
+    },
+    {
+        label: 'Empresa',
+        children: [
+            {
+                label: 'La Empresa',
+                href: '/empresa',
+            },
+            {
+                label: 'Historia',
+                href: '/historia',
+            },
+        ]
     },
     {
         label: 'Servicios',
         href: '/servicios',
         children: [
             {
-                label: 'Servicio Técnico',
-                subLabel: 'Solicite asistencia especializada',
+                label: 'Soporte Técnico',
                 href: '/servicios/tecnico',
             },
             {
                 label: 'Registro de Estufas',
-                subLabel: 'Registre su nuevo equipo',
                 href: '/servicios/registro',
             },
             {
                 label: 'Extensión de Garantía',
-                subLabel: 'Active su garantía extendida',
                 href: '/servicios/garantia',
+            },
+            {
+                label: 'Preguntas Frecuentes',
+                href: '/preguntas-frecuentes',
             },
         ],
     },

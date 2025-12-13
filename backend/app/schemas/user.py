@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     role: Optional[UserRole] = UserRole.USUARIO_NACIONAL
+    newsletter_subscribed: Optional[bool] = False
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):

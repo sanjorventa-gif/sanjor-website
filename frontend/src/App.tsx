@@ -3,11 +3,13 @@ import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Company from './pages/Company';
 import Products from './pages/Products';
+import BlastSystem from './pages/BlastSystem';
 import ProductDetail from './pages/ProductDetail';
 import Services from './pages/Services';
 import DynamicFormPage from './pages/DynamicFormPage';
 import Downloads from './pages/Downloads';
 import History from './pages/History';
+import Faq from './pages/Faq';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Contact from './pages/Contact';
@@ -58,6 +60,7 @@ function App() {
             <Route path="empresa" element={<Company />} />
             <Route path="historia" element={<History />} />
             <Route path="productos" element={<Products />} />
+            <Route path="productos/sistema-blast" element={<BlastSystem />} />
             <Route path="productos/:category" element={<Products />} />
             <Route path="productos/detalle/:id" element={<ProductDetail />} />
             <Route path="/forms/:slug" element={<DynamicFormPage />} />
@@ -69,6 +72,7 @@ function App() {
             <Route path="descargas" element={<Downloads />} />
             <Route path="novedades" element={<News />} />
             <Route path="novedades/:slug" element={<NewsDetail />} />
+            <Route path="preguntas-frecuentes" element={<Faq />} />
             <Route path="contacto" element={<Contact />} />
             <Route path="login" element={<UserLogin />} />
             <Route path="register" element={<Register />} />
