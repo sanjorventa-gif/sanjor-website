@@ -94,7 +94,6 @@ export default function BlastStabilizationChart() {
                     <SvgCircle
                         r="4"
                         fill={targetColor}
-                        initial={{ offsetDistance: "0%" }}
                         animate={{ offsetDistance: "100%" }}
                         transition={{
                             duration: 4,
@@ -104,6 +103,7 @@ export default function BlastStabilizationChart() {
                         }}
                         style={{
                             offsetPath: `path('${curvePath}')`,
+                            offsetDistance: "0%", // Start at 0%
                         }}
                     />
 

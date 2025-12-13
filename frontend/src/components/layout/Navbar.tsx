@@ -285,21 +285,26 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
     const { isAuthenticated, user, logout } = useAuth();
     const navigate = useNavigate();
 
+    // Hook calls must be at the top level, unconditional
+    const bg = useColorModeValue('whiteAlpha.900', 'gray.800');
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const accountTextColor = useColorModeValue('gray.900', 'white');
+
     return (
         <Stack
-            bg={useColorModeValue('whiteAlpha.900', 'gray.800')}
+            bg={bg}
             p={4}
             display={{ md: 'none' }}
             backdropFilter="blur(10px)"
             borderBottomWidth={1}
-            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            borderColor={borderColor}
             shadow="lg"
         >
             {NAV_ITEMS.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} onToggleMenu={onToggle} />
             ))}
 
-            <Box borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')} my={2} />
+            <Box borderTopWidth={1} borderColor={borderColor} my={2} />
 
             {isAuthenticated ? (
                 <>
@@ -307,7 +312,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
                         <Text fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="wider" color="gray.500" mb={1}>
                             Cuenta
                         </Text>
-                        <Text fontWeight="medium" color={useColorModeValue('gray.900', 'white')} isTruncated>
+                        <Text fontWeight="medium" color={accountTextColor} isTruncated>
                             {user?.email}
                         </Text>
                     </Box>
@@ -327,7 +332,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
 
             {isAuthenticated && (
                 <>
-                    <Box borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')} my={2} />
+                    <Box borderTopWidth={1} borderColor={borderColor} my={2} />
                     <Stack spacing={4} onClick={() => { logout(); navigate('/'); onToggle(); }} cursor="pointer" py={2}>
                         <Flex justify={'space-between'} align={'center'} px={4}>
                             <Text fontWeight={600} color="red.500">
@@ -338,7 +343,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
                 </>
             )}
 
-            <Stack direction="row" spacing={6} justify="center" mt={6} pt={4} borderTopWidth={1} borderColor={useColorModeValue('gray.200', 'gray.700')}>
+            <Stack direction="row" spacing={6} justify="center" mt={6} pt={4} borderTopWidth={1} borderColor={borderColor}>
                 <IconButton
                     as={Link}
                     href="https://instagram.com"
