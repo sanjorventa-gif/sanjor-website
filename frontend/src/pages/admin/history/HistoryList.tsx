@@ -123,23 +123,25 @@ export default function HistoryList() {
                         {history.map((item) => (
                             <Tr key={item.id}>
                                 <Td>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        size="sm"
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        mr={2}
-                                        onClick={() => navigate(`/admin/history/edit/${item.id}`)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        size="sm"
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        onClick={() => handleDelete(item.id)}
-                                    />
+                                    <Flex>
+                                        <IconButton
+                                            aria-label="Editar"
+                                            icon={<EditIcon />}
+                                            size="sm"
+                                            colorScheme="blue"
+                                            variant="ghost"
+                                            mr={2}
+                                            onClick={() => navigate(`/admin/history/edit/${item.id}`)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<DeleteIcon />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => handleDelete(item.id)}
+                                        />
+                                    </Flex>
                                 </Td>
                                 <Td>
                                     <Badge colorScheme="brand" fontSize="md">

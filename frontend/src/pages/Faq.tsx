@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -10,9 +10,29 @@ import {
     AccordionPanel,
     AccordionIcon,
     useColorModeValue,
+    Spinner,
+    Flex,
 } from '@chakra-ui/react';
+import { getFaqs, type Faq as FaqType } from '../api/faqs';
 
 export default function Faq() {
+    const [faqs, setFaqs] = useState<FaqType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const data = await getFaqs();
+                setFaqs(data);
+            } catch (error) {
+                console.error("Error loading FAQs:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchFaqs();
+    }, []);
+
     return (
         <Box>
             {/* Hero Section */}
@@ -27,51 +47,51 @@ export default function Faq() {
                 </Container>
             </Box>
 
-            <Container maxW={'container.lg'} py={16}>
-                <Accordion allowMultiple>
-                    <AccordionItem border="none" mb={4} bg={useColorModeValue('gray.50', 'gray.900')} rounded="lg">
-                        <h2>
-                            <AccordionButton _expanded={{ bg: 'brand.500', color: 'white' }} rounded="lg" p={4}>
-                                <Box flex="1" textAlign="left" fontWeight="bold">
-                                    ¿Cómo registro mi garantía?
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                            Para registrar su garantía, ingrese a la sección "Servicios" y seleccione "Registro de Estufas". Complete el formulario con los datos de su equipo y factura de compra.
-                        </AccordionPanel>
-                    </AccordionItem>
-
-                    <AccordionItem border="none" mb={4} bg={useColorModeValue('gray.50', 'gray.900')} rounded="lg">
-                        <h2>
-                            <AccordionButton _expanded={{ bg: 'brand.500', color: 'white' }} rounded="lg" p={4}>
-                                <Box flex="1" textAlign="left" fontWeight="bold">
-                                    ¿Cómo solicito servicio técnico?
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                            Puede solicitar asistencia técnica ingresando a "Servicios" y seleccionando "Soporte Técnico". Allí podrá detallar el inconveniente y nuestro equipo se pondrá en contacto a la brevedad.
-                        </AccordionPanel>
-                    </AccordionItem>
-
-                    <AccordionItem border="none" mb={4} bg={useColorModeValue('gray.50', 'gray.900')} rounded="lg">
-                        <h2>
-                            <AccordionButton _expanded={{ bg: 'brand.500', color: 'white' }} rounded="lg" p={4}>
-                                <Box flex="1" textAlign="left" fontWeight="bold">
-                                    ¿Cuál es el período de garantía?
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                            Nuestras estufas cuentan con una garantía estándar de 12 meses. Puede extender este plazo mediante nuestro programa de "Extensión de Garantía".
-                        </AccordionPanel>
-                    </AccordionItem>
-                </Accordion>
-            </Container>
+            <Box py={16} bg={useColorModeValue('gray.50', 'gray.900')} position="relative">
+                {/* Background Pattern */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.1}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    zIndex={0}
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.lg'} position="relative" zIndex={1}>
+                    {isLoading ? (
+                        <Flex justify="center" py={10}>
+                            <Spinner size="xl" />
+                        </Flex>
+                    ) : (
+                        <Accordion allowMultiple>
+                            {faqs.map((faq) => (
+                                <AccordionItem key={faq.id} border="none" mb={4} bg={useColorModeValue('white', 'gray.800')} rounded="lg" shadow="sm">
+                                    <h2>
+                                        <AccordionButton _expanded={{ bg: 'brand.500', color: 'white' }} rounded="lg" p={4}>
+                                            <Box flex="1" textAlign="left" fontWeight="bold">
+                                                {faq.question}
+                                            </Box>
+                                            <AccordionIcon />
+                                        </AccordionButton>
+                                    </h2>
+                                    <AccordionPanel pb={4}>
+                                        {faq.answer}
+                                    </AccordionPanel>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    )}
+                    {!isLoading && faqs.length === 0 && (
+                        <Box textAlign="center" py={10} color="gray.500">
+                            No hay preguntas frecuentes disponibles en este momento.
+                        </Box>
+                    )}
+                </Container>
+            </Box>
         </Box>
     );
 }

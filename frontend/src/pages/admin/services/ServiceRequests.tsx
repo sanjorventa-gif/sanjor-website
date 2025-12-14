@@ -113,22 +113,43 @@ const ServiceRequests = () => {
                     title="Reporte de Solicitudes de Service"
                 />
             </Flex>
-            <Box overflowX="auto">
+            <Box bg="white" shadow="sm" rounded="lg" overflow="hidden">
                 <Table variant="simple">
-                    <Thead>
+                    <Thead bg="gray.50">
                         <Tr>
+                            <Th w="100px">Acciones</Th>
                             <Th>ID</Th>
                             <Th>Fecha</Th>
                             <Th>Estado</Th>
                             <Th>Nombre</Th>
                             <Th>Modelo</Th>
                             <Th>Problema</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {requests.map((req) => (
                             <Tr key={req.id}>
+                                <Td>
+                                    <Flex>
+                                        <IconButton
+                                            aria-label="Ver detalles"
+                                            icon={<FaEye />}
+                                            size="sm"
+                                            colorScheme="blue"
+                                            variant="ghost"
+                                            mr={2}
+                                            onClick={() => handleView(req)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<FaTrash />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => handleDelete(req.id)}
+                                        />
+                                    </Flex>
+                                </Td>
                                 <Td>{req.id}</Td>
                                 <Td>{new Date(req.created_at).toLocaleDateString()}</Td>
                                 <Td>
@@ -139,23 +160,6 @@ const ServiceRequests = () => {
                                 <Td>{req.name}</Td>
                                 <Td>{req.stove_model}</Td>
                                 <Td maxW="300px" isTruncated>{req.problem_description}</Td>
-                                <Td>
-                                    <IconButton
-                                        aria-label="Ver detalles"
-                                        icon={<FaEye />}
-                                        size="sm"
-                                        colorScheme="blue"
-                                        mr={2}
-                                        onClick={() => handleView(req)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<FaTrash />}
-                                        size="sm"
-                                        colorScheme="red"
-                                        onClick={() => handleDelete(req.id)}
-                                    />
-                                </Td>
                             </Tr>
                         ))}
                     </Tbody>

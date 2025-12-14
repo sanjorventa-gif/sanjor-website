@@ -31,6 +31,8 @@ import DownloadsList from './pages/admin/downloads/DownloadsList';
 import DownloadForm from './pages/admin/downloads/DownloadForm';
 import CarouselList from './pages/admin/carousel/CarouselList';
 import CarouselForm from './pages/admin/carousel/CarouselForm';
+import FaqList from './pages/admin/faqs/FaqList';
+import FaqForm from './pages/admin/faqs/FaqForm';
 import ServiceRequestForm from './pages/ServiceRequestForm';
 import WarrantyForm from './pages/WarrantyForm';
 import ServiceRequests from './pages/admin/services/ServiceRequests';
@@ -112,6 +114,9 @@ function App() {
                 <Route path="carousel" element={<CarouselList />} />
                 <Route path="carousel/new" element={<CarouselForm />} />
                 <Route path="carousel/edit/:id" element={<CarouselForm />} />
+                <Route path="faqs" element={<FaqList />} />
+                <Route path="faqs/new" element={<FaqForm />} />
+                <Route path="faqs/edit/:id" element={<FaqForm />} />
                 <Route path="newsletter" element={<AdminNewsletter />} />
               </Route>
             </Route>

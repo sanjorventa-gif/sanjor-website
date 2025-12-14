@@ -42,8 +42,21 @@ export default function Contact() {
     };
 
     return (
-        <Box py={10}>
-            <Container maxW={'container.xl'}>
+        <Box py={10} position="relative" bg={useColorModeValue('gray.50', 'gray.900')}>
+            {/* Background Pattern */}
+            <Box
+                position="absolute"
+                top="0"
+                left="0"
+                w="full"
+                h="full"
+                opacity={0.1}
+                backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                backgroundSize="20px 20px"
+                zIndex={0}
+                pointerEvents="none"
+            />
+            <Container maxW={'container.xl'} position="relative" zIndex={1}>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={16}>
                     {/* Contact Form */}
                     <Box

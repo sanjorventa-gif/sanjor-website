@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -13,14 +14,47 @@ import {
     SimpleGrid,
     Icon,
     useColorModeValue,
+    Spinner,
+    Flex,
 } from '@chakra-ui/react';
 import { FaTools, FaShieldAlt, FaQuestionCircle } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
+import { getFaqs, type Faq } from '../api/faqs';
 
 export default function Services() {
+    const [faqs, setFaqs] = useState<Faq[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const data = await getFaqs();
+                setFaqs(data);
+            } catch (error) {
+                console.error("Error loading FAQs:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchFaqs();
+    }, []);
     return (
-        <Box py={10}>
-            <Container maxW={'container.xl'}>
+        <Box py={10} position="relative" bg={useColorModeValue('gray.50', 'gray.900')}>
+            {/* Background Pattern */}
+            <Box
+                position="absolute"
+                top="0"
+                left="0"
+                w="full"
+                h="full"
+                opacity={0.1}
+                backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                backgroundSize="20px 20px"
+                zIndex={0}
+                pointerEvents="none"
+            />
+            <Container maxW={'container.xl'} position="relative" zIndex={1}>
+                {/* Intro */}
                 <Text fontSize="lg" mb={10} color="gray.600">
                     Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
                 </Text>
@@ -58,27 +92,28 @@ export default function Services() {
 
                 <Box mb={16}>
                     <Heading size="lg" mb={6} color="brand.600">Preguntas Frecuentes</Heading>
-                    <Accordion allowToggle>
-                        <FAQItem
-                            question="¿Cómo registro mi producto para la garantía?"
-                            answer="Puede registrar su producto completando el formulario de registro en esta misma sección o enviándonos un correo con el número de serie y factura de compra."
-                        />
-                        <FAQItem
-                            question="¿Cuál es la frecuencia recomendada para el mantenimiento?"
-                            answer="Recomendamos realizar un mantenimiento preventivo y calibración cada 12 meses para asegurar la precisión de la temperatura."
-                        />
-                        <FAQItem
-                            question="¿Realizan envíos al interior del país?"
-                            answer="Sí, realizamos envíos a todo el país a través de transportes de confianza. El embalaje está diseñado para proteger el equipo durante el traslado."
-                        />
-                        <FAQItem
-                            question="¿Dónde puedo descargar el manual de usuario?"
-                            answer="Los manuales de usuario están disponibles en la sección de Descargas de este sitio web."
-                        />
-                    </Accordion>
+                    {isLoading ? (
+                        <Flex justify="center" py={10}>
+                            <Spinner size="lg" color="brand.500" />
+                        </Flex>
+                    ) : (
+                        <Accordion allowToggle>
+                            {faqs.length > 0 ? (
+                                faqs.map((faq) => (
+                                    <FAQItem
+                                        key={faq.id}
+                                        question={faq.question}
+                                        answer={faq.answer}
+                                    />
+                                ))
+                            ) : (
+                                <Text color="gray.500">No hay preguntas frecuentes disponibles.</Text>
+                            )}
+                        </Accordion>
+                    )}
                 </Box>
 
-                <Box bg="brand.50" p={8} rounded="xl" textAlign="center">
+                <Box bg="white" p={8} rounded="xl" textAlign="center" shadow="md">
                     <Heading size="md" mb={4}>¿No encontró lo que buscaba?</Heading>
                     <Button as={RouterLink} to="/contacto" colorScheme="brand">
                         Contáctenos directamente

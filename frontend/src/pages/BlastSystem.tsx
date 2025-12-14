@@ -85,8 +85,20 @@ export default function BlastSystem() {
             </Box>
 
             {/* FUNDAMENTOS & EVOLUTION SECTION */}
-            <Box py={{ base: 16, md: 24 }} bg={bgGray}>
-                <Container maxW={'container.xl'}>
+            <Box py={{ base: 16, md: 24 }} bg={bgGray} position="relative">
+                {/* Background Pattern */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.1}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <Stack spacing={12}>
                         <Box textAlign="center">
                             <Heading size="xl" mb={4} color="brand.700">Evolución del Control</Heading>
@@ -188,8 +200,20 @@ export default function BlastSystem() {
             </Box>
 
             {/* SENSOR TECH SECTION */}
-            <Box py={{ base: 16, md: 24 }} bg={bgGray}>
-                <Container maxW={'container.xl'}>
+            <Box py={{ base: 16, md: 24 }} bg={bgGray} position="relative">
+                {/* Background Pattern */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.1}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={12} alignItems="center">
                         <Stack spacing={6}>
                             <Heading size="lg" color={'brand.600'}>Sensor PT100 de 3 Hilos</Heading>

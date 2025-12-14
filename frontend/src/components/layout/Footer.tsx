@@ -8,6 +8,11 @@ import {
     VisuallyHidden,
     chakra,
     useColorModeValue,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
 } from '@chakra-ui/react';
 import { FaInstagram, FaFacebook } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
@@ -53,7 +58,8 @@ export default function Footer() {
             mt="auto"
         >
             <Container as={Stack} maxW={'container.xl'} py={10}>
-                <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+                {/* Desktop View */}
+                <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8} display={{ base: 'none', md: 'grid' }}>
                     <Stack align={'flex-start'}>
                         <Text fontWeight={'bold'} fontSize={'lg'} mb={2}>
                             SAN JOR
@@ -91,6 +97,74 @@ export default function Footer() {
                         <Text fontSize={'sm'}>+54 11 1234-5678</Text>
                     </Stack>
                 </SimpleGrid>
+
+                {/* Mobile View */}
+                <Box display={{ base: 'block', md: 'none' }}>
+                    <Stack align="center" textAlign="center" mb={6}>
+                        <Text fontWeight={'bold'} fontSize={'lg'} mb={2}>
+                            SAN JOR
+                        </Text>
+                        <Text fontSize={'sm'}>
+                            Fabricante de estufas para laboratorio, cultivo y esterilización.
+                        </Text>
+                    </Stack>
+
+                    <Accordion allowToggle>
+                        <AccordionItem border="none">
+                            <h2>
+                                <AccordionButton py={4}>
+                                    <Box flex="1" textAlign="left" fontWeight="500">
+                                        Empresa
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <Stack align="center">
+                                    <Link as={RouterLink} to={'/empresa'}>Acerca de nosotros</Link>
+                                    <Link as={RouterLink} to={'/novedades'}>Noticias</Link>
+                                    <Link as={RouterLink} to={'/contacto'}>Contacto</Link>
+                                </Stack>
+                            </AccordionPanel>
+                        </AccordionItem>
+
+                        <AccordionItem border="none">
+                            <h2>
+                                <AccordionButton py={4}>
+                                    <Box flex="1" textAlign="left" fontWeight="500">
+                                        Soporte
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <Stack align="center">
+                                    <Link as={RouterLink} to={'/servicios'}>Servicio Técnico</Link>
+                                    <Link as={RouterLink} to={'/descargas'}>Manuales y Catálogos</Link>
+                                    <Link as={RouterLink} to={'/servicios'}>Garantía</Link>
+                                </Stack>
+                            </AccordionPanel>
+                        </AccordionItem>
+
+                        <AccordionItem border="none">
+                            <h2>
+                                <AccordionButton py={4}>
+                                    <Box flex="1" textAlign="left" fontWeight="500">
+                                        Contacto
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <Stack align="center">
+                                    <Text fontSize={'sm'}>Buenos Aires, Argentina</Text>
+                                    <Text fontSize={'sm'}>info@sanjor.com.ar</Text>
+                                    <Text fontSize={'sm'}>+54 11 1234-5678</Text>
+                                </Stack>
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
+                </Box>
             </Container>
 
             <Box
@@ -102,12 +176,12 @@ export default function Footer() {
                     as={Stack}
                     maxW={'container.xl'}
                     py={4}
-                    direction={{ base: 'column', md: 'row' }}
+                    direction={{ base: 'column-reverse', md: 'row' }}
                     spacing={4}
-                    justify={'center'}
+                    justify={{ base: 'center', md: 'space-between' }}
                     align={'center'}
                 >
-                    <Text>© {new Date().getFullYear()} SAN JOR. Todos los derechos reservados.</Text>
+                    <Text textAlign={{ base: 'center', md: 'left' }}>© {new Date().getFullYear()} SAN JOR. Todos los derechos reservados.</Text>
                     <Stack direction={'row'} spacing={6}>
                         <SocialButton label={'Facebook'} href={'https://www.facebook.com/sanjorenlared'}>
                             <FaFacebook />

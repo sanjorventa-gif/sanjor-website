@@ -105,45 +105,49 @@ const WarrantyExtensions = () => {
                     title="Reporte de Extensiones de Garantía"
                 />
             </Flex>
-            <Box overflowX="auto">
+            <Box bg="white" shadow="sm" rounded="lg" overflow="hidden">
                 <Table variant="simple">
-                    <Thead>
+                    <Thead bg="gray.50">
                         <Tr>
+                            <Th w="100px">Acciones</Th>
                             <Th>ID</Th>
                             <Th>Fecha</Th>
                             <Th>Nombre</Th>
                             <Th>Modelo</Th>
                             <Th>N° Serie</Th>
                             <Th>Vendedor</Th>
-                            <Th>Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {registrations.map((reg) => (
                             <Tr key={reg.id}>
+                                <Td>
+                                    <Flex>
+                                        <IconButton
+                                            aria-label="Ver detalles"
+                                            icon={<FaEye />}
+                                            size="sm"
+                                            colorScheme="blue"
+                                            variant="ghost"
+                                            mr={2}
+                                            onClick={() => handleView(reg)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<FaTrash />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => handleDelete(reg.id)}
+                                        />
+                                    </Flex>
+                                </Td>
                                 <Td>{reg.id}</Td>
                                 <Td>{new Date(reg.created_at).toLocaleDateString()}</Td>
                                 <Td>{reg.name}</Td>
                                 <Td>{reg.stove_model}</Td>
                                 <Td>{reg.serial_number}</Td>
                                 <Td>{reg.vendor}</Td>
-                                <Td>
-                                    <IconButton
-                                        aria-label="Ver detalles"
-                                        icon={<FaEye />}
-                                        size="sm"
-                                        colorScheme="blue"
-                                        mr={2}
-                                        onClick={() => handleView(reg)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<FaTrash />}
-                                        size="sm"
-                                        colorScheme="red"
-                                        onClick={() => handleDelete(reg.id)}
-                                    />
-                                </Td>
                             </Tr>
                         ))}
                     </Tbody>

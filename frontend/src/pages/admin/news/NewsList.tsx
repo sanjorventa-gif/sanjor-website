@@ -107,7 +107,7 @@ export default function NewsList() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
-                            <Th>Acciones</Th>
+                            <Th w="100px">Acciones</Th>
                             <Th>Imagen</Th>
                             <Th>Título</Th>
                             <Th>Fecha</Th>
@@ -119,23 +119,25 @@ export default function NewsList() {
                         {news.map((item) => (
                             <Tr key={item.id}>
                                 <Td>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        size="sm"
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        mr={2}
-                                        onClick={() => navigate(`/admin/news/edit/${item.id}`)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        size="sm"
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        onClick={() => handleDelete(item.id)}
-                                    />
+                                    <Flex>
+                                        <IconButton
+                                            aria-label="Editar"
+                                            icon={<EditIcon />}
+                                            size="sm"
+                                            colorScheme="blue"
+                                            variant="ghost"
+                                            mr={2}
+                                            onClick={() => navigate(`/admin/news/edit/${item.id}`)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<DeleteIcon />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => handleDelete(item.id)}
+                                        />
+                                    </Flex>
                                 </Td>
                                 <Td>
                                     <Image

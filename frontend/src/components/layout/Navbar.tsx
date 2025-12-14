@@ -45,6 +45,23 @@ export default function Navbar() {
         navigate('/');
     };
 
+    const faqLink = useBreakpointValue({ base: '/servicios', md: '/preguntas-frecuentes' });
+
+    const navItems = NAV_ITEMS.map((item) => {
+        if (item.label === 'Servicios') {
+            return {
+                ...item,
+                children: item.children?.map((child) => {
+                    if (child.label === 'Preguntas Frecuentes') {
+                        return { ...child, href: faqLink };
+                    }
+                    return child;
+                }),
+            };
+        }
+        return item;
+    });
+
     return (
         <Box>
             <Flex
@@ -92,7 +109,7 @@ export default function Navbar() {
                         </Text>
 
                         <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                            <DesktopNav />
+                            <DesktopNav navItems={navItems} />
                         </Flex>
                     </Flex>
 
@@ -179,7 +196,7 @@ export default function Navbar() {
                 display={{ md: 'none' }}
             >
                 <Collapse in={isOpen} animateOpacity>
-                    <MobileNav onToggle={onToggle} />
+                    <MobileNav onToggle={onToggle} navItems={navItems} />
                 </Collapse>
             </Box>
 
@@ -191,14 +208,14 @@ export default function Navbar() {
     );
 }
 
-const DesktopNav = () => {
+const DesktopNav = ({ navItems }: { navItems: Array<NavItem> }) => {
     const linkColor = useColorModeValue('gray.600', 'gray.200');
     const linkHoverColor = useColorModeValue('gray.800', 'white');
     const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
     return (
         <Stack direction={'row'} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (
+            {navItems.map((navItem) => (
                 <Box key={navItem.label}>
                     <Popover trigger={'hover'} placement={'bottom-start'}>
                         <PopoverTrigger>
@@ -281,7 +298,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
     );
 };
 
-const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
+const MobileNav = ({ onToggle, navItems }: { onToggle: () => void, navItems: Array<NavItem> }) => {
     const { isAuthenticated, user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -300,7 +317,7 @@ const MobileNav = ({ onToggle }: { onToggle: () => void }) => {
             borderColor={borderColor}
             shadow="lg"
         >
-            {NAV_ITEMS.map((navItem) => (
+            {navItems.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} onToggleMenu={onToggle} />
             ))}
 
@@ -434,6 +451,7 @@ const MobileNavItem = ({ label, children, href, onToggleMenu }: NavItem & { onTo
                                 py={2}
                                 as={RouterLink}
                                 to={child.href ?? '#'}
+                                _hover={{ textDecoration: 'none' }}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onToggleMenu();

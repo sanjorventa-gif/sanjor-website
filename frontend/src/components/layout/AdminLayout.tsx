@@ -17,7 +17,7 @@ import {
     type BoxProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaClock, FaFilePdf, FaImages, FaTools, FaShieldAlt, FaEnvelope } from 'react-icons/fa';
+import { FaBox, FaSignOutAlt, FaPlus, FaUsers, FaBars, FaNewspaper, FaClock, FaFilePdf, FaImages, FaTools, FaShieldAlt, FaEnvelope, FaQuestionCircle } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps extends BoxProps {
@@ -169,6 +169,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                         <NavItem icon={FaShieldAlt} to="/admin/warranty-registrations">Registro Estufas</NavItem>
                         <NavItem icon={FaShieldAlt} to="/admin/warranty-extensions">Extensiones</NavItem>
                         <NavItem icon={FaFilePdf} to="/admin/downloads">Descargas</NavItem>
+                        <NavItem icon={FaQuestionCircle} to="/admin/faqs">Preguntas Frecuentes</NavItem>
                         <NavItem icon={FaEnvelope} to="/admin/newsletter">Newsletter</NavItem>
                     </>
                 )}

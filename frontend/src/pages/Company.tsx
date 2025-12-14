@@ -94,8 +94,20 @@ export default function Company() {
             </Box>
 
             {/* VENTAS SECTION */}
-            <Box py={{ base: 16, md: 24 }} bg={bgGray}>
-                <Container maxW={'container.xl'}>
+            <Box py={{ base: 16, md: 24 }} bg={bgGray} position="relative">
+                {/* Background Pattern */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.1}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <Stack spacing={12}>
                         <Box textAlign="center" maxW="4xl" mx="auto">
                             <Heading size="xl" mb={4} color="brand.700">Ventas</Heading>
@@ -181,8 +193,20 @@ export default function Company() {
             </Box>
 
             {/* WHY SAN JOR & QULAITY - Using Feature Cards Style */}
-            <Box py={{ base: 16, md: 24 }} bg={bgGray}>
-                <Container maxW={'container.xl'}>
+            <Box py={{ base: 16, md: 24 }} bg={bgGray} position="relative">
+                {/* Background Pattern */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.1}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16}>
                         <Stack spacing={8}>
                             <Box>

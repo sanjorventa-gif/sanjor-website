@@ -134,7 +134,7 @@ export default function Users() {
                 <Table variant="simple">
                     <Thead bg="gray.50">
                         <Tr>
-                            <Th>Acciones</Th>
+                            <Th w="100px">Acciones</Th>
                             <Th>ID</Th>
                             <Th>Email</Th>
                             <Th>Rol</Th>
@@ -145,25 +145,27 @@ export default function Users() {
                         {filteredUsers.map((user) => (
                             <Tr key={user.id} bg={!user.is_active ? 'red.50' : undefined}>
                                 <Td>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        size="sm"
-                                        mr={2}
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        onClick={() => navigate(`/admin/users/edit/${user.id}`)}
-                                        isDisabled={user.is_superuser}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        size="sm"
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        onClick={() => handleDelete(user.id)}
-                                        isDisabled={user.is_superuser}
-                                    />
+                                    <Flex>
+                                        <IconButton
+                                            aria-label="Editar"
+                                            icon={<EditIcon />}
+                                            size="sm"
+                                            mr={2}
+                                            colorScheme="blue"
+                                            variant="ghost"
+                                            onClick={() => navigate(`/admin/users/edit/${user.id}`)}
+                                            isDisabled={user.is_superuser}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<DeleteIcon />}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => handleDelete(user.id)}
+                                            isDisabled={user.is_superuser}
+                                        />
+                                    </Flex>
                                 </Td>
                                 <Td>
                                     <Text fontWeight={!user.is_active ? 'bold' : 'normal'}>

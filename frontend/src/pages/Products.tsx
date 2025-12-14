@@ -12,6 +12,7 @@ import {
     Tab,
     TabPanel,
     Stack,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import ProductCard from '../components/ui/ProductCard';
 // import ProductAdvisor from '../components/features/ProductAdvisor';
@@ -52,9 +53,22 @@ export default function Products() {
     };
 
     return (
-        <Box py={10}>
+        <Box py={10} position="relative" bg={useColorModeValue('gray.50', 'gray.900')}>
+            {/* Background Pattern */}
+            <Box
+                position="absolute"
+                top="0"
+                left="0"
+                w="full"
+                h="full"
+                opacity={0.1}
+                backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                backgroundSize="20px 20px"
+                zIndex={0}
+                pointerEvents="none"
+            />
             {/* <ProductAdvisor /> */}
-            <Container maxW={'container.xl'}>
+            <Container maxW={'container.xl'} position="relative" zIndex={1}>
                 <Heading mb={6} color="brand.700">Catálogo de Productos</Heading>
                 <Text fontSize="lg" mb={10} color="gray.600">
                     Explore nuestra gama completa de estufas y equipos para laboratorio.
