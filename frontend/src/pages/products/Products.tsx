@@ -14,10 +14,10 @@ import {
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import ProductCard from '../components/ui/ProductCard';
-// import ProductAdvisor from '../components/features/ProductAdvisor';
-import StoveSearch from '../components/features/StoveSearch';
-import { useProducts } from '../context/ProductContext';
+import ProductCard from '../../components/ui/ProductCard';
+// import ProductAdvisor from '../../components/features/ProductAdvisor';
+import StoveSearch from '../../components/features/StoveSearch';
+import { useProducts } from '../../context/ProductContext';
 
 export default function Products() {
     const { category } = useParams<{ category: string }>();

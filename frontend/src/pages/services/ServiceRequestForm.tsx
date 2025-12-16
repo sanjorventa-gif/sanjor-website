@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { createServiceRequest } from '../api/services';
+import { createServiceRequest } from '../../api/services';
 
 interface ServiceRequestFormData {
     name: string;

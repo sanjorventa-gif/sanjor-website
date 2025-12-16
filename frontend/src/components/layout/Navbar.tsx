@@ -45,22 +45,7 @@ export default function Navbar() {
         navigate('/');
     };
 
-    const faqLink = useBreakpointValue({ base: '/servicios', md: '/preguntas-frecuentes' });
-
-    const navItems = NAV_ITEMS.map((item) => {
-        if (item.label === 'Servicios') {
-            return {
-                ...item,
-                children: item.children?.map((child) => {
-                    if (child.label === 'Preguntas Frecuentes') {
-                        return { ...child, href: faqLink };
-                    }
-                    return child;
-                }),
-            };
-        }
-        return item;
-    });
+    const navItems = NAV_ITEMS;
 
     return (
         <Box>

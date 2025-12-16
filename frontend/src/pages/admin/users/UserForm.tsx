@@ -39,6 +39,7 @@ export default function UserForm() {
         role: 'usuario_nacional',
         is_active: true,
         is_superuser: false,
+        newsletter_subscribed: false,
     });
 
     useEffect(() => {
@@ -57,6 +58,7 @@ export default function UserForm() {
                     role: user.role,
                     is_active: user.is_active,
                     is_superuser: user.is_superuser,
+                    newsletter_subscribed: user.newsletter_subscribed || false,
                 });
             }
         } catch (error) {
@@ -143,13 +145,11 @@ export default function UserForm() {
                                 value={formData.role || ''}
                                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                             >
-                                <option value="">Pendiente (Sin Rol)</option>
-                                <option value="admin">Admin</option>
+                                <option value="usuario_nacional">Pendiente (Usuario Nacional)</option>
                                 <option value="usuario_nacional">Usuario Nacional</option>
                                 <option value="usuario_internacional">Usuario Internacional</option>
                                 <option value="distribuidor_nacional">Distribuidor Nacional</option>
                                 <option value="distribuidor_internacional">Distribuidor Internacional</option>
-                                <option value="servicio_tecnico">Servicio Técnico</option>
                             </Select>
                         </FormControl>
 
@@ -161,6 +161,17 @@ export default function UserForm() {
                                 id="is_active"
                                 isChecked={formData.is_active}
                                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                            />
+                        </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel htmlFor="newsletter_subscribed" mb="0">
+                                Suscrito al Newsletter
+                            </FormLabel>
+                            <Switch
+                                id="newsletter_subscribed"
+                                isChecked={formData.newsletter_subscribed}
+                                onChange={(e) => setFormData({ ...formData, newsletter_subscribed: e.target.checked })}
                             />
                         </FormControl>
 

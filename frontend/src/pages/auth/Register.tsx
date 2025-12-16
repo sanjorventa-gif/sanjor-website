@@ -70,7 +70,7 @@ export default function Register() {
                     duration: 5000,
                     isClosable: true,
                 });
-                navigate('/login');
+                navigate('/registro-exitoso');
             }
         }
     };

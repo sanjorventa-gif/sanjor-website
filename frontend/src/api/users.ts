@@ -6,6 +6,7 @@ export interface User {
     role: string;
     is_active: boolean;
     is_superuser: boolean;
+    newsletter_subscribed: boolean;
 }
 
 export interface UserCreate {
@@ -14,6 +15,7 @@ export interface UserCreate {
     role: string;
     is_active: boolean;
     is_superuser: boolean;
+    newsletter_subscribed?: boolean;
 }
 
 export interface UserUpdate {
@@ -21,6 +23,7 @@ export interface UserUpdate {
     role?: string;
     is_active?: boolean;
     is_superuser?: boolean;
+    newsletter_subscribed?: boolean;
 }
 
 export const getUsers = async () => {

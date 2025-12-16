@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { FaCheckCircle, FaFilePdf } from 'react-icons/fa';
-import { useProducts } from '../context/ProductContext';
+import { useProducts } from '../../context/ProductContext';
 
 export default function ProductDetail() {
     const { id } = useParams();

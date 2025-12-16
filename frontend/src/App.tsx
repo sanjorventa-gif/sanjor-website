@@ -1,24 +1,25 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-import Home from './pages/Home';
-import Company from './pages/Company';
-import Products from './pages/Products';
-import BlastSystem from './pages/BlastSystem';
-import ProductDetail from './pages/ProductDetail';
-import Services from './pages/Services';
-import DynamicFormPage from './pages/DynamicFormPage';
-import Downloads from './pages/Downloads';
-import History from './pages/History';
-import Faq from './pages/Faq';
-import News from './pages/News';
-import NewsDetail from './pages/NewsDetail';
-import Contact from './pages/Contact';
-import ServiceHistory from './pages/ServiceHistory';
+import Home from './pages/public/Home';
+import Company from './pages/public/Company';
+import Products from './pages/products/Products';
+import BlastSystem from './pages/products/BlastSystem';
+import ProductDetail from './pages/products/ProductDetail';
+import Services from './pages/services/Services';
+import DynamicFormPage from './pages/resources/DynamicFormPage';
+import Downloads from './pages/resources/Downloads';
+import History from './pages/resources/History';
+import Faq from './pages/resources/Faq';
+import News from './pages/resources/News';
+import NewsDetail from './pages/resources/NewsDetail';
+import Contact from './pages/public/Contact';
+import ServiceHistory from './pages/services/ServiceHistory';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import AddProduct from './pages/admin/products/AddProduct';
 import EditProduct from './pages/admin/products/EditProduct';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import UserProtectedRoute from './components/auth/UserProtectedRoute';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import AdminLayout from './components/layout/AdminLayout';
 import Users from './pages/admin/users/Users';
@@ -33,14 +34,16 @@ import CarouselList from './pages/admin/carousel/CarouselList';
 import CarouselForm from './pages/admin/carousel/CarouselForm';
 import FaqList from './pages/admin/faqs/FaqList';
 import FaqForm from './pages/admin/faqs/FaqForm';
-import ServiceRequestForm from './pages/ServiceRequestForm';
-import WarrantyForm from './pages/WarrantyForm';
+import ServiceRequestForm from './pages/services/ServiceRequestForm';
+import WarrantyForm from './pages/services/WarrantyForm';
 import ServiceRequests from './pages/admin/services/ServiceRequests';
 import WarrantyRegistrations from './pages/admin/services/WarrantyRegistrations';
 import WarrantyExtensions from './pages/admin/services/WarrantyExtensions';
 
 import UserLogin from './pages/auth/UserLogin';
 import Register from './pages/auth/Register';
+import RegisterSuccess from './pages/auth/RegisterSuccess';
+import UserDashboard from './pages/user/UserDashboard';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
 import { useUI } from './context/UIContext';
@@ -79,7 +82,9 @@ function App() {
             <Route path="login" element={<UserLogin />} />
             <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="mis-solicitudes" element={<ServiceHistory />} />
+            <Route path="registro-exitoso" element={<RegisterSuccess />} />
+            <Route path="mi-cuenta" element={<UserProtectedRoute><UserDashboard /></UserProtectedRoute>} />
+            <Route path="mis-solicitudes" element={<UserProtectedRoute><ServiceHistory /></UserProtectedRoute>} />
           </Route>
 
           {/* Admin Routes */}

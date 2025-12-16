@@ -13,8 +13,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
-import { getNews, type News as NewsType } from '../api/news';
-import { useAuth } from '../context/AuthContext';
+import { getNews, type News as NewsType } from '../../api/news';
+import { useAuth } from '../../context/AuthContext';
 
 export default function News() {
     const [news, setNews] = useState<NewsType[]>([]);

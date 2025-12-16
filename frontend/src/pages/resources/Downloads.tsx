@@ -15,8 +15,8 @@ import {
     Center,
 } from '@chakra-ui/react';
 import { FaFilePdf, FaDownload } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
-import { getDownloads, type Download } from '../api/downloads';
+import { useAuth } from '../../context/AuthContext';
+import { getDownloads, type Download } from '../../api/downloads';
 
 export default function Downloads() {
     const { user, isAuthenticated } = useAuth();

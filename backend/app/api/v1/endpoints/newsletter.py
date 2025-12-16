@@ -33,7 +33,35 @@ def read_newsletters(
     """
     Retrieve newsletter subscribers.
     """
-    return crud.newsletter.get_multi(db, skip=skip, limit=limit)
+    """
+    Retrieve newsletter subscribers.
+    """
+    from datetime import datetime
+    
+    # Get standalone newsletter subscribers
+    subscribers = crud.newsletter.get_multi(db, skip=skip, limit=limit)
+    
+    # Get users subscribed
+    users = db.query(models.User).filter(models.User.newsletter_subscribed == True).offset(skip).limit(limit).all()
+    
+    results = []
+    
+    # Add subscribers
+    for sub in subscribers:
+        results.append(sub)
+        
+    # Add users (mapped to Newsletter schema structure)
+    for user in users:
+        # Avoid duplicates if email exists in both (unlikely but possible)
+        if not any(r.email == user.email for r in results):
+             # Create a dummy object or dict that matches schema
+             results.append(schemas.Newsletter(
+                 id=user.id + 100000, # Offset ID to avoid collision with standard subscribers
+                 email=user.email,
+                 created_at=datetime.utcnow() # User doesn't track subscription date, using now or dummy
+             ))
+             
+    return results
 
 @router.delete("/{id}", response_model=schemas.Newsletter)
 def delete_newsletter(

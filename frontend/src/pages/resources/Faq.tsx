@@ -13,7 +13,7 @@ import {
     Spinner,
     Flex,
 } from '@chakra-ui/react';
-import { getFaqs, type Faq as FaqType } from '../api/faqs';
+import { getFaqs, type Faq as FaqType } from '../../api/faqs';
 
 export default function Faq() {
     const [faqs, setFaqs] = useState<FaqType[]>([]);

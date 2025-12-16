@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getNewsBySlug, type News } from '../api/news';
+import { getNewsBySlug, type News } from '../../api/news';
 import { ArrowBackIcon, CalendarIcon } from '@chakra-ui/icons';
 
 export default function NewsDetail() {

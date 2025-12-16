@@ -17,6 +17,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             is_superuser=obj_in.is_superuser,
             role=obj_in.role,
             is_active=obj_in.is_active,
+            newsletter_subscribed=obj_in.newsletter_subscribed,
         )
         db.add(db_obj)
         db.commit()

@@ -13,9 +13,11 @@ import {
     Button,
     useColorModeValue,
     Divider,
+    Icon,
 } from '@chakra-ui/react';
-import { getMyServiceRequests, type ServiceRequest } from '../api/services';
+import { getMyServiceRequests, type ServiceRequest } from '../../api/services';
 import { Link } from 'react-router-dom';
+import { FaClipboardList, FaTools } from 'react-icons/fa';
 
 const ServiceHistory = () => {
     const [requests, setRequests] = useState<ServiceRequest[]>([]);
@@ -69,12 +71,36 @@ const ServiceHistory = () => {
             )}
 
             {requests.length === 0 && !error ? (
-                <Box textAlign="center" py={10} bg={cardBg} borderRadius="lg" shadow="sm">
-                    <Text fontSize="lg" mb={4}>No tienes solicitudes registradas.</Text>
-                    <Button as={Link} to="/servicios/tecnico" colorScheme="blue">
-                        Solicitar Service
+                <VStack
+                    textAlign="center"
+                    py={16}
+                    bg={cardBg}
+                    borderRadius="xl"
+                    shadow="sm"
+                    spacing={6}
+                    border="1px dashed"
+                    borderColor="gray.200"
+                >
+                    <Box bg="blue.50" p={4} rounded="full">
+                        <Icon as={FaClipboardList} w={10} h={10} color="blue.500" />
+                    </Box>
+                    <Box>
+                        <Heading size="md" mb={2}>No tiene solicitudes activas</Heading>
+                        <Text color="gray.500" maxW="md" mx="auto">
+                            Actualmente no tiene ningún ticket de servicio técnico en proceso.
+                            Si tiene problemas con algún equipo, puede generar una nueva solicitud aquí.
+                        </Text>
+                    </Box>
+                    <Button
+                        as={Link}
+                        to="/servicios/tecnico"
+                        colorScheme="brand"
+                        size="lg"
+                        leftIcon={<Icon as={FaTools} />}
+                    >
+                        Solicitar Servicio Técnico
                     </Button>
-                </Box>
+                </VStack>
             ) : (
                 <VStack spacing={4} align="stretch">
                     {requests.map((req) => (

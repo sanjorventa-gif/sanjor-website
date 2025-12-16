@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react';
 import { FaTemperatureHigh, FaWind, FaCheckCircle } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
-import ProductCard from '../components/ui/ProductCard';
-import HeroCarousel from '../components/features/HeroCarousel';
-import FloatingWidget from '../components/features/FloatingWidget';
+import ProductCard from '../../components/ui/ProductCard';
+import HeroCarousel from '../../components/features/HeroCarousel';
+import FloatingWidget from '../../components/features/FloatingWidget';
 
 export default function Home() {
     return (

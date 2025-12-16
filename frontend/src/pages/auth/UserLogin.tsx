@@ -27,7 +27,7 @@ export default function UserLogin() {
     const handleSubmit = async () => {
         const success = await login(email, password);
         if (success) {
-            navigate('/descargas');
+            navigate('/mi-cuenta');
         } else {
             toast({
                 title: 'Error de inicio de sesión',

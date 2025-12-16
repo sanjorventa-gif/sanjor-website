@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { FaTools, FaShieldAlt, FaQuestionCircle } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
-import { getFaqs, type Faq } from '../api/faqs';
+import { getFaqs, type Faq } from '../../api/faqs';
 
 export default function Services() {
     const [faqs, setFaqs] = useState<Faq[]>([]);

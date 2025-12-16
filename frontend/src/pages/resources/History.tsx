@@ -6,7 +6,7 @@ import {
     Heading,
     useColorModeValue,
 } from '@chakra-ui/react';
-import CompanyTimeline from '../components/features/CompanyTimeline';
+import CompanyTimeline from '../../components/features/CompanyTimeline';
 
 export default function History() {
     const bgGray = useColorModeValue('gray.50', 'gray.900');

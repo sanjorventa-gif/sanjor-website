@@ -12,7 +12,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
-import BlastStabilizationChart from '../components/features/BlastStabilizationChart';
+import BlastStabilizationChart from '../../components/features/BlastStabilizationChart';
 import { FaTemperatureHigh, FaMicrochip, FaChartLine, FaCogs } from 'react-icons/fa';
 
 export default function BlastSystem() {
