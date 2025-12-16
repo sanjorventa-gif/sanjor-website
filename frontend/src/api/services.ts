@@ -3,11 +3,18 @@ import axios from './axios';
 export interface ServiceRequest {
     id: number;
     name: string;
+    last_name?: string;
+    company?: string;
     email: string;
     phone: string;
     city: string;
-    address: string;
+    province?: string;
+    country?: string;
+    address?: string;
     stove_model: string;
+    serial_number: string;
+    rubro?: string;
+    work_area?: string;
     purchase_date: string;
     problem_description: string;
     status: string;
@@ -19,9 +26,12 @@ export interface ServiceRequestCreate {
     email: string;
     phone: string;
     city: string;
-    address: string;
+    address?: string;
     stove_model: string;
-    purchase_date: string;
+    serial_number: string;
+    rubro?: string;
+    work_area?: string;
+    purchase_date?: string;
     problem_description: string;
     recaptcha_token?: string;
 }

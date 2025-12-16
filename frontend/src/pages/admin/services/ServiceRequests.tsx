@@ -22,6 +22,7 @@ import {
     Flex,
     Badge,
     Select,
+    SimpleGrid,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
 import ExportButtons from '../../../components/common/ExportButtons';
@@ -193,29 +194,67 @@ const ServiceRequests = () => {
                                     <Text>{new Date(selectedRequest.created_at).toLocaleString()}</Text>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Nombre:</Text>
-                                    <Text>{selectedRequest.name}</Text>
+                                    <Heading size="sm" mb={2}>Información Personal</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Nombre Completo:</Text>
+                                            <Text>{selectedRequest.name} {selectedRequest.last_name}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Empresa:</Text>
+                                            <Text>{selectedRequest.company || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Email:</Text>
+                                            <Text>{selectedRequest.email}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Teléfono:</Text>
+                                            <Text>{selectedRequest.phone}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Rubro / Sector:</Text>
+                                            <Text>{selectedRequest.rubro || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Área de Trabajo:</Text>
+                                            <Text>{selectedRequest.work_area || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
                                 </Box>
+
                                 <Box>
-                                    <Text fontWeight="bold">Email:</Text>
-                                    <Text>{selectedRequest.email}</Text>
+                                    <Heading size="sm" mb={2}>Ubicación</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Ciudad:</Text>
+                                            <Text>{selectedRequest.city}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Provincia:</Text>
+                                            <Text>{selectedRequest.province || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">País:</Text>
+                                            <Text>{selectedRequest.country || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
                                 </Box>
+
                                 <Box>
-                                    <Text fontWeight="bold">Teléfono:</Text>
-                                    <Text>{selectedRequest.phone}</Text>
+                                    <Heading size="sm" mb={2}>Datos de la Estufa</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Modelo:</Text>
+                                            <Text>{selectedRequest.stove_model}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">N° de Serie:</Text>
+                                            <Text>{selectedRequest.serial_number || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
                                 </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Ciudad / Dirección:</Text>
-                                    <Text>{selectedRequest.city} - {selectedRequest.address}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Modelo de Estufa:</Text>
-                                    <Text>{selectedRequest.stove_model}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Fecha de Compra:</Text>
-                                    <Text>{selectedRequest.purchase_date}</Text>
-                                </Box>
+
                                 <Box>
                                     <Text fontWeight="bold">Descripción del Problema:</Text>
                                     <Text p={4} bg="gray.50" borderRadius="md">{selectedRequest.problem_description}</Text>

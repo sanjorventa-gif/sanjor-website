@@ -5,14 +5,20 @@ from datetime import datetime
 # Shared properties
 class WarrantyRegistrationBase(BaseModel):
     name: str
+    last_name: Optional[str] = None
+    company: Optional[str] = None
     email: str
-    phone: str
+    phone: Optional[str] = None
     city: str
-    address: str
+    province: Optional[str] = None
+    country: Optional[str] = None
+    address: Optional[str] = None
     stove_model: str
+    rubro: Optional[str] = None
+    work_area: Optional[str] = None
     serial_number: str
-    purchase_date: str
-    vendor: str
+    purchase_date: Optional[str] = None
+    vendor: Optional[str] = None
     registration_type: Optional[str] = "standard"
 
 # Properties to receive on creation

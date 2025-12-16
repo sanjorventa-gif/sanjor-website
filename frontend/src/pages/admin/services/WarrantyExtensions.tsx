@@ -20,6 +20,7 @@ import {
     VStack,
     useDisclosure,
     Flex,
+    SimpleGrid,
 } from '@chakra-ui/react';
 import { FaTrash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
@@ -27,10 +28,20 @@ import axios from 'axios';
 interface WarrantyRegistration {
     id: number;
     name: string;
+    last_name?: string;
+    company?: string;
     email: string;
+    phone?: string;
+    city: string;
+    province?: string;
+    country?: string;
+    address?: string;
     stove_model: string;
     serial_number: string;
-    vendor: string;
+    vendor?: string;
+    purchase_date?: string;
+    rubro?: string;
+    work_area?: string;
     created_at: string;
     registration_type: string;
     [key: string]: any;
@@ -163,40 +174,76 @@ const WarrantyExtensions = () => {
                         {selectedReg && (
                             <VStack align="stretch" spacing={4}>
                                 <Box>
-                                    <Text fontWeight="bold">Fecha de Solicitud:</Text>
-                                    <Text>{new Date(selectedReg.created_at).toLocaleString()}</Text>
+                                    <Heading size="sm" mb={2}>Información Personal</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Nombre Completo:</Text>
+                                            <Text>{selectedReg.name} {selectedReg.last_name}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Empresa:</Text>
+                                            <Text>{selectedReg.company || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Email:</Text>
+                                            <Text>{selectedReg.email}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Teléfono:</Text>
+                                            <Text>{selectedReg.phone}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Rubro / Sector:</Text>
+                                            <Text>{selectedReg.rubro || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Área de Trabajo:</Text>
+                                            <Text>{selectedReg.work_area || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
+                                </Box>
+
+                                <Box>
+                                    <Heading size="sm" mb={2}>Ubicación</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Ciudad:</Text>
+                                            <Text>{selectedReg.city}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Provincia:</Text>
+                                            <Text>{selectedReg.province || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">País:</Text>
+                                            <Text>{selectedReg.country || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
+                                </Box>
+
+                                <Box>
+                                    <Heading size="sm" mb={2}>Datos de la Estufa</Heading>
+                                    <SimpleGrid columns={2} spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold">Modelo:</Text>
+                                            <Text>{selectedReg.stove_model}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">N° de Serie:</Text>
+                                            <Text>{selectedReg.serial_number || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Fecha de Compra:</Text>
+                                            <Text>{selectedReg.purchase_date || '-'}</Text>
+                                        </Box>
+                                        <Box>
+                                            <Text fontWeight="bold">Vendedor:</Text>
+                                            <Text>{selectedReg.vendor || '-'}</Text>
+                                        </Box>
+                                    </SimpleGrid>
                                 </Box>
                                 <Box>
-                                    <Text fontWeight="bold">Nombre:</Text>
-                                    <Text>{selectedReg.name}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Email:</Text>
-                                    <Text>{selectedReg.email}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Teléfono:</Text>
-                                    <Text>{selectedReg.phone}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Ciudad / Dirección:</Text>
-                                    <Text>{selectedReg.city} - {selectedReg.address}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Modelo de Estufa:</Text>
-                                    <Text>{selectedReg.stove_model}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Número de Serie:</Text>
-                                    <Text>{selectedReg.serial_number}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Fecha de Compra:</Text>
-                                    <Text>{selectedReg.purchase_date}</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="bold">Vendedor:</Text>
-                                    <Text>{selectedReg.vendor}</Text>
+                                    <Text fontWeight="bold" fontSize="sm" color="gray.500">Solicitado el: {new Date(selectedReg.created_at).toLocaleString()}</Text>
                                 </Box>
                             </VStack>
                         )}
