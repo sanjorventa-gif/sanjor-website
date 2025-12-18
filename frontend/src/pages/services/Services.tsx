@@ -77,7 +77,7 @@ export default function Services() {
                     <ServiceCard
                         icon={FaShieldAlt}
                         title="Extensión de Garantía"
-                        text="Amplíe la protección de su inversión con nuestros planes de garantía."
+                        text="Amplíe la protección de su inversión extendiendo su garantía a 3 años."
                         action="Extender Garantía"
                         link="/servicios/garantia"
                     />

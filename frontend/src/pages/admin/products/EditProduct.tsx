@@ -39,7 +39,8 @@ export default function EditProduct() {
         technicalSheet: '',
     });
 
-    const [featuresInput, setFeaturesInput] = useState('');
+
+
 
     // Dimensions state
     const [dimLength, setDimLength] = useState('');
@@ -55,7 +56,6 @@ export default function EditProduct() {
             const product = products.find((p) => p.id == id);
             if (product) {
                 setFormData(product);
-                setFeaturesInput(product.features.join(', '));
                 if (product.dimensions) {
                     setDimLength(product.dimensions.length.toString());
                     setDimWidth(product.dimensions.width.toString());
@@ -94,7 +94,7 @@ export default function EditProduct() {
             category: formData.category,
             description: formData.description,
             image: formData.image,
-            features: featuresInput.split(',').map((f) => f.trim()).filter((f) => f !== ''),
+            features: [],
             dimensions: (dimLength || dimWidth || dimHeight) ? {
                 length: Number(dimLength),
                 width: Number(dimWidth),
@@ -172,14 +172,8 @@ export default function EditProduct() {
                         <FormHelperText>Se recomienda una imagen de 400x300px</FormHelperText>
                     </FormControl>
 
-                    <FormControl>
-                        <FormLabel>Características (separadas por coma)</FormLabel>
-                        <Input
-                            value={featuresInput}
-                            onChange={(e) => setFeaturesInput(e.target.value)}
-                            placeholder="Ej: Control Digital, Alta Precisión, Acero Inoxidable"
-                        />
-                    </FormControl>
+
+
 
                     <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                         <FormControl>

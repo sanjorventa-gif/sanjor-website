@@ -56,15 +56,7 @@ export default function ProductCard({ title, image, description, href, dimension
                     />
                 </Box>
                 <Stack flex="1" spacing={3}>
-                    <Text
-                        color={'brand.500'}
-                        textTransform={'uppercase'}
-                        fontWeight={800}
-                        fontSize={'xs'}
-                        letterSpacing={1.1}
-                    >
-                        Producto
-                    </Text>
+
                     <Heading
                         color={useColorModeValue('gray.700', 'white')}
                         fontSize={'xl'}
@@ -73,22 +65,20 @@ export default function ProductCard({ title, image, description, href, dimension
                     >
                         {title}
                     </Heading>
-                    <Text color={'gray.500'} fontSize="sm" noOfLines={3}>
-                        {description.replace(/<[^>]*>?/gm, '')}
-                    </Text>
+
 
                     {dimensions && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="purple">Medidas</Badge>
+                            <Badge colorScheme="purple">Medidas Internas</Badge>
                             <Text fontSize="xs" fontWeight="bold">
-                                {dimensions.length}x{dimensions.width}x{dimensions.height} {dimensions.unit}
+                                {dimensions.length} x {dimensions.width} x {dimensions.height} {dimensions.unit}
                             </Text>
                         </Stack>
                     )}
 
                     {temperature && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="red">Temp</Badge>
+                            <Badge colorScheme="red">Rango de temperatura</Badge>
                             <Text fontSize="xs" fontWeight="bold">
                                 {temperature.min} - {temperature.max} {temperature.unit}
                             </Text>

@@ -13,7 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import BlastStabilizationChart from '../../components/features/BlastStabilizationChart';
-import { FaTemperatureHigh, FaMicrochip, FaChartLine, FaCogs } from 'react-icons/fa';
+import { FaTemperatureHigh, FaCrosshairs, FaEquals, FaHandHolding, FaDonate } from 'react-icons/fa';
+import ControlEvolutionCharts from '../../components/features/ControlEvolutionCharts';
 
 export default function BlastSystem() {
     const bgGray = useColorModeValue('gray.50', 'gray.900');
@@ -107,24 +108,9 @@ export default function BlastSystem() {
                             </Text>
                         </Box>
 
-                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-                            <FeatureCard
-                                title="Control PID"
-                                description="Control básico proporcional, integral y derivativo."
-                                icon={FaCogs}
-                            />
-                            <FeatureCard
-                                title="Fuzzy Logic"
-                                description="Lógica difusa con recálculo constante de variables."
-                                icon={FaMicrochip}
-                            />
-                            <FeatureCard
-                                title="Sistema BLAST"
-                                description="Cálculo matemático individual optimizado para cada modelo."
-                                highlight
-                                icon={FaChartLine}
-                            />
-                        </SimpleGrid>
+                        <Box py={8}>
+                            <ControlEvolutionCharts />
+                        </Box>
 
                         <Divider borderColor="gray.300" />
 
@@ -159,14 +145,23 @@ export default function BlastSystem() {
             <Box bg={'brand.600'} py={16} color={'white'}>
                 <Container maxW={'container.xl'}>
                     <Stack spacing={10}>
-                        <Heading textAlign="center" size="lg" fontWeight="medium">
-                            Para la implementación exclusiva en Estufas era necesario un control que brindara:
-                        </Heading>
-                        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-                            <StatCard title="Máxima" value="Precisión" />
-                            <StatCard title="Buena" value="Uniformidad" />
-                            <StatCard title="Fácil" value="Manejo" />
-                            <StatCard title="Costo" value="Moderado" />
+                        <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10} pt={8}>
+                            <VStack spacing={3}>
+                                <Icon as={FaCrosshairs} w={8} h={8} color="brand.200" />
+                                <Text fontSize="lg" fontWeight="bold">Máxima Precisión</Text>
+                            </VStack>
+                            <VStack spacing={3}>
+                                <Icon as={FaEquals} w={8} h={8} color="brand.200" />
+                                <Text fontSize="lg" fontWeight="bold">Buena Uniformidad</Text>
+                            </VStack>
+                            <VStack spacing={3}>
+                                <Icon as={FaHandHolding} w={8} h={8} color="brand.200" />
+                                <Text fontSize="lg" fontWeight="bold">Fácil Manejo</Text>
+                            </VStack>
+                            <VStack spacing={3}>
+                                <Icon as={FaDonate} w={8} h={8} color="brand.200" />
+                                <Text fontSize="lg" fontWeight="bold">Costo Moderado</Text>
+                            </VStack>
                         </SimpleGrid>
                     </Stack>
                 </Container>
@@ -247,43 +242,12 @@ export default function BlastSystem() {
     );
 }
 
-const FeatureCard = ({ title, description, highlight, icon }: { title: string; description: string; highlight?: boolean; icon: any }) => {
-    return (
-        <VStack
-            bg={highlight ? 'brand.500' : 'white'}
-            color={highlight ? 'white' : 'gray.800'}
-            p={8}
-            rounded={'xl'}
-            boxShadow={'xl'}
-            textAlign={'center'}
-            transform={highlight ? 'scale(1.05)' : 'none'}
-            zIndex={highlight ? 1 : 0}
-            spacing={4}
-            borderWidth={highlight ? 0 : 1}
-            borderColor="gray.200"
-        >
-            <Icon as={icon} w={10} h={10} color={highlight ? 'white' : 'brand.500'} />
-            <Heading size="md">{title}</Heading>
-            <Text fontSize="sm" color={highlight ? 'brand.100' : 'gray.500'}>{description}</Text>
-        </VStack>
-    );
-};
 
-const StatCard = ({ title, value }: { title: string; value: string }) => {
-    return (
-        <Box bg="whiteAlpha.200" p={6} rounded="xl" textAlign="center" backdropFilter="blur(5px)">
-            <Text fontSize="sm" textTransform="uppercase" letterSpacing="wide" mb={1} color="brand.100">
-                {title}
-            </Text>
-            <Heading size="lg">{value}</Heading>
-        </Box>
-    );
-};
 
 const VariableCard = ({ text }: { text: string }) => {
     return (
         <Flex align="center" bg="gray.50" p={4} rounded="lg" border="1px" borderColor="gray.100">
-            <Icon as={CheckCircleIcon} color="green.500" mr={4} w={5} h={5} />
+            <Icon as={CheckCircleIcon} color="brand.500" mr={4} w={5} h={5} />
             <Text fontWeight="medium" color="gray.700">{text}</Text>
         </Flex>
     )

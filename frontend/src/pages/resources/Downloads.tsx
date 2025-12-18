@@ -13,6 +13,7 @@ import {
     Badge,
     Spinner,
     Center,
+    IconButton,
 } from '@chakra-ui/react';
 import { FaFilePdf, FaDownload } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
@@ -170,9 +171,13 @@ const DownloadCard = ({ item }: { item: Download }) => {
                 </Box>
             </Stack>
             <Link href={item.file_url} isExternal style={{ textDecoration: 'none' }}>
-                <Button leftIcon={<FaDownload />} size="sm" variant="ghost" colorScheme="brand">
-                    Descargar
-                </Button>
+                <IconButton
+                    icon={<FaDownload />}
+                    aria-label="Descargar"
+                    size="sm"
+                    variant="ghost"
+                    colorScheme="brand"
+                />
             </Link>
         </Stack>
     );

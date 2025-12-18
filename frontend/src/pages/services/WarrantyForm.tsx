@@ -93,11 +93,11 @@ const WarrantyForm = ({ type = 'standard' }: WarrantyFormProps) => {
                 <VStack spacing={8} align="stretch">
                     <Box textAlign="center">
                         <Heading as="h1" size="xl" mb={2}>
-                            {type === 'extension' ? 'Extensión de Garantía Gratuita' : 'Registro de Estufas'}
+                            {type === 'extension' ? 'Extensión de Garantía' : 'Registro de Estufas'}
                         </Heading>
                         <Text color="gray.600">
                             {type === 'extension'
-                                ? 'Complete el formulario para solicitar su extensión de garantía.'
+                                ? 'Complete el formulario para solicitar su extensión de garantía a 3 años.'
                                 : 'Registre su equipo para activar la garantía de fábrica.'}
                         </Text>
                     </Box>

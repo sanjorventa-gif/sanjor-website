@@ -142,9 +142,9 @@ export default function Dashboard() {
                                     <Badge
                                         colorScheme={
                                             product.category === 'cultivo'
-                                                ? 'green'
+                                                ? 'cyan'
                                                 : product.category === 'esterilizacion'
-                                                    ? 'blue'
+                                                    ? 'green'
                                                     : product.category === 'secado'
                                                         ? 'orange'
                                                         : 'purple'

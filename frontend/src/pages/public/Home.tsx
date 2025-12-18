@@ -112,8 +112,8 @@ export default function Home() {
                             href="/servicios/tecnico"
                         />
                         <ServiceHighlight
-                            title="Extensión de Garantía Gratuita"
-                            text="Registrando la estufa ya obtiene la extensión de 12 meses adicionales a la garantía normal de fábrica, en caso de ser las estufas con sistema BLAST..."
+                            title="Extensión de Garantía"
+                            text="Registrando su equipo obtiene una extensión de garantía total de 3 años, asegurando el máximo rendimiento y respaldo de fábrica."
                             action="IR A FORMULARIO"
                             href="/servicios/garantia"
                         />
