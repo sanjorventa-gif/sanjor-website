@@ -7,7 +7,6 @@ import {
     SimpleGrid,
     Stack,
     Icon,
-    Button,
     useColorModeValue,
     Link,
     Badge,

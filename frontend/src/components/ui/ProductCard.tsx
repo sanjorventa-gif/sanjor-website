@@ -20,7 +20,7 @@ interface ProductCardProps {
     temperature?: { min: number; max: number; unit: string };
 }
 
-export default function ProductCard({ title, image, description, href, dimensions, temperature }: ProductCardProps) {
+export default function ProductCard({ title, image, href, dimensions, temperature }: ProductCardProps) {
     return (
         <Center py={6}>
             <Box
