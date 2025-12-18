@@ -25,7 +25,7 @@ export default function ControlEvolutionCharts() {
 
 const ControlChart = ({ title, subtitle, imageSrc }: { title: string, subtitle: string, imageSrc: string }) => {
     return (
-        <VStack spacing={4} align="center" flex={1} w="full" maxW="320px" role="group">
+        <VStack spacing={4} align="center" flex={1} w="full" maxW="220px" role="group">
             {/* Title */}
             <Text
                 fontWeight="bold"
