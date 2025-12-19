@@ -1,0 +1,22 @@
+{% extends "email/base.html" %}
+
+{% block content %}
+<h2>Nuevo Mensaje de Contacto</h2>
+<p>Se ha recibido un nuevo mensaje desde el formulario de contacto del sitio web.</p>
+
+<h3>Información de Contacto</h3>
+<ul>
+    <li><strong>Nombre:</strong> {{ name }} {{ lastname }}</li>
+    <li><strong>Empresa:</strong> {{ company }}</li>
+    <li><strong>Email:</strong> {{ email }}</li>
+    <li><strong>Teléfono:</strong> {{ phone }}</li>
+    <li><strong>Rubro:</strong> {{ rubro }}</li>
+    <li><strong>Cargo/Área:</strong> {{ cargo }}</li>
+</ul>
+
+<h3>Mensaje</h3>
+<p>{{ message }}</p>
+
+<hr>
+<p>Puede responder directamente a este correo para contactar al usuario.</p>
+{% endblock %}

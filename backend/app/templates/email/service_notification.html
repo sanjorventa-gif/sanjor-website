@@ -1,0 +1,30 @@
+{% extends "email/base.html" %}
+
+{% block content %}
+<h2>Nueva Solicitud de Servicio</h2>
+<p>Se ha recibido una nueva solicitud de servicio técnico.</p>
+
+<h3>Detalles del Cliente</h3>
+<ul>
+    <li><strong>Nombre:</strong> {{ name }} {{ last_name }}</li>
+    <li><strong>Empresa:</strong> {{ company }}</li>
+    <li><strong>Email:</strong> {{ email }}</li>
+    <li><strong>Teléfono:</strong> {{ phone }}</li>
+    <li><strong>Ubicación:</strong> {{ city }}, {{ province }}, {{ country }}</li>
+    <li><strong>Rubro:</strong> {{ rubro }}</li>
+    <li><strong>Área:</strong> {{ work_area }}</li>
+</ul>
+
+<h3>Detalles del Equipo</h3>
+<ul>
+    <li><strong>Modelo:</strong> {{ stove_model }}</li>
+    <li><strong>Nº Serie:</strong> {{ serial_number }}</li>
+    <li><strong>Fecha Compra:</strong> {{ purchase_date }}</li>
+</ul>
+
+<h3>Descripción del Problema</h3>
+<p>{{ problem_description }}</p>
+
+<hr>
+<p>Puede responder directamente a este correo para contactar al cliente.</p>
+{% endblock %}

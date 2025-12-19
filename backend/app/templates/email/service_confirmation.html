@@ -1,0 +1,16 @@
+{% extends "email/base.html" %}
+
+{% block content %}
+<h2>Solicitud Recibida</h2>
+<p>Estimado/a {{ name }},</p>
+<p>Hemos recibido su solicitud de servicio técnico para el equipo <strong>{{ stove_model }}</strong>.</p>
+<p>Nuestro equipo técnico analizará su caso y se pondrá en contacto con usted a la brevedad posible.</p>
+
+<h3>Detalles de su solicitud:</h3>
+<ul>
+    <li><strong>Nº de Caso (interno):</strong> {{ request_id }}</li>
+    <li><strong>Problema reportado:</strong> {{ problem_description }}</li>
+</ul>
+
+<p>Muchas gracias por confiar en SAN JOR.</p>
+{% endblock %}

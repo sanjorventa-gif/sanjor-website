@@ -13,8 +13,9 @@ import {
     Icon,
     useColorModeValue,
     useToast,
+    Select,
 } from '@chakra-ui/react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function Contact() {
@@ -24,21 +25,83 @@ export default function Contact() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Get form data
+        const formData = new FormData(e.target as HTMLFormElement);
+        const data = Object.fromEntries(formData.entries());
+
         if (!executeRecaptcha) {
             console.log('Execute recaptcha not yet available');
             return;
         }
 
-        const token = await executeRecaptcha('contact_form');
-        console.log('ReCAPTCHA Token:', token);
+        try {
+            const token = await executeRecaptcha('contact_form');
+            console.log('ReCAPTCHA Token:', token);
 
-        toast({
-            title: 'Mensaje enviado.',
-            description: "Nos pondremos en contacto con usted a la brevedad.",
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-        });
+            // Construct payload matching ContactCreate schema
+            const payload = {
+                name: data.name as string,
+                lastname: data.lastname as string,
+                company: data.company as string,
+                email: data.email as string,
+                phone: data.phone as string,
+                rubro: data.rubro as string, // Note: Selects might need to be captured if not named properly? 
+                // Ah, I need to add name attributes to Selects first!
+                // I will assume name attributes will be added in next step or I should do it now. 
+                // Wait, previous replace didn't add name attributes to Selects? 
+                // Check logic: "Object.fromEntries(formData)" works if inputs have names.
+                // The inputs have IDs but not names? Check previous file content.
+                // Standard FormControl uses... wait, typical inputs have name?  
+                // Previously inputs had `id="..."`. I need to ensure they have `name="..."` for FormData to work easily.
+                // Or use uncontrolled refs or React Hook Form. Use React Hook Form is safer as seen in ServiceRequestForm.
+                // But Contact.tsx was simple HTML form.
+                // I will stick to simple fetch but I MUST add 'name' attributes to inputs.
+                // I'll add name attributes in the ReplacementContent where possible or assume I fix it.
+                // Actually, simpler to just access elements by ID if I don't want to rewrite the whole JSX.
+                // Or better: Use React local state?
+                // Let's use simple FormData but I need to make sure inputs have names.
+                // I'll update the JSX to include names in a separate call if needed, but I suspect they might not have them.
+                // The ID is usually there.
+                // Let's use explicit state or refs? No, too much boilerplate.
+                // I'll add names in the JSX below.
+                cargo: data.cargo as string,
+                message: data.message as string,
+                recaptcha_token: token
+            };
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/contact/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error sending message');
+            }
+
+            toast({
+                title: 'Mensaje enviado.',
+                description: "Nos pondremos en contacto con usted a la brevedad.",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+
+            // Reset form
+            (e.target as HTMLFormElement).reset();
+
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: 'Error.',
+                description: "Hubo un problema al enviar el mensaje.",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+        }
     };
 
     return (
@@ -68,26 +131,76 @@ export default function Contact() {
                         <Heading size="md" mb={6}>Envíenos un mensaje</Heading>
                         <form onSubmit={handleSubmit}>
                             <Stack spacing={4}>
-                                <FormControl id="name" isRequired>
-                                    <FormLabel>Nombre Completo</FormLabel>
-                                    <Input type="text" placeholder="Juan Pérez" />
+                                <SimpleGrid columns={2} spacing={4}>
+                                    <FormControl id="name" isRequired>
+                                        <FormLabel>Nombre</FormLabel>
+                                        <Input name="name" type="text" placeholder="Su nombre" />
+                                    </FormControl>
+                                    <FormControl id="lastname">
+                                        <FormLabel>Apellido</FormLabel>
+                                        <Input name="lastname" type="text" placeholder="Su apellido" />
+                                    </FormControl>
+                                </SimpleGrid>
+
+                                <FormControl id="company">
+                                    <FormLabel>Empresa / Institución</FormLabel>
+                                    <Input name="company" type="text" placeholder="Nombre de su empresa" />
                                 </FormControl>
-                                <FormControl id="email" isRequired>
-                                    <FormLabel>Email</FormLabel>
-                                    <Input type="email" placeholder="juan@empresa.com" />
-                                </FormControl>
-                                <FormControl id="phone">
-                                    <FormLabel>Teléfono</FormLabel>
-                                    <Input type="tel" placeholder="+54 11 ..." />
-                                </FormControl>
-                                <FormControl id="subject">
-                                    <FormLabel>Asunto</FormLabel>
-                                    <Input type="text" placeholder="Consulta sobre..." />
-                                </FormControl>
+
+                                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                                    <FormControl>
+                                        <FormLabel>Rubro / Sector</FormLabel>
+                                        <Select name="rubro" placeholder="Seleccione...">
+                                            <option value="Alimenticia">Alimenticia</option>
+                                            <option value="Agropecuaria">Agropecuaria</option>
+                                            <option value="Avícola">Avícola</option>
+                                            <option value="Clínica">Clínica</option>
+                                            <option value="Cosmética">Cosmética</option>
+                                            <option value="Esterilización">Esterilización</option>
+                                            <option value="Farmacéutica">Farmacéutica</option>
+                                            <option value="Higiene">Higiene</option>
+                                            <option value="Hospital">Hospital</option>
+                                            <option value="Industria">Industria</option>
+                                            <option value="Investigación">Investigación</option>
+                                            <option value="Laboratorio">Laboratorio</option>
+                                            <option value="Odontología">Odontología</option>
+                                            <option value="Petroquímica">Petroquímica</option>
+                                            <option value="Sanatorio">Sanatorio</option>
+                                            <option value="Veterinaria">Veterinaria</option>
+                                            <option value="Otros">Otros</option>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel>Cargo / Área</FormLabel>
+                                        <Select name="cargo" placeholder="Seleccione...">
+                                            <option value="Dirección">Dirección</option>
+                                            <option value="Compras">Compras</option>
+                                            <option value="Calidad">Calidad</option>
+                                            <option value="Producción">Producción</option>
+                                            <option value="Mantenimiento">Mantenimiento</option>
+                                            <option value="Laboratorio">Laboratorio</option>
+                                            <option value="Ventas">Ventas</option>
+                                            <option value="Otro">Otro</option>
+                                        </Select>
+                                    </FormControl>
+                                </SimpleGrid>
+
+                                <SimpleGrid columns={2} spacing={4}>
+                                    <FormControl id="email" isRequired>
+                                        <FormLabel>Email</FormLabel>
+                                        <Input name="email" type="email" placeholder="email@ejemplo.com" />
+                                    </FormControl>
+                                    <FormControl id="phone">
+                                        <FormLabel>Teléfono</FormLabel>
+                                        <Input name="phone" type="tel" placeholder=" Cod. Área + Número" />
+                                    </FormControl>
+                                </SimpleGrid>
+
                                 <FormControl id="message" isRequired>
-                                    <FormLabel>Mensaje</FormLabel>
-                                    <Textarea placeholder="Escriba su consulta aquí..." rows={6} />
+                                    <FormLabel>Consulta / Mensaje</FormLabel>
+                                    <Textarea name="message" placeholder="Escriba su consulta aquí..." rows={6} />
                                 </FormControl>
+
                                 <Button
                                     type="submit"
                                     colorScheme="brand"
@@ -104,7 +217,7 @@ export default function Contact() {
                     {/* Contact Info */}
                     <Stack spacing={8}>
                         <Box>
-                            <Heading mb={4} color="brand.700">Contáctenos</Heading>
+                            <Heading mb={4} color="brand.700">SAN JOR</Heading>
                             <Text fontSize="lg" color="gray.600">
                                 Estamos a su disposición para responder consultas técnicas, comerciales o de servicio.
                             </Text>
@@ -114,30 +227,42 @@ export default function Contact() {
                             <ContactItem
                                 icon={FaMapMarkerAlt}
                                 title="Dirección"
-                                text="Av. Siempreviva 1234, CABA, Argentina"
+                                text="Joaquín V. González 1115, San Martín, Bs. As."
                             />
                             <ContactItem
                                 icon={FaPhone}
                                 title="Teléfono"
-                                text="+54 11 1234-5678"
+                                text="011 4738-3398"
                             />
                             <ContactItem
                                 icon={FaEnvelope}
                                 title="Email"
                                 text="info@sanjor.com.ar"
                             />
+                            <ContactItem
+                                icon={FaClock}
+                                title="Horario de Atención"
+                                text="Lunes a Viernes de 8:00 a 17:00 hs"
+                            />
                         </Stack>
 
-                        {/* Map Placeholder */}
+                        {/* Google Map Embed */}
                         <Box
                             bg="gray.200"
                             h="300px"
-                            rounded="md"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
+                            rounded="xl"
+                            overflow="hidden"
+                            boxShadow="md"
                         >
-                            <Text color="gray.500">Mapa de Google Maps</Text>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3286.068474246852!2d-58.5348889!3d-34.5518056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb74a3414b8b5%3A0x918969614c739c19!2sJoaqu%C3%ADn%20V.%20Gonz%C3%A1lez%201115%2C%20B1651DJO%20San%20Mart%C3%ADn%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1700000000000!5m2!1ses!2sar"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
                         </Box>
                     </Stack>
                 </SimpleGrid>

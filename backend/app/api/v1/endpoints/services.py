@@ -1,9 +1,10 @@
-from typing import Any, List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from app import models, schemas
 from app.api import deps
 from app.core.recaptcha import verify_recaptcha
+from app.core.email import send_email
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -14,7 +15,8 @@ def create_service_request(
     *,
     db: Session = Depends(deps.get_db),
     request_in: schemas.ServiceRequestCreate,
-    current_user: models.User | None = Depends(deps.get_current_user_optional)
+    current_user: models.User | None = Depends(deps.get_current_user_optional),
+    background_tasks: BackgroundTasks
 ) -> Any:
     """
     Create new service request (Public).
@@ -31,6 +33,45 @@ def create_service_request(
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
+
+    # Convert to dict for template
+    email_data = {
+        "name": db_obj.name,
+        "last_name": db_obj.last_name,
+        "company": db_obj.company,
+        "email": db_obj.email,
+        "phone": db_obj.phone,
+        "city": db_obj.city,
+        "province": db_obj.province,
+        "country": db_obj.country,
+        "rubro": db_obj.rubro,
+        "work_area": db_obj.work_area,
+        "stove_model": db_obj.stove_model,
+        "serial_number": db_obj.serial_number,
+        "purchase_date": db_obj.purchase_date,
+        "problem_description": db_obj.problem_description,
+        "request_id": db_obj.id
+    }
+
+    # Send Notification to Admin
+    background_tasks.add_task(
+        send_email,
+        email_to=settings.EMAIL_TO_ADMIN,
+        subject=f"Nueva Solicitud de Servicio - {db_obj.company} ({db_obj.name} {db_obj.last_name})",
+        template_name="email/service_notification.html",
+        environment=email_data,
+        reply_to=db_obj.email
+    )
+
+    # Send Confirmation to User
+    background_tasks.add_task(
+        send_email,
+        email_to=db_obj.email,
+        subject="Solicitud de Servicio Recibida - SAN JOR",
+        template_name="email/service_confirmation.html",
+        environment=email_data
+    )
+
     return db_obj
 
 @router.get("/service-requests", response_model=List[schemas.ServiceRequest])

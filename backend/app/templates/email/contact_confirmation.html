@@ -1,0 +1,12 @@
+{% extends "email/base.html" %}
+
+{% block content %}
+<h2>Mensaje Recibido</h2>
+<p>Estimado/a {{ name }},</p>
+<p>Gracias por contactarse con SAN JOR. Hemos recibido su mensaje correctamente y le responderemos a la brevedad.</p>
+
+<h3>Su mensaje:</h3>
+<p><em>{{ message }}</em></p>
+
+<p>Saludos cordiales,<br>El equipo de SAN JOR</p>
+{% endblock %}
