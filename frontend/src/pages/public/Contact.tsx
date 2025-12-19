@@ -38,7 +38,6 @@ export default function Contact() {
 
         try {
             const token = await executeRecaptcha('contact_form');
-            console.log('ReCAPTCHA Token:', token);
 
             // Construct payload matching ContactCreate schema
             const payload = {
