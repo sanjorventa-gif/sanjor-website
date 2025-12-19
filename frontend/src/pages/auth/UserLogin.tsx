@@ -25,15 +25,15 @@ export default function UserLogin() {
     const toast = useToast();
 
     const handleSubmit = async () => {
-        const success = await login(email, password);
+        const { success, error } = await login(email, password);
         if (success) {
             navigate('/mi-cuenta');
         } else {
             toast({
                 title: 'Error de inicio de sesión',
-                description: 'Email o contraseña incorrectos.',
+                description: error || 'Email o contraseña incorrectos.',
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         }

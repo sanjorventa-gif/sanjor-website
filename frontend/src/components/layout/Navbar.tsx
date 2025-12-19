@@ -67,9 +67,9 @@ export default function Navbar() {
             >
                 <Container maxW="container.xl" display="flex" alignItems="center">
                     <Flex
-                        flex={{ base: 1, md: 'auto' }}
+                        flex={{ base: 1, lg: 'auto' }}
                         ml={{ base: -2 }}
-                        display={{ base: 'flex', md: 'none' }}
+                        display={{ base: 'flex', lg: 'none' }}
                     >
                         <IconButton
                             onClick={onToggle}
@@ -80,9 +80,9 @@ export default function Navbar() {
                             aria-label={'Toggle Navigation'}
                         />
                     </Flex>
-                    <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+                    <Flex flex={{ base: 1 }} justify={{ base: 'center', lg: 'start' }}>
                         <Text
-                            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
+                            textAlign={useBreakpointValue({ base: 'center', lg: 'left' })}
                             fontFamily={'heading'}
                             color={useColorModeValue('brand.500', 'white')}
                             fontWeight="bold"
@@ -93,13 +93,13 @@ export default function Navbar() {
                             SAN JOR
                         </Text>
 
-                        <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+                        <Flex display={{ base: 'none', lg: 'flex' }} ml={10}>
                             <DesktopNav navItems={navItems} />
                         </Flex>
                     </Flex>
 
                     <Stack
-                        flex={{ base: 1, md: 0 }}
+                        flex={{ base: 1, lg: 0 }}
                         justify={'flex-end'}
                         direction={'row'}
                         spacing={6}
@@ -115,13 +115,13 @@ export default function Navbar() {
                                 >
                                     <Avatar
                                         size={'sm'}
-                                        name={user?.email}
+                                        name={user?.name || user?.email}
                                         src={'https://bit.ly/broken-link'}
                                     />
                                 </MenuButton>
                                 <MenuList zIndex={1001}>
                                     <MenuItem cursor="default" fontWeight="bold">
-                                        {user?.email}
+                                        {user?.name ? `Hola, ${user.name}` : user?.email}
                                     </MenuItem>
                                     <MenuDivider />
                                     <MenuItem as={RouterLink} to="/mis-solicitudes">
@@ -146,7 +146,7 @@ export default function Navbar() {
                             <Button
                                 as={RouterLink}
                                 to="/login"
-                                display={{ base: 'none', md: 'inline-flex' }}
+                                display={{ base: 'none', lg: 'inline-flex' }}
                                 fontSize={'sm'}
                                 fontWeight={600}
                                 variant={'link'}
@@ -158,7 +158,7 @@ export default function Navbar() {
                         <Button
                             as={RouterLink}
                             to="/contacto"
-                            display={{ base: 'none', md: 'inline-flex' }}
+                            display={{ base: 'none', lg: 'inline-flex' }}
                             fontSize={'sm'}
                             fontWeight={600}
                             color={'white'}
@@ -178,7 +178,7 @@ export default function Navbar() {
                 top="60px"
                 w="full"
                 zIndex={999}
-                display={{ md: 'none' }}
+                display={{ lg: 'none' }}
             >
                 <Collapse in={isOpen} animateOpacity>
                     <MobileNav onToggle={onToggle} navItems={navItems} />
@@ -296,7 +296,7 @@ const MobileNav = ({ onToggle, navItems }: { onToggle: () => void, navItems: Arr
         <Stack
             bg={bg}
             p={4}
-            display={{ md: 'none' }}
+            display={{ lg: 'none' }}
             backdropFilter="blur(10px)"
             borderBottomWidth={1}
             borderColor={borderColor}
@@ -315,7 +315,7 @@ const MobileNav = ({ onToggle, navItems }: { onToggle: () => void, navItems: Arr
                             Cuenta
                         </Text>
                         <Text fontWeight="medium" color={accountTextColor} isTruncated>
-                            {user?.email}
+                            {user?.name ? `Hola, ${user.name}` : user?.email}
                         </Text>
                     </Box>
                     <MobileNavItem label="Mis Solicitudes" href="/mis-solicitudes" onToggleMenu={onToggle} />

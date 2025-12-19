@@ -95,7 +95,7 @@ const ExportButtons = ({ data, columns, fileName, title }: ExportButtonsProps) =
         <HStack spacing={2}>
             <Button
                 leftIcon={<FaFileExcel />}
-                colorScheme="green"
+                colorScheme="brand"
                 size="sm"
                 onClick={exportExcel}
                 isDisabled={data.length === 0}

@@ -1,5 +1,5 @@
 import { Button, Box, Icon } from '@chakra-ui/react';
-import { FaBell } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 import { useUI } from '../../context/UIContext';
 
 export default function FloatingWidget() {
@@ -8,7 +8,7 @@ export default function FloatingWidget() {
     return (
         <Box position="fixed" bottom="4" left="4" zIndex={1000}>
             <Button
-                leftIcon={<Icon as={FaBell} />}
+                leftIcon={<Icon as={FaEnvelope} />}
                 colorScheme="brand"
                 size="lg"
                 shadow="xl"
@@ -24,7 +24,7 @@ export default function FloatingWidget() {
                 justifyContent="center"
             >
                 <Box as="span" display={{ base: 'none', md: 'inline' }}>
-                    Suscribirse
+                    Newsletter
                 </Box>
             </Button>
         </Box>

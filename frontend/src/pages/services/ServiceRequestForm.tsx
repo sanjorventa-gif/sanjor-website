@@ -42,10 +42,31 @@ interface ServiceRequestFormData {
     purchase_date?: string;
 }
 
+import { useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+
 const ServiceRequestForm = () => {
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<ServiceRequestFormData>();
     const toast = useToast();
     const { executeRecaptcha } = useGoogleReCaptcha();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            reset({
+                name: user.name || '',
+                last_name: user.last_name || '',
+                company: user.company || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                city: user.city || '',
+                province: user.province || '',
+                country: user.country || '',
+                rubro: user.rubro || '',
+                work_area: user.work_area || '',
+            });
+        }
+    }, [user, reset]);
 
     const onSubmit = async (data: ServiceRequestFormData) => {
         if (!executeRecaptcha) {

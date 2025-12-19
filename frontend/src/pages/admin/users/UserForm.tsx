@@ -20,6 +20,7 @@ import {
     ModalCloseButton,
     useDisclosure,
     Text,
+    SimpleGrid,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUser, createUser, updateUser } from '../../../api/users';
@@ -40,6 +41,15 @@ export default function UserForm() {
         is_active: true,
         is_superuser: false,
         newsletter_subscribed: false,
+        name: '',
+        last_name: '',
+        company: '',
+        phone: '',
+        city: '',
+        province: '',
+        country: '',
+        rubro: '',
+        work_area: '',
     });
 
     useEffect(() => {
@@ -59,6 +69,15 @@ export default function UserForm() {
                     is_active: user.is_active,
                     is_superuser: user.is_superuser,
                     newsletter_subscribed: user.newsletter_subscribed || false,
+                    name: user.name || '',
+                    last_name: user.last_name || '',
+                    company: user.company || '',
+                    phone: user.phone || '',
+                    city: user.city || '',
+                    province: user.province || '',
+                    country: user.country || '',
+                    rubro: user.rubro || '',
+                    work_area: user.work_area || '',
                 });
             }
         } catch (error) {
@@ -138,6 +157,111 @@ export default function UserForm() {
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
                         </FormControl>
+
+                        <Heading size="md" pt={4} pb={2}>Información Personal</Heading>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                            <FormControl id="name">
+                                <FormLabel>Nombre</FormLabel>
+                                <Input
+                                    value={formData.name || ''}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                />
+                            </FormControl>
+                            <FormControl id="last_name">
+                                <FormLabel>Apellido</FormLabel>
+                                <Input
+                                    value={formData.last_name || ''}
+                                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                                />
+                            </FormControl>
+                            <FormControl id="phone">
+                                <FormLabel>Teléfono</FormLabel>
+                                <Input
+                                    value={formData.phone || ''}
+                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                />
+                            </FormControl>
+                            <FormControl id="company">
+                                <FormLabel>Empresa</FormLabel>
+                                <Input
+                                    value={formData.company || ''}
+                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <Heading size="md" pt={4} pb={2}>Ubicación</Heading>
+                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+                            <FormControl id="city">
+                                <FormLabel>Ciudad</FormLabel>
+                                <Input
+                                    value={formData.city || ''}
+                                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                                />
+                            </FormControl>
+                            <FormControl id="province">
+                                <FormLabel>Provincia</FormLabel>
+                                <Input
+                                    value={formData.province || ''}
+                                    onChange={(e) => setFormData({ ...formData, province: e.target.value })}
+                                />
+                            </FormControl>
+                            <FormControl id="country">
+                                <FormLabel>País</FormLabel>
+                                <Input
+                                    value={formData.country || ''}
+                                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                                />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <Heading size="md" pt={4} pb={2}>Perfil Profesional</Heading>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                            <FormControl id="rubro">
+                                <FormLabel>Rubro</FormLabel>
+                                <Select
+                                    placeholder="Seleccione..."
+                                    value={formData.rubro || ''}
+                                    onChange={(e) => setFormData({ ...formData, rubro: e.target.value })}
+                                >
+                                    <option value="Alimenticia">Alimenticia</option>
+                                    <option value="Agropecuaria">Agropecuaria</option>
+                                    <option value="Avícola">Avícola</option>
+                                    <option value="Clínica">Clínica</option>
+                                    <option value="Cosmética">Cosmética</option>
+                                    <option value="Esterilización">Esterilización</option>
+                                    <option value="Farmacéutica">Farmacéutica</option>
+                                    <option value="Higiene">Higiene</option>
+                                    <option value="Hospital">Hospital</option>
+                                    <option value="Industria">Industria</option>
+                                    <option value="Investigación">Investigación</option>
+                                    <option value="Laboratorio">Laboratorio</option>
+                                    <option value="Odontología">Odontología</option>
+                                    <option value="Petroquímica">Petroquímica</option>
+                                    <option value="Sanatorio">Sanatorio</option>
+                                    <option value="Veterinaria">Veterinaria</option>
+                                    <option value="Otros">Otros</option>
+                                </Select>
+                            </FormControl>
+                            <FormControl id="work_area">
+                                <FormLabel>Área de Trabajo</FormLabel>
+                                <Select
+                                    placeholder="Seleccione..."
+                                    value={formData.work_area || ''}
+                                    onChange={(e) => setFormData({ ...formData, work_area: e.target.value })}
+                                >
+                                    <option value="Control de Calidad">Control de Calidad</option>
+                                    <option value="Investigación y Desarrollo">Investigación y Desarrollo</option>
+                                    <option value="Laboratorio Científico">Laboratorio Científico</option>
+                                    <option value="Laboratorio Industrial">Laboratorio Industrial</option>
+                                    <option value="Producción">Producción</option>
+                                    <option value="Sala Estéril">Sala Estéril</option>
+                                    <option value="Otro">Otro</option>
+                                </Select>
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <Heading size="md" pt={4} pb={2}>Configuración de Cuenta</Heading>
 
                         <FormControl id="role">
                             <FormLabel>Rol</FormLabel>

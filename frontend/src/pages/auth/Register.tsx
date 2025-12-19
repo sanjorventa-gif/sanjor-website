@@ -14,6 +14,7 @@ import {
     Alert,
     AlertIcon,
     Checkbox,
+    SimpleGrid,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +27,15 @@ export default function Register() {
         confirmPassword: '',
         role: 'usuario_nacional',
         newsletter_subscribed: false,
+        name: '',
+        last_name: '',
+        company: '',
+        phone: '',
+        city: '',
+        province: '',
+        country: '',
+        rubro: '',
+        work_area: '',
     });
     const { register, isLoading } = useAuth();
     const navigate = useNavigate();
@@ -51,7 +61,10 @@ export default function Register() {
             return;
         }
 
-        const success = await register(formData.email, formData.password, formData.role, formData.newsletter_subscribed);
+        // Create the data object for API, excluding confirmPassword
+        const { confirmPassword, ...registerData } = formData;
+
+        const success = await register(registerData);
         if (success) {
             if (formData.role.startsWith('distribuidor')) {
                 toast({
@@ -81,12 +94,13 @@ export default function Register() {
             align={'center'}
             justify={'center'}
             bg={useColorModeValue('gray.50', 'gray.800')}
+            py={12}
         >
-            <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+            <Stack spacing={8} mx={'auto'} maxW={'4xl'} px={6} w="full">
                 <Stack align={'center'}>
                     <Heading fontSize={'4xl'}>Crear Cuenta</Heading>
                     <Text fontSize={'lg'} color={'gray.600'}>
-                        para acceder a servicios exclusivos
+                        complete sus datos para acceder a servicios exclusivos
                     </Text>
                 </Stack>
                 <Box
@@ -94,19 +108,9 @@ export default function Register() {
                     bg={useColorModeValue('white', 'gray.700')}
                     boxShadow={'lg'}
                     p={8}
-                    minW={{ base: 'full', md: '400px' }}
                 >
-                    <Stack spacing={4}>
-                        <FormControl id="email" isRequired>
-                            <FormLabel>Dirección de Email</FormLabel>
-                            <Input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </FormControl>
-
+                    <Stack spacing={6}>
+                        {/* Account Type - Top Priority */}
                         <FormControl id="role" isRequired>
                             <FormLabel>Tipo de Cuenta</FormLabel>
                             <Select name="role" value={formData.role} onChange={handleChange}>
@@ -120,29 +124,117 @@ export default function Register() {
                         {formData.role.startsWith('distribuidor') && (
                             <Alert status="info" borderRadius="md" fontSize="sm">
                                 <AlertIcon />
-                                Las cuentas de distribuidor requieren verificación manual y aprobación antes de poder acceder.
+                                Las cuentas de distribuidor requieren verificación manual.
                             </Alert>
                         )}
 
-                        <FormControl id="password" isRequired>
-                            <FormLabel>Contraseña</FormLabel>
-                            <Input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                            />
+                        <Heading size="md" color="gray.700" borderBottom="1px solid" borderColor="gray.200" pb={2} mt={2}>
+                            Información Personal
+                        </Heading>
+
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                            <FormControl id="name" isRequired>
+                                <FormLabel>Nombre</FormLabel>
+                                <Input type="text" name="name" value={formData.name} onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="last_name" isRequired>
+                                <FormLabel>Apellidos</FormLabel>
+                                <Input type="text" name="last_name" value={formData.last_name} onChange={handleChange} />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <FormControl id="company">
+                            <FormLabel>Empresa / Institución</FormLabel>
+                            <Input type="text" name="company" value={formData.company} onChange={handleChange} />
                         </FormControl>
 
-                        <FormControl id="confirmPassword" isRequired>
-                            <FormLabel>Confirmar Contraseña</FormLabel>
-                            <Input
-                                type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                            />
-                        </FormControl>
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                            <FormControl id="email" isRequired>
+                                <FormLabel>Email</FormLabel>
+                                <Input type="email" name="email" value={formData.email} onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="phone" isRequired>
+                                <FormLabel>Teléfono</FormLabel>
+                                <Input type="tel" name="phone" value={formData.phone} onChange={handleChange} />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+                            <FormControl id="city" isRequired>
+                                <FormLabel>Ciudad</FormLabel>
+                                <Input type="text" name="city" value={formData.city} onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="province" isRequired>
+                                <FormLabel>Provincia / Estado</FormLabel>
+                                <Input type="text" name="province" value={formData.province} onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="country" isRequired>
+                                <FormLabel>País</FormLabel>
+                                <Input type="text" name="country" value={formData.country} onChange={handleChange} />
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                            <FormControl id="rubro">
+                                <FormLabel>Rubro / Sector</FormLabel>
+                                <Select name="rubro" placeholder="Seleccione..." value={formData.rubro} onChange={handleChange}>
+                                    <option value="Alimenticia">Alimenticia</option>
+                                    <option value="Agropecuaria">Agropecuaria</option>
+                                    <option value="Avícola">Avícola</option>
+                                    <option value="Clínica">Clínica</option>
+                                    <option value="Cosmética">Cosmética</option>
+                                    <option value="Esterilización">Esterilización</option>
+                                    <option value="Farmacéutica">Farmacéutica</option>
+                                    <option value="Higiene">Higiene</option>
+                                    <option value="Hospital">Hospital</option>
+                                    <option value="Industria">Industria</option>
+                                    <option value="Investigación">Investigación</option>
+                                    <option value="Laboratorio">Laboratorio</option>
+                                    <option value="Odontología">Odontología</option>
+                                    <option value="Petroquímica">Petroquímica</option>
+                                    <option value="Sanatorio">Sanatorio</option>
+                                    <option value="Veterinaria">Veterinaria</option>
+                                    <option value="Otros">Otros</option>
+                                </Select>
+                            </FormControl>
+                            <FormControl id="work_area">
+                                <FormLabel>Área de Trabajo</FormLabel>
+                                <Select name="work_area" placeholder="Seleccione..." value={formData.work_area} onChange={handleChange}>
+                                    <option value="Control de Calidad">Control de Calidad</option>
+                                    <option value="Investigación y Desarrollo">Investigación y Desarrollo</option>
+                                    <option value="Laboratorio Científico">Laboratorio Científico</option>
+                                    <option value="Laboratorio Industrial">Laboratorio Industrial</option>
+                                    <option value="Producción">Producción</option>
+                                    <option value="Sala Estéril">Sala Estéril</option>
+                                    <option value="Otro">Otro</option>
+                                </Select>
+                            </FormControl>
+                        </SimpleGrid>
+
+                        <Heading size="md" color="gray.700" borderBottom="1px solid" borderColor="gray.200" pb={2} mt={2}>
+                            Seguridad
+                        </Heading>
+
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                            <FormControl id="password" isRequired>
+                                <FormLabel>Contraseña</FormLabel>
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                />
+                            </FormControl>
+                            <FormControl id="confirmPassword" isRequired>
+                                <FormLabel>Confirmar Contraseña</FormLabel>
+                                <Input
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                />
+                            </FormControl>
+                        </SimpleGrid>
 
                         <FormControl id="newsletter">
                             <Checkbox

@@ -40,10 +40,30 @@ interface WarrantyFormProps {
     type?: 'standard' | 'extension';
 }
 
+import { useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+
 const WarrantyForm = ({ type = 'standard' }: WarrantyFormProps) => {
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<WarrantyFormData>();
     const toast = useToast();
     const { executeRecaptcha } = useGoogleReCaptcha();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            reset({
+                name: user.name || '',
+                last_name: user.last_name || '',
+                company: user.company || '',
+                email: user.email || '',
+                city: user.city || '',
+                province: user.province || '',
+                country: user.country || '',
+                rubro: user.rubro || '',
+                work_area: user.work_area || '',
+            });
+        }
+    }, [user, reset]);
 
     const onSubmit = async (data: WarrantyFormData) => {
         if (!executeRecaptcha) {
@@ -213,7 +233,7 @@ const WarrantyForm = ({ type = 'standard' }: WarrantyFormProps) => {
                                 </SimpleGrid>
                             </Box>
 
-                            <Button type="submit" colorScheme="green" size="lg" width="full" isLoading={isSubmitting} mt={6}>
+                            <Button type="submit" colorScheme="brand" size="lg" width="full" isLoading={isSubmitting} mt={6}>
                                 {type === 'extension' ? 'Solicitar Extensión' : 'Registrar Garantía'}
                             </Button>
                         </VStack>

@@ -8,20 +8,17 @@ import {
     Button,
     Input,
     Stack,
-    FormControl,
-    FormLabel,
-    Checkbox,
     useToast,
     Text,
     HStack,
     Heading,
     Box,
-    Divider,
     useColorModeValue,
+    Icon,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { register, login } from '../../api/auth';
 import { subscribeNewsletter } from '../../api/newsletter';
+import { FaEnvelope } from 'react-icons/fa';
 
 interface NewsletterDrawerProps {
     isOpen: boolean;
@@ -29,68 +26,12 @@ interface NewsletterDrawerProps {
 }
 
 export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerProps) {
-    // Registration State
-    const [regData, setRegData] = useState({
-        email: '',
-        password: '',
-        confirmPassword: '',
-        newsletter: true,
-    });
-    const [isRegLoading, setIsRegLoading] = useState(false);
-
     // Newsletter State
     const [newsEmail, setNewsEmail] = useState('');
     const [isNewsLoading, setIsNewsLoading] = useState(false);
 
     const toast = useToast();
     const bgColor = useColorModeValue('gray.50', 'gray.900');
-
-    const handleRegister = async () => {
-        if (regData.password !== regData.confirmPassword) {
-            toast({
-                title: 'Error',
-                description: 'Las contraseñas no coinciden',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
-            return;
-        }
-
-        setIsRegLoading(true);
-        try {
-            await register({
-                email: regData.email,
-                password: regData.password,
-            });
-
-            // Auto-login after successful registration
-            await login(regData.email, regData.password);
-
-            toast({
-                title: 'Cuenta creada',
-                description: 'Bienvenido a la comunidad SAN JOR.',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-            });
-            onClose();
-            setRegData({ email: '', password: '', confirmPassword: '', newsletter: true });
-            // Reload to update auth state (simple way) or use AuthContext
-            window.location.reload();
-        } catch (error: any) {
-            const errorMessage = error.response?.data?.detail || 'No se pudo crear la cuenta. Intente nuevamente.';
-            toast({
-                title: 'Error',
-                description: errorMessage,
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-            });
-        } finally {
-            setIsRegLoading(false);
-        }
-    };
 
     const handleNewsletterSubscribe = async () => {
         if (!newsEmail) return;
@@ -125,108 +66,39 @@ export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerPr
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth="1px">
-                    <Heading size="md">Comunidad SAN JOR</Heading>
+                    <HStack>
+                        <Icon as={FaEnvelope} color="brand.500" />
+                        <Heading size="md">Newsletter</Heading>
+                    </HStack>
                 </DrawerHeader>
 
-                <DrawerBody p={0} display="flex" flexDirection="column" height="100%">
-                    {/* Top Section: Registration */}
-                    <Box
-                        flex={{ base: 'auto', md: '65' }}
-                        p={6}
-                        overflowY="auto"
-                        borderBottomWidth={{ base: 1, md: 0 }}
-                    >
-                        <Stack spacing={6}>
-                            <Box>
-                                <Heading size="sm" mb={2}>Crear Cuenta</Heading>
-                                <Text fontSize="sm" color="gray.500">
-                                    Acceda a descargas exclusivas y gestione sus consultas.
-                                </Text>
-                            </Box>
+                <DrawerBody p={6} display="flex" flexDirection="column" justifyContent="center">
+                    <Stack spacing={6}>
+                        <Box textAlign="center">
+                            <Text fontSize="md" color="gray.600" mb={4}>
+                                Suscríbase a nuestro newsletter para recibir las últimas novedades, actualizaciones de productos y promociones exclusivas.
+                            </Text>
+                        </Box>
 
-                            <FormControl isRequired>
-                                <FormLabel>Email</FormLabel>
-                                <Input
-                                    type="email"
-                                    placeholder="su@email.com"
-                                    value={regData.email}
-                                    onChange={(e) => setRegData({ ...regData, email: e.target.value })}
-                                />
-                            </FormControl>
-
-                            <FormControl isRequired>
-                                <FormLabel>Contraseña</FormLabel>
-                                <Input
-                                    type="password"
-                                    placeholder="********"
-                                    value={regData.password}
-                                    onChange={(e) => setRegData({ ...regData, password: e.target.value })}
-                                />
-                            </FormControl>
-
-                            <FormControl isRequired>
-                                <FormLabel>Confirmar Contraseña</FormLabel>
-                                <Input
-                                    type="password"
-                                    placeholder="********"
-                                    value={regData.confirmPassword}
-                                    onChange={(e) => setRegData({ ...regData, confirmPassword: e.target.value })}
-                                />
-                            </FormControl>
-
-                            <Checkbox
-                                isChecked={regData.newsletter}
-                                onChange={(e) => setRegData({ ...regData, newsletter: e.target.checked })}
+                        <Stack spacing={4}>
+                            <Input
+                                size="lg"
+                                type="email"
+                                placeholder="su@email.com"
+                                value={newsEmail}
+                                onChange={(e) => setNewsEmail(e.target.value)}
+                            />
+                            <Button
+                                size="lg"
                                 colorScheme="brand"
+                                onClick={handleNewsletterSubscribe}
+                                isLoading={isNewsLoading}
+                                w="full"
                             >
-                                También quiero recibir novedades.
-                            </Checkbox>
-
-                            <Button colorScheme="brand" onClick={handleRegister} isLoading={isRegLoading} w="full">
-                                Crear Cuenta
+                                Suscribirme
                             </Button>
                         </Stack>
-                    </Box>
-
-                    <Divider display={{ base: 'none', md: 'block' }} />
-
-                    {/* Bottom Section: Newsletter - More compact */}
-                    <Box
-                        flex={{ base: '0 0 auto', md: 'auto' }}
-                        bg={bgColor}
-                        p={5}
-                        borderTopWidth="1px"
-                    >
-                        <Stack spacing={3}>
-                            <Box>
-                                <Heading size="xs" textTransform="uppercase" color="gray.500">Newsletter</Heading>
-                                <Text fontSize="xs" color="gray.500">
-                                    Reciba novedades sin crear cuenta.
-                                </Text>
-                            </Box>
-
-                            <HStack>
-                                <Input
-                                    bg="white"
-                                    type="email"
-                                    placeholder="su@email.com"
-                                    value={newsEmail}
-                                    onChange={(e) => setNewsEmail(e.target.value)}
-                                    size="sm"
-                                    rounded="md"
-                                />
-                                <Button
-                                    size="sm"
-                                    colorScheme="brand"
-                                    onClick={handleNewsletterSubscribe}
-                                    isLoading={isNewsLoading}
-                                    px={6}
-                                >
-                                    Suscribirse
-                                </Button>
-                            </HStack>
-                        </Stack>
-                    </Box>
+                    </Stack>
                 </DrawerBody>
             </DrawerContent>
         </Drawer>

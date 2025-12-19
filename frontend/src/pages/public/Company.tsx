@@ -152,7 +152,7 @@ export default function Company() {
                                 <Text color="gray.600">
                                     Si usted desea adquirir las Estufas de nuestra fabricación o desea realizar alguna consulta, déjenos su mensaje en el Formulario Usuarios.
                                 </Text>
-                                <Button as={RouterLink} to="/contacto" colorScheme="green" size="lg" w="full">
+                                <Button as={RouterLink} to="/contacto" colorScheme="brand" size="lg" w="full">
                                     IR A FORMULARIO
                                 </Button>
                             </VStack>

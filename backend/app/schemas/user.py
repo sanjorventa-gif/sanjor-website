@@ -9,6 +9,17 @@ class UserBase(BaseModel):
     is_superuser: Optional[bool] = False
     role: Optional[UserRole] = UserRole.USUARIO_NACIONAL
     newsletter_subscribed: Optional[bool] = False
+    
+    # Personal Info
+    name: Optional[str] = None
+    last_name: Optional[str] = None
+    company: Optional[str] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    province: Optional[str] = None
+    country: Optional[str] = None
+    rubro: Optional[str] = None
+    work_area: Optional[str] = None
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):

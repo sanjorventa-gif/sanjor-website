@@ -7,6 +7,15 @@ export interface User {
     is_active: boolean;
     is_superuser: boolean;
     newsletter_subscribed: boolean;
+    name?: string;
+    last_name?: string;
+    company?: string;
+    phone?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    rubro?: string;
+    work_area?: string;
 }
 
 export interface UserCreate {
@@ -16,6 +25,15 @@ export interface UserCreate {
     is_active: boolean;
     is_superuser: boolean;
     newsletter_subscribed?: boolean;
+    name?: string;
+    last_name?: string;
+    company?: string;
+    phone?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    rubro?: string;
+    work_area?: string;
 }
 
 export interface UserUpdate {
@@ -24,6 +42,15 @@ export interface UserUpdate {
     is_active?: boolean;
     is_superuser?: boolean;
     newsletter_subscribed?: boolean;
+    name?: string;
+    last_name?: string;
+    company?: string;
+    phone?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    rubro?: string;
+    work_area?: string;
 }
 
 export const getUsers = async () => {

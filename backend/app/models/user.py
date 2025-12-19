@@ -19,5 +19,16 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)
     role = Column(String, default=UserRole.USUARIO_NACIONAL.value)
     newsletter_subscribed = Column(Boolean, default=False)
+    
+    # Personal Info
+    name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    company = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
+    city = Column(String, nullable=True)
+    province = Column(String, nullable=True)
+    country = Column(String, nullable=True)
+    rubro = Column(String, nullable=True)
+    work_area = Column(String, nullable=True)
 
     service_requests = relationship("ServiceRequest", back_populates="user")

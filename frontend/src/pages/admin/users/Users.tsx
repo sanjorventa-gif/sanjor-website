@@ -87,6 +87,15 @@ export default function Users() {
     const exportColumns = [
         { header: 'ID', key: 'id' },
         { header: 'Email', key: 'email' },
+        { header: 'Nombre', key: 'name' },
+        { header: 'Apellido', key: 'last_name' },
+        { header: 'Empresa', key: 'company' },
+        { header: 'Teléfono', key: 'phone' },
+        { header: 'Ciudad', key: 'city' },
+        { header: 'Provincia', key: 'province' },
+        { header: 'País', key: 'country' },
+        { header: 'Rubro', key: 'rubro' },
+        { header: 'Área de Trabajo', key: 'work_area' },
         { header: 'Rol', key: 'role' },
         { header: 'Estado', key: 'is_active', formatter: (val: boolean) => val ? 'Activo' : 'Inactivo' },
     ];
@@ -136,7 +145,9 @@ export default function Users() {
                         <Tr>
                             <Th w="100px">Acciones</Th>
                             <Th>ID</Th>
-                            <Th>Email</Th>
+                            <Th>Usuario / Email</Th>
+                            <Th>Empresa</Th>
+                            <Th>Teléfono</Th>
                             <Th>Rol</Th>
                             <Th>Estado</Th>
                         </Tr>
@@ -173,9 +184,20 @@ export default function Users() {
                                     </Text>
                                 </Td>
                                 <Td>
-                                    <Text fontWeight={!user.is_active ? 'bold' : 'normal'}>
-                                        {user.email}
-                                    </Text>
+                                    <Box>
+                                        <Text fontWeight="bold">
+                                            {user.name} {user.last_name}
+                                        </Text>
+                                        <Text fontSize="sm" color="gray.500">
+                                            {user.email}
+                                        </Text>
+                                    </Box>
+                                </Td>
+                                <Td>
+                                    <Text>{user.company || '-'}</Text>
+                                </Td>
+                                <Td>
+                                    <Text>{user.phone || '-'}</Text>
                                 </Td>
                                 <Td>
                                     <Badge colorScheme={user.role ? 'blue' : 'gray'}>

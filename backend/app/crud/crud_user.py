@@ -18,6 +18,15 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             role=obj_in.role,
             is_active=obj_in.is_active,
             newsletter_subscribed=obj_in.newsletter_subscribed,
+            name=obj_in.name,
+            last_name=obj_in.last_name,
+            company=obj_in.company,
+            phone=obj_in.phone,
+            city=obj_in.city,
+            province=obj_in.province,
+            country=obj_in.country,
+            rubro=obj_in.rubro,
+            work_area=obj_in.work_area,
         )
         db.add(db_obj)
         db.commit()

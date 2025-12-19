@@ -20,11 +20,15 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import api from '../../api/axios';
 
 
+import { useAuth } from '../../context/AuthContext';
+
 export default function Contact() {
     const toast = useToast();
     const { executeRecaptcha } = useGoogleReCaptcha();
+    const { user } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
+        // ... (existing submit logic)
         e.preventDefault();
 
         // Get form data
@@ -104,28 +108,28 @@ export default function Contact() {
                         boxShadow={'lg'}
                     >
                         <Heading size="md" mb={6}>Envíenos un mensaje</Heading>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} key={user?.id || 'guest'}>
                             <Stack spacing={4}>
                                 <SimpleGrid columns={2} spacing={4}>
                                     <FormControl id="name" isRequired>
                                         <FormLabel>Nombre</FormLabel>
-                                        <Input name="name" type="text" placeholder="Su nombre" />
+                                        <Input name="name" type="text" placeholder="Su nombre" defaultValue={user?.name || ''} />
                                     </FormControl>
                                     <FormControl id="lastname">
                                         <FormLabel>Apellido</FormLabel>
-                                        <Input name="lastname" type="text" placeholder="Su apellido" />
+                                        <Input name="lastname" type="text" placeholder="Su apellido" defaultValue={user?.last_name || ''} />
                                     </FormControl>
                                 </SimpleGrid>
 
                                 <FormControl id="company">
                                     <FormLabel>Empresa / Institución</FormLabel>
-                                    <Input name="company" type="text" placeholder="Nombre de su empresa" />
+                                    <Input name="company" type="text" placeholder="Nombre de su empresa" defaultValue={user?.company || ''} />
                                 </FormControl>
 
                                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                                     <FormControl>
                                         <FormLabel>Rubro / Sector</FormLabel>
-                                        <Select name="rubro" placeholder="Seleccione...">
+                                        <Select name="rubro" placeholder="Seleccione..." defaultValue={user?.rubro || ''}>
                                             <option value="Alimenticia">Alimenticia</option>
                                             <option value="Agropecuaria">Agropecuaria</option>
                                             <option value="Avícola">Avícola</option>
@@ -147,7 +151,7 @@ export default function Contact() {
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel>Cargo / Área</FormLabel>
-                                        <Select name="cargo" placeholder="Seleccione...">
+                                        <Select name="cargo" placeholder="Seleccione..." defaultValue={user?.work_area || ''}>
                                             <option value="Dirección">Dirección</option>
                                             <option value="Compras">Compras</option>
                                             <option value="Calidad">Calidad</option>
@@ -163,11 +167,11 @@ export default function Contact() {
                                 <SimpleGrid columns={2} spacing={4}>
                                     <FormControl id="email" isRequired>
                                         <FormLabel>Email</FormLabel>
-                                        <Input name="email" type="email" placeholder="email@ejemplo.com" />
+                                        <Input name="email" type="email" placeholder="email@ejemplo.com" defaultValue={user?.email || ''} readOnly={!!user?.email} />
                                     </FormControl>
                                     <FormControl id="phone">
                                         <FormLabel>Teléfono</FormLabel>
-                                        <Input name="phone" type="tel" placeholder=" Cod. Área + Número" />
+                                        <Input name="phone" type="tel" placeholder=" Cod. Área + Número" defaultValue={user?.phone || ''} />
                                     </FormControl>
                                 </SimpleGrid>
 

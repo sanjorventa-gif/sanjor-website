@@ -25,14 +25,15 @@ export default function Login() {
     const toast = useToast();
 
     const handleSubmit = async () => {
-        if (await login(email, password)) {
+        const { success, error } = await login(email, password);
+        if (success) {
             navigate('/admin');
         } else {
             toast({
                 title: 'Error de autenticación',
-                description: 'La contraseña es incorrecta.',
+                description: error || 'La contraseña es incorrecta.',
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         }

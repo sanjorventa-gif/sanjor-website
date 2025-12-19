@@ -1,18 +1,28 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { login as apiLogin, getMe, register as apiRegister } from '../api/auth';
+import { type User } from '../api/users';
 
-interface User {
+export interface RegisterData {
     email: string;
-    is_active: boolean;
-    is_superuser: boolean;
+    password: string;
     role: string;
+    newsletter_subscribed?: boolean;
+    name?: string;
+    last_name?: string;
+    company?: string;
+    phone?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    rubro?: string;
+    work_area?: string;
 }
 
 interface AuthContextType {
     isAuthenticated: boolean;
     user: User | null;
-    login: (email: string, password: string) => Promise<boolean>;
-    register: (email: string, password: string, role: string, newsletter_subscribed?: boolean) => Promise<boolean>;
+    login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+    register: (data: RegisterData) => Promise<boolean>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -49,17 +59,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const userData = await getMe();
             setUser(userData);
             setIsAuthenticated(true);
-            return true;
-        } catch (error) {
+            return { success: true };
+        } catch (error: any) {
             console.error('Login failed:', error);
-            return false;
+            const errorMessage = error.response?.data?.detail || 'Error al iniciar sesión';
+            return { success: false, error: errorMessage };
         }
     };
 
-    const register = async (email: string, password: string, role: string, newsletter_subscribed: boolean = false) => {
+    const register = async (data: RegisterData) => {
         try {
             setIsLoading(true);
-            await apiRegister({ email, password, role, newsletter_subscribed });
+            await apiRegister(data);
             return true;
             // Note: We don't auto-login here because user might be inactive (distributor)
         } catch (error) {
