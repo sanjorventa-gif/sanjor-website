@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import api from '../../api/axios';
+
 
 export default function Contact() {
     const toast = useToast();
@@ -45,45 +47,13 @@ export default function Contact() {
                 company: data.company as string,
                 email: data.email as string,
                 phone: data.phone as string,
-                rubro: data.rubro as string, // Note: Selects might need to be captured if not named properly? 
-                // Ah, I need to add name attributes to Selects first!
-                // I will assume name attributes will be added in next step or I should do it now. 
-                // Wait, previous replace didn't add name attributes to Selects? 
-                // Check logic: "Object.fromEntries(formData)" works if inputs have names.
-                // The inputs have IDs but not names? Check previous file content.
-                // Standard FormControl uses... wait, typical inputs have name?  
-                // Previously inputs had `id="..."`. I need to ensure they have `name="..."` for FormData to work easily.
-                // Or use uncontrolled refs or React Hook Form. Use React Hook Form is safer as seen in ServiceRequestForm.
-                // But Contact.tsx was simple HTML form.
-                // I will stick to simple fetch but I MUST add 'name' attributes to inputs.
-                // I'll add name attributes in the ReplacementContent where possible or assume I fix it.
-                // Actually, simpler to just access elements by ID if I don't want to rewrite the whole JSX.
-                // Or better: Use React local state?
-                // Let's use simple FormData but I need to make sure inputs have names.
-                // I'll update the JSX to include names in a separate call if needed, but I suspect they might not have them.
-                // The ID is usually there.
-                // Let's use explicit state or refs? No, too much boilerplate.
-                // I'll add names in the JSX below.
+                rubro: data.rubro as string,
                 cargo: data.cargo as string,
                 message: data.message as string,
                 recaptcha_token: token
             };
 
-            // VITE_API_URL should point to /api/v1/ or we should use the axios instance.
-            // But here we use fetch. Safe guess: VITE_API_URL includes /api/v1 if it follows axios.ts convention.
-            // If VITE_API_URL is just domain, then axios.ts would be failing? No.
-            // Let's assume VITE_API_URL is the full base URL including /api/v1.
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/contact/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error sending message');
-            }
+            await api.post('/contact/', payload);
 
             toast({
                 title: 'Mensaje enviado.',
@@ -98,6 +68,8 @@ export default function Contact() {
 
         } catch (error) {
             console.error(error);
+            // Check if it's an axios error to show better message?
+            // For now generic error is fine as per UI.
             toast({
                 title: 'Error.',
                 description: "Hubo un problema al enviar el mensaje.",
