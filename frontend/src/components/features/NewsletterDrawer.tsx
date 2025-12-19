@@ -13,7 +13,6 @@ import {
     HStack,
     Heading,
     Box,
-    useColorModeValue,
     Icon,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -31,7 +30,7 @@ export default function NewsletterDrawer({ isOpen, onClose }: NewsletterDrawerPr
     const [isNewsLoading, setIsNewsLoading] = useState(false);
 
     const toast = useToast();
-    const bgColor = useColorModeValue('gray.50', 'gray.900');
+
 
     const handleNewsletterSubscribe = async () => {
         if (!newsEmail) return;
