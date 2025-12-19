@@ -69,7 +69,11 @@ export default function Contact() {
                 recaptcha_token: token
             };
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/contact/`, {
+            // VITE_API_URL should point to /api/v1/ or we should use the axios instance.
+            // But here we use fetch. Safe guess: VITE_API_URL includes /api/v1 if it follows axios.ts convention.
+            // If VITE_API_URL is just domain, then axios.ts would be failing? No.
+            // Let's assume VITE_API_URL is the full base URL including /api/v1.
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/contact/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
