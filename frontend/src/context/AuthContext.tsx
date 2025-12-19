@@ -22,7 +22,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     user: User | null;
     login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-    register: (data: RegisterData) => Promise<boolean>;
+    register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -71,11 +71,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             setIsLoading(true);
             await apiRegister(data);
-            return true;
+            return { success: true };
             // Note: We don't auto-login here because user might be inactive (distributor)
-        } catch (error) {
+        } catch (error: any) {
             console.error('Registration failed:', error);
-            return false;
+            const errorMessage = error.response?.data?.detail || 'Error al registrarse';
+            return { success: false, error: errorMessage };
         } finally {
             setIsLoading(false);
         }

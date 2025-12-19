@@ -2,13 +2,14 @@ from typing import Optional
 from pydantic import BaseModel
 
 class FaqBase(BaseModel):
-    question: str
-    answer: str
+    question: Optional[str] = None
+    answer: Optional[str] = None
     order: Optional[int] = 0
     is_active: Optional[bool] = True
 
 class FaqCreate(FaqBase):
-    pass
+    question: str
+    answer: str
 
 class FaqUpdate(FaqBase):
     pass

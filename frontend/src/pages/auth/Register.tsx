@@ -64,7 +64,7 @@ export default function Register() {
         // Create the data object for API, excluding confirmPassword
         const { confirmPassword, ...registerData } = formData;
 
-        const success = await register(registerData);
+        const { success, error } = await register(registerData);
         if (success) {
             if (formData.role.startsWith('distribuidor')) {
                 toast({
@@ -85,6 +85,14 @@ export default function Register() {
                 });
                 navigate('/registro-exitoso');
             }
+        } else {
+            toast({
+                title: 'Error en el Registro',
+                description: error || 'No se pudo crear la cuenta. Intente nuevamente.',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
         }
     };
 
