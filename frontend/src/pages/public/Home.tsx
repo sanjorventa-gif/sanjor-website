@@ -53,8 +53,20 @@ export default function Home() {
             </Box>
 
             {/* Featured Products Section */}
-            <Box p={4} py={16} bg={useColorModeValue('gray.50', 'gray.800')}>
-                <Container maxW={'container.xl'}>
+            <Box p={4} py={16} bg={useColorModeValue('gray.50', 'gray.800')} position="relative">
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.2}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    zIndex={0}
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'} mb={10}>
                         <Heading fontSize={'3xl'}>Nuestras Líneas de Productos</Heading>
                         <Text color={'gray.600'} fontSize={'xl'}>
@@ -96,8 +108,20 @@ export default function Home() {
             </Box>
 
             {/* Services Highlights Section */}
-            <Box py={16} bg="gray.50">
-                <Container maxW={'container.xl'}>
+            <Box py={16} bg="gray.50" position="relative">
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.2}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    zIndex={0}
+                    pointerEvents="none"
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
                         <ServiceHighlight
                             title="Registro de Estufas"
