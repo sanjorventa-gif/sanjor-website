@@ -29,6 +29,7 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:5173",
         "https://sanjor-website.onrender.com",
+        "https://sanjor-website.vercel.app",
     ],
     allow_origin_regex=r"https://sanjor-website.*\.vercel\.app",
     allow_credentials=True,
