@@ -13,3 +13,4 @@ from app.models.carousel import CarouselItem  # noqa
 from app.models.service_request import ServiceRequest  # noqa
 from app.models.warranty_registration import WarrantyRegistration  # noqa
 from app.models.newsletter import Newsletter  # noqa
+from app.models.faq import Faq  # noqa

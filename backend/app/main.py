@@ -25,13 +25,8 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 # CORS: allow Vercel and localhost (demo setup)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://sanjor-website.onrender.com",
-        "https://sanjor-website.vercel.app",
-    ],
-    allow_origin_regex=r"https://sanjor-website.*\.vercel\.app",
+    allow_origins=[str(origin).rstrip("/") for origin in settings.BACKEND_CORS_ORIGINS],
+    allow_origin_regex=settings.BACKEND_CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

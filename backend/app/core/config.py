@@ -1,6 +1,6 @@
 from typing import List
 from pydantic_settings import BaseSettings
-from pydantic import AnyHttpUrl
+from pydantic import AnyHttpUrl, validator
 from dotenv import load_dotenv
 import os
 
@@ -14,7 +14,23 @@ class Settings(BaseSettings):
     RECAPTCHA_SECRET_KEY: str
     
     # CORS
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://localhost:3000",
+        "http://localhost:5173", 
+        "https://sanjor-website.onrender.com"
+    ]
+
+    @validator("BACKEND_CORS_ORIGINS", pre=True)
+    def assemble_cors_origins(cls, v: str | List[str]) -> List[str] | str:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(v)
+
+    BACKEND_CORS_ORIGIN_REGEX: str | None = r"https://sanjor-website.*\.vercel\.app"
+
+
 
     # Database
     SQLALCHEMY_DATABASE_URI: str
