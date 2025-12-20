@@ -61,32 +61,40 @@ export default function News() {
     };
 
     return (
-        <Box py={10} position="relative" bg={useColorModeValue('gray.50', 'gray.900')}>
-            {/* Background Pattern */}
-            <Box
-                position="absolute"
-                top="0"
-                left="0"
-                w="full"
-                h="full"
-                opacity={0.1}
-                backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
-                backgroundSize="20px 20px"
-                zIndex={0}
-            />
-            <Container maxW={'container.xl'} position="relative" zIndex={1}>
-                <Heading mb={6} color="brand.700">Noticias</Heading>
-                <Text fontSize="lg" mb={10} color="gray.600">
-                    Manténgase informado sobre nuestros últimos lanzamientos, eventos y noticias corporativas.
-                </Text>
+        <>
+            {/* Header Section - White */}
+            < Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} >
+                <Container maxW={'container.xl'}>
+                    <Heading mb={6} color="brand.700">Noticias</Heading>
+                    <Text fontSize="lg" color="gray.600">
+                        Manténgase informado sobre nuestros últimos lanzamientos, eventos y noticias corporativas.
+                    </Text>
+                </Container>
+            </Box >
 
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
-                    {filteredNews.map((item) => (
-                        <NewsCard key={item.id} {...item} onReadMore={() => handleOpenNews(item)} />
-                    ))}
-                </SimpleGrid>
-            </Container>
-        </Box>
+            {/* Content Section - Gray with Pattern */}
+            < Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} position="relative" >
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.2}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    zIndex={0}
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
+
+                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
+                        {filteredNews.map((item) => (
+                            <NewsCard key={item.id} {...item} onReadMore={() => handleOpenNews(item)} />
+                        ))}
+                    </SimpleGrid>
+                </Container>
+            </Box >
+        </>
     );
 }
 

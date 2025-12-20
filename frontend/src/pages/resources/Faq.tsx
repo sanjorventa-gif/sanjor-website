@@ -36,12 +36,37 @@ export default function Faq() {
     return (
         <Box>
             {/* Hero Section */}
-            <Box bg="brand.600" color="white" py={20}>
-                <Container maxW={'container.xl'} textAlign="center">
-                    <Heading as="h1" size="2xl" mb={4}>
+            <Box
+                bg={'brand.600'}
+                color={'white'}
+                py={{ base: 20, md: 32 }}
+                position="relative"
+                overflow="hidden"
+                backgroundImage="linear-gradient(135deg, var(--chakra-colors-brand-800) 0%, var(--chakra-colors-brand-600) 100%)"
+            >
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.2}
+                    backgroundImage="linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)"
+                    backgroundSize="40px 40px"
+                />
+                <Container maxW={'container.xl'} textAlign="center" position="relative" zIndex={1}>
+                    <Heading
+                        as="h1"
+                        fontWeight={800}
+                        fontSize={{ base: '4xl', sm: '5xl', md: '6xl' }}
+                        lineHeight={'110%'}
+                        mb={6}
+                        letterSpacing="tight"
+                        textShadow="0px 2px 4px rgba(0,0,0,0.3)"
+                    >
                         Preguntas Frecuentes
                     </Heading>
-                    <Text fontSize="xl" maxW="2xl" mx="auto">
+                    <Text fontSize={{ base: 'xl', md: '2xl' }} maxW="2xl" mx="auto" color="brand.100">
                         Respuestas a las consultas más habituales sobre nuestros productos y servicios.
                     </Text>
                 </Container>
@@ -55,7 +80,7 @@ export default function Faq() {
                     left="0"
                     w="full"
                     h="full"
-                    opacity={0.1}
+                    opacity={0.2}
                     backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
                     backgroundSize="20px 20px"
                     zIndex={0}

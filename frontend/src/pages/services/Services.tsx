@@ -39,88 +39,96 @@ export default function Services() {
         fetchFaqs();
     }, []);
     return (
-        <Box py={10} position="relative" bg={useColorModeValue('gray.50', 'gray.900')}>
-            {/* Background Pattern */}
-            <Box
-                position="absolute"
-                top="0"
-                left="0"
-                w="full"
-                h="full"
-                opacity={0.1}
-                backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
-                backgroundSize="20px 20px"
-                zIndex={0}
-                pointerEvents="none"
-            />
-            <Container maxW={'container.xl'} position="relative" zIndex={1}>
-                {/* Intro */}
-                <Text fontSize="lg" mb={10} color="gray.600">
-                    Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
-                </Text>
+        <Box>
+            {/* Header Section - White */}
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10}>
+                <Container maxW={'container.xl'}>
+                    <Heading mb={6} color="brand.700">Servicios y Soporte</Heading>
+                    <Text fontSize="lg" color="gray.600">
+                        Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
+                    </Text>
+                </Container>
+            </Box>
 
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mb={16}>
-                    <ServiceCard
-                        icon={FaTools}
-                        title="Soporte Técnico"
-                        text="Mantenimiento preventivo y correctivo realizado por especialistas."
-                        action="Solicitar Soporte"
-                        link="/servicios/tecnico"
-                    />
-                    <ServiceCard
-                        icon={FaShieldAlt}
-                        title="Registro de Estufas"
-                        text="Registre su nuevo equipo para validar la garantía original."
-                        action="Registrar Equipo"
-                        link="/servicios/registro"
-                    />
-                    <ServiceCard
-                        icon={FaShieldAlt}
-                        title="Extensión de Garantía"
-                        text="Amplíe la protección de su inversión extendiendo su garantía a 3 años."
-                        action="Extender Garantía"
-                        link="/servicios/garantia"
-                    />
-                    <ServiceCard
-                        icon={FaQuestionCircle}
-                        title="Soporte Online"
-                        text="Resuelva dudas frecuentes y acceda a documentación técnica."
-                        action="Ver FAQ"
-                        link="/descargas"
-                    />
-                </SimpleGrid>
+            {/* Content Section - Gray with Pattern */}
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} position="relative">
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    w="full"
+                    h="full"
+                    opacity={0.2}
+                    backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
+                    backgroundSize="20px 20px"
+                    zIndex={0}
+                />
+                <Container maxW={'container.xl'} position="relative" zIndex={1}>
 
-                <Box mb={16}>
-                    <Heading size="lg" mb={6} color="brand.600">Preguntas Frecuentes</Heading>
-                    {isLoading ? (
-                        <Flex justify="center" py={10}>
-                            <Spinner size="lg" color="brand.500" />
-                        </Flex>
-                    ) : (
-                        <Accordion allowToggle>
-                            {faqs.length > 0 ? (
-                                faqs.map((faq) => (
-                                    <FAQItem
-                                        key={faq.id}
-                                        question={faq.question}
-                                        answer={faq.answer}
-                                    />
-                                ))
-                            ) : (
-                                <Text color="gray.500">No hay preguntas frecuentes disponibles.</Text>
-                            )}
-                        </Accordion>
-                    )}
-                </Box>
 
-                <Box bg="white" p={8} rounded="xl" textAlign="center" shadow="md">
-                    <Heading size="md" mb={4}>¿No encontró lo que buscaba?</Heading>
-                    <Button as={RouterLink} to="/contacto" colorScheme="brand">
-                        Contáctenos directamente
-                    </Button>
-                </Box>
-            </Container>
-        </Box >
+                    <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mb={16}>
+                        <ServiceCard
+                            icon={FaTools}
+                            title="Soporte Técnico"
+                            text="Mantenimiento preventivo y correctivo realizado por especialistas."
+                            action="Solicitar Soporte"
+                            link="/servicios/tecnico"
+                        />
+                        <ServiceCard
+                            icon={FaShieldAlt}
+                            title="Registro de Estufas"
+                            text="Registre su nuevo equipo para validar la garantía original."
+                            action="Registrar Equipo"
+                            link="/servicios/registro"
+                        />
+                        <ServiceCard
+                            icon={FaShieldAlt}
+                            title="Extensión de Garantía"
+                            text="Amplíe la protección de su inversión extendiendo su garantía a 3 años."
+                            action="Extender Garantía"
+                            link="/servicios/garantia"
+                        />
+                        <ServiceCard
+                            icon={FaQuestionCircle}
+                            title="Soporte Online"
+                            text="Resuelva dudas frecuentes y acceda a documentación técnica."
+                            action="Ver FAQ"
+                            link="/descargas"
+                        />
+                    </SimpleGrid>
+
+                    <Box mb={16}>
+                        <Heading size="lg" mb={6} color="brand.600">Preguntas Frecuentes</Heading>
+                        {isLoading ? (
+                            <Flex justify="center" py={10}>
+                                <Spinner size="lg" color="brand.500" />
+                            </Flex>
+                        ) : (
+                            <Accordion allowToggle>
+                                {faqs.length > 0 ? (
+                                    faqs.map((faq) => (
+                                        <FAQItem
+                                            key={faq.id}
+                                            question={faq.question}
+                                            answer={faq.answer}
+                                        />
+                                    ))
+                                ) : (
+                                    <Text color="gray.500">No hay preguntas frecuentes disponibles.</Text>
+                                )}
+                            </Accordion>
+                        )}
+                    </Box>
+
+                    <Box bg="white" p={8} rounded="xl" textAlign="center" shadow="md">
+                        <Heading size="md" mb={4}>¿No encontró lo que buscaba?</Heading>
+                        <Button as={RouterLink} to="/contacto" colorScheme="brand">
+                            Contáctenos directamente
+                        </Button>
+                    </Box>
+                </Container>
+            </Box >
+        </Box>
     );
 }
 
@@ -148,9 +156,16 @@ const ServiceCard = ({ icon, title, text, action, link }: { icon: any; title: st
 
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
     return (
-        <AccordionItem>
+        <AccordionItem
+            bg={useColorModeValue('white', 'gray.800')}
+            mb={4}
+            rounded="lg"
+            shadow="sm"
+            border="1px solid"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+        >
             <h2>
-                <AccordionButton>
+                <AccordionButton _expanded={{ bg: 'brand.50', color: 'brand.600' }} roundedTop="lg">
                     <Box flex="1" textAlign="left" fontWeight="600">
                         {question}
                     </Box>

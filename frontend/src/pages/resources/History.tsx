@@ -29,7 +29,7 @@ export default function History() {
                     left="0"
                     w="full"
                     h="full"
-                    opacity={0.1}
+                    opacity={0.2}
                     backgroundImage="linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)"
                     backgroundSize="40px 40px"
                 />
@@ -80,7 +80,7 @@ export default function History() {
                     left="0"
                     w="full"
                     h="full"
-                    opacity={0.1}
+                    opacity={0.2}
                     backgroundImage="radial-gradient(#4299E1 1px, transparent 1px)"
                     backgroundSize="20px 20px"
                 />
