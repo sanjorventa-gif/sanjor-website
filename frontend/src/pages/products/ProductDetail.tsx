@@ -170,12 +170,12 @@ export default function ProductDetail() {
                         <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} pt={4}>
                             <Button
                                 as={RouterLink}
-                                to="/contacto"
+                                to={`/contacto?message=${encodeURIComponent(`Hola, quisiera más información sobre el producto ${product.name}`)}`}
                                 size="lg"
                                 colorScheme="brand"
                                 px={8}
                             >
-                                Solicitar Cotización
+                                Obtener más información
                             </Button>
                             {product.technicalSheet && (
                                 <Button

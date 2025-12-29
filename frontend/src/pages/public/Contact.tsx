@@ -21,11 +21,15 @@ import api from '../../api/axios';
 
 
 import { useAuth } from '../../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 export default function Contact() {
     const toast = useToast();
     const { executeRecaptcha } = useGoogleReCaptcha();
     const { user } = useAuth();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const prefilledMessage = searchParams.get('message') || '';
 
     const handleSubmit = async (e: React.FormEvent) => {
         // ... (existing submit logic)
@@ -177,7 +181,7 @@ export default function Contact() {
 
                                 <FormControl id="message" isRequired>
                                     <FormLabel>Consulta / Mensaje</FormLabel>
-                                    <Textarea name="message" placeholder="Escriba su consulta aquí..." rows={6} />
+                                    <Textarea name="message" placeholder="Escriba su consulta aquí..." rows={6} defaultValue={prefilledMessage} />
                                 </FormControl>
 
                                 <Button

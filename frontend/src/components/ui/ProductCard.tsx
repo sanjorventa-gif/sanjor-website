@@ -38,20 +38,22 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                 height="100%"
             >
                 <Box
-                    h={'210px'}
                     bg={'gray.100'}
                     mt={-6}
                     mx={-6}
                     mb={6}
                     pos={'relative'}
                     overflow="hidden"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                 >
                     <Image
                         src={image}
                         alt={title}
-                        objectFit="cover"
+                        objectFit="contain"
                         w="100%"
-                        h="100%"
+                        maxH="400px"
                         fallbackSrc="https://via.placeholder.com/400x300?text=SAN+JOR"
                     />
                 </Box>
@@ -69,7 +71,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
 
                     {dimensions && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="purple">Medidas Internas</Badge>
+                            <Badge colorScheme="purple" textTransform="none">Medidas internas</Badge>
                             <Text fontSize="xs" fontWeight="bold">
                                 {dimensions.length} x {dimensions.width} x {dimensions.height} {dimensions.unit}
                             </Text>
@@ -78,7 +80,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
 
                     {temperature && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="red">Rango de temperatura</Badge>
+                            <Badge colorScheme="red" textTransform="none">Rango de temperatura</Badge>
                             <Text fontSize="xs" fontWeight="bold">
                                 {temperature.min} - {temperature.max} {temperature.unit}
                             </Text>

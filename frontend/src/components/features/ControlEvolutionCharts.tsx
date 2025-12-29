@@ -7,17 +7,17 @@ export default function ControlEvolutionCharts() {
             <ControlChart
                 title="PID"
                 subtitle="Oscilación continua"
-                imageSrc="/assets/images/chart-pid.png"
+                imageSrc="/images/blast-system/chart-pid.png"
             />
             <ControlChart
                 title="PID Fuzzy Logic"
                 subtitle="Oscilación amortiguada"
-                imageSrc="/assets/images/chart-fuzzy.png"
+                imageSrc="/images/blast-system/chart-fuzzy.png"
             />
             <ControlChart
                 title="PID Sistema Blast"
                 subtitle="Estabilidad absoluta"
-                imageSrc="/assets/images/chart-blast.png"
+                imageSrc="/images/blast-system/chart-blast.png"
             />
         </Flex>
     );

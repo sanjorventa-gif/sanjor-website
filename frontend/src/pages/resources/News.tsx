@@ -108,7 +108,7 @@ const NewsCard = ({ title, date, category, excerpt, image, onReadMore }: any) =>
             transition="transform 0.2s"
             _hover={{ transform: 'translateY(-5px)' }}
         >
-            <Image src={image} alt={title} objectFit="cover" w="100%" h="200px" />
+            <Image src={image} alt={title} objectFit="contain" w="100%" maxH="400px" />
             <Box p={6}>
                 <Stack direction="row" align="center" mb={2}>
                     <Tag size="sm" colorScheme="brand">{category}</Tag>
