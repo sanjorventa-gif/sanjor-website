@@ -10,9 +10,16 @@ import {
     Spinner,
     Center,
 } from '@chakra-ui/react';
+import { keyframes } from '@emotion/react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { FaFilePdf } from 'react-icons/fa';
 import { useProducts } from '../../context/ProductContext';
+
+const pulse = keyframes`
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--chakra-colors-brand-200); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+`;
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -64,22 +71,17 @@ export default function ProductDetail() {
                     </Box>
 
                     <Stack spacing={6}>
-                        <Box>
-                            <Text
-                                color={'brand.500'}
-                                textTransform={'uppercase'}
-                                fontWeight={800}
-                                fontSize={'sm'}
-                                letterSpacing={1.1}
-                                mb={2}
-                            >
-                                {product.category}
-                            </Text>
-                            <Heading as={'h1'} fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700}>
-                                {product.name}
-                            </Heading>
-                        </Box>
+                        {/* 1. Título */}
+                        <Heading as={'h1'} fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700}>
+                            {product.name}
+                        </Heading>
 
+                        {/* 2. Especificaciones Técnicas */}
+                        <Heading as={'h2'} fontSize={{ base: 'xl', sm: '2xl' }} fontWeight={600} color="gray.700">
+                            Especificaciones Técnicas
+                        </Heading>
+
+                        {/* 3. Descripción (Bullets) */}
                         <Box
                             className="rich-text-content"
                             dangerouslySetInnerHTML={{ __html: product.description }}
@@ -87,86 +89,74 @@ export default function ProductDetail() {
                                 '& h1, & h2, & h3': { marginTop: '10px', marginBottom: '10px', fontWeight: 'bold' },
                                 '& p': { marginBottom: '10px' },
 
-                                // Target BOTH ul and ol to capture all list types used by Quill/User
+                                // Reset list styles
                                 '& ul, & ol': {
-                                    listStyleType: 'none !important',
                                     paddingLeft: '0 !important',
                                     marginLeft: '0 !important',
                                     marginTop: '0.5rem',
                                     marginBottom: '0.5rem',
                                 },
 
-                                // Target list items
+                                // List Items
                                 '& ul li, & ol li': {
-                                    position: 'relative',
-                                    paddingLeft: '1.5rem',
                                     marginBottom: '0.5rem',
-                                    display: 'flex',
-                                    alignItems: 'start',
+                                    paddingLeft: '1.5rem',
+                                    position: 'relative',
                                     lineHeight: '1.5',
+                                    listStyleType: 'none',
+                                    color: 'gray.600',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                 },
-
-                                // Custom Arrow Bullet
+                                // Custom animated bullet
                                 '& ul li::before, & ol li::before': {
-                                    content: '"›"',
-                                    color: 'brand.500',
-                                    fontWeight: '900',
-                                    fontSize: '1.5rem',
-                                    lineHeight: '1rem',
+                                    content: '""',
                                     position: 'absolute',
-                                    left: 0,
-                                    top: '0.1rem',
-                                    fontFamily: 'sans-serif',
+                                    left: '0.2rem',
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'brand.500',
+                                    animation: `${pulse} 2s infinite`,
                                 },
 
-                                // Hide Quill's default bullet/number span to avoid double markers
+                                // Hide Quill's default bullet/number span
                                 '& .ql-ui': {
                                     display: 'none !important',
                                 },
 
-                                // Support for indented paragraphs (if strictly used instead of lists)
+                                // Indent support
                                 '& .ql-indent-1': {
                                     paddingLeft: '1.5rem',
                                     position: 'relative',
                                     marginBottom: '0.5rem',
                                 },
-                                '& .ql-indent-1::before': {
-                                    content: '"›"',
-                                    color: 'brand.500',
-                                    fontWeight: '900',
-                                    fontSize: '1.5rem',
-                                    lineHeight: '1rem',
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: '0.1rem',
-                                    fontFamily: 'sans-serif',
-                                }
                             }}
                         />
 
-                        {(product.dimensions || product.temperature) && (
-                            <Box>
-                                <Heading size="md" mb={4}>Especificaciones Técnicas</Heading>
-                                <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={4}>
-                                    {product.dimensions && (
-                                        <Box p={4} bg="brand.50" rounded="md" border="1px" borderColor="brand.200">
-                                            <Text fontWeight="extrabold" fontSize="lg" color="brand.700" mb={2}>Medidas Internas</Text>
-                                            <Text fontSize="md" fontWeight="bold">Largo: {product.dimensions.length} {product.dimensions.unit}</Text>
-                                            <Text fontSize="md" fontWeight="bold">Ancho: {product.dimensions.width} {product.dimensions.unit}</Text>
-                                            <Text fontSize="md" fontWeight="bold">Alto: {product.dimensions.height} {product.dimensions.unit}</Text>
-                                        </Box>
-                                    )}
-                                    {product.temperature && (
-                                        <Box p={4} bg="gray.50" rounded="md">
-                                            <Text fontWeight="bold" mb={2}>Temperatura</Text>
-                                            <Text>Mínima: {product.temperature.min} {product.temperature.unit}</Text>
-                                            <Text>Máxima: {product.temperature.max} {product.temperature.unit}</Text>
-                                        </Box>
-                                    )}
-                                </SimpleGrid>
+                        {/* 4. Medidas Internas (Cuadro coloreado al final) */}
+                        {product.dimensions && (
+                            <Box
+                                bg="blue.50"
+                                border="2px solid"
+                                borderColor="blue.200"
+                                borderRadius="md"
+                                p={4}
+                                mt={4}
+                            >
+                                <Text fontWeight="bold" fontSize="lg" color="gray.800" mb={1}>
+                                    Medidas Internas
+                                </Text>
+                                <Text fontSize="lg" fontWeight="medium" color="gray.700">
+                                    {product.dimensions.length} x {product.dimensions.width} x {product.dimensions.height} {product.dimensions.unit}
+                                    <Text as="span" fontSize="md" color="gray.500" fontWeight="normal" ml={2}>
+                                        (Frente x Alto x Fondo en cm)
+                                    </Text>
+                                </Text>
                             </Box>
                         )}
 
+                        {/* Botones de acción */}
                         <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} pt={4}>
                             <Button
                                 as={RouterLink}
