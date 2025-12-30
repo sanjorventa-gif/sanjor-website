@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
     Box,
     Container,
@@ -9,13 +10,16 @@ import {
     Button,
     Spinner,
     Center,
+    IconButton,
 } from '@chakra-ui/react';
-import { keyframes } from '@emotion/react';
+import { keyframes as emotionKeyframes } from '@emotion/react'; // Fix alias if needed or just use emotion
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { FaFilePdf } from 'react-icons/fa';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useProducts } from '../../context/ProductContext';
+import ProductCard from '../../components/ui/ProductCard';
 
-const pulse = keyframes`
+const pulse = emotionKeyframes`
   0% { transform: scale(1); box-shadow: 0 0 0 0 var(--chakra-colors-brand-200); }
   70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
@@ -25,6 +29,34 @@ export default function ProductDetail() {
     const { id } = useParams();
     const { products, isLoading } = useProducts();
     const product = products.find((p) => p.id == id);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    // Filter related products
+    const relatedProducts = products.filter(
+        (p) => p.category === product?.category && p.id != id
+    );
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            const { current } = scrollRef;
+            const scrollAmount = 300;
+
+            if (direction === 'left') {
+                if (current.scrollLeft <= 5) { // Threshold for start
+                    current.scrollTo({ left: current.scrollWidth, behavior: 'smooth' });
+                } else {
+                    current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                }
+            } else {
+                // Check if we are at the end (with small tolerance)
+                if (current.scrollLeft + current.clientWidth >= current.scrollWidth - 5) {
+                    current.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                }
+            }
+        }
+    };
 
     if (isLoading) {
         return (
@@ -58,7 +90,7 @@ export default function ProductDetail() {
                     &larr; Volver a Productos
                 </Button>
 
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mb={20}>
                     <Box>
                         <Image
                             src={product.image}
@@ -184,6 +216,79 @@ export default function ProductDetail() {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+
+                {/* Related Products Carousel */}
+                {relatedProducts.length > 0 && (
+                    <Box mt={16} position="relative">
+                        <Heading as="h3" size="lg" mb={8} borderBottom="2px solid" borderColor="brand.500" pb={2} display="inline-block">
+                            Productos Relacionados
+                        </Heading>
+
+                        <IconButton
+                            aria-label="Scroll Left"
+                            icon={<ChevronLeftIcon w={6} h={6} />}
+                            position="absolute"
+                            left={{ base: -2, md: -8 }}
+                            top="55%" // Adjust vertically
+                            transform="translateY(-50%)"
+                            zIndex={2}
+                            onClick={() => scroll('left')}
+                            colorScheme="brand"
+                            variant="ghost"
+                            rounded="full"
+                            bg="whiteAlpha.800"
+                            shadow="md"
+                            _hover={{ bg: 'brand.50' }}
+                        />
+
+                        <Box
+                            ref={scrollRef}
+                            overflowX="auto"
+                            pb={8}
+                            css={{
+                                '&::-webkit-scrollbar': {
+                                    height: '0px', // Hide scrollbar for cleaner look with arrows
+                                },
+                                scrollBehavior: 'smooth',
+                            }}
+                        >
+                            <Stack direction="row" spacing={6}>
+                                {relatedProducts.map((related) => (
+                                    <Box key={related.id} minW={{ base: '220px', md: '250px' }} w={{ base: '220px', md: '250px' }}>
+                                        <Box transform="scale(0.95)" transformOrigin="top left">
+                                            <ProductCard
+                                                title={related.name}
+                                                image={related.image}
+                                                description={related.description}
+                                                href={`/productos/${related.id}`}
+                                                dimensions={related.dimensions}
+                                                temperature={related.temperature}
+                                                temperatureLabel="Temp"
+                                            />
+                                        </Box>
+                                    </Box>
+                                ))}
+                            </Stack>
+                        </Box>
+
+                        <IconButton
+                            aria-label="Scroll Right"
+                            icon={<ChevronRightIcon w={6} h={6} />}
+                            position="absolute"
+                            right={{ base: -2, md: -8 }}
+                            top="55%"
+                            transform="translateY(-50%)"
+                            zIndex={2}
+                            onClick={() => scroll('right')}
+                            colorScheme="brand"
+                            variant="ghost"
+                            rounded="full"
+                            bg="whiteAlpha.800"
+                            shadow="md"
+                            _hover={{ bg: 'brand.50' }}
+                        />
+                    </Box>
+                )}
             </Container>
         </Box>
     );

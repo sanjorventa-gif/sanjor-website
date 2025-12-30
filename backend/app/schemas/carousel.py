@@ -9,6 +9,8 @@ class CarouselItemBase(BaseModel):
     order: Optional[int] = 0
     button_text: Optional[str] = None
     button_link: Optional[str] = None
+    transition_effect: Optional[str] = "slide"
+    overlay_effect: Optional[str] = "grid"
 
 # Properties to receive on item creation
 class CarouselItemCreate(CarouselItemBase):

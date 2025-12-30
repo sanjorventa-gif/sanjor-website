@@ -177,18 +177,19 @@ const TimelineItem = ({ item, index }: { item: History; index: number }) => {
                     {item.image && (
                         <Box
                             flexShrink={0}
-                            w={{ base: '100%', md: '200px' }}
-                            h={{ base: 'auto', md: '200px' }}
+                            w={{ base: '100%', md: '250px' }}
+                            maxH={{ base: '400px', md: '300px' }}
                             rounded="md"
                             overflow="hidden"
                             boxShadow="sm"
+                            alignSelf={{ base: 'center', md: 'flex-start' }}
                         >
                             <Image
                                 src={item.image}
                                 alt={item.title}
                                 w="100%"
-                                h="100%"
-                                objectFit="cover"
+                                h="auto"
+                                objectFit="contain"
                                 transition="transform 0.3s ease"
                             />
                         </Box>

@@ -8,6 +8,8 @@ export interface CarouselItem {
     order: number;
     button_text?: string;
     button_link?: string;
+    transition_effect?: string;
+    overlay_effect?: string;
 }
 
 export interface CarouselItemCreate {
@@ -17,6 +19,8 @@ export interface CarouselItemCreate {
     order?: number;
     button_text?: string;
     button_link?: string;
+    transition_effect?: string;
+    overlay_effect?: string;
 }
 
 export interface CarouselItemUpdate {
@@ -26,6 +30,8 @@ export interface CarouselItemUpdate {
     order?: number;
     button_text?: string;
     button_link?: string;
+    transition_effect?: string;
+    overlay_effect?: string;
 }
 
 export const getCarouselItems = async (): Promise<CarouselItem[]> => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -14,16 +14,11 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
-    Icon,
-    Flex,
-    Text,
-    Image,
+    Select,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createCarouselItem, getCarouselItem, updateCarouselItem } from '../../../api/carousel';
-import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../../api/upload';
-import { FaCloudUploadAlt, FaFileImage } from 'react-icons/fa';
+import FileUpload from '../../../components/ui/FileUpload';
 
 export default function CarouselForm() {
     const { id } = useParams();
@@ -38,6 +33,8 @@ export default function CarouselForm() {
         order: 0,
         button_text: '',
         button_link: '',
+        transition_effect: 'slide',
+        overlay_effect: 'grid',
     });
 
     useEffect(() => {
@@ -45,43 +42,6 @@ export default function CarouselForm() {
             fetchItem();
         }
     }, [id]);
-
-    const [isUploading, setIsUploading] = useState(false);
-
-    const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        const file = acceptedFiles[0];
-        if (!file) return;
-
-        setIsUploading(true);
-        try {
-            const response = await uploadFile(file);
-            setFormData((prev) => ({ ...prev, image: response.url }));
-            toast({
-                title: 'Imagen subida',
-                status: 'success',
-                duration: 2000,
-                isClosable: true,
-            });
-        } catch (error) {
-            toast({
-                title: 'Error al subir imagen',
-                description: 'Intente nuevamente.',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
-        } finally {
-            setIsUploading(false);
-        }
-    }, [toast]);
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        multiple: false,
-        accept: {
-            'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp']
-        }
-    });
 
     const fetchItem = async () => {
         try {
@@ -93,6 +53,8 @@ export default function CarouselForm() {
                 order: data.order,
                 button_text: data.button_text || '',
                 button_link: data.button_link || '',
+                transition_effect: data.transition_effect || 'slide',
+                overlay_effect: data.overlay_effect || 'grid',
             });
         } catch (error) {
             toast({
@@ -162,62 +124,12 @@ export default function CarouselForm() {
 
                         <FormControl isRequired>
                             <FormLabel>Imagen</FormLabel>
-                            <Box
-                                {...getRootProps()}
-                                border="2px dashed"
-                                borderColor={isDragActive ? 'brand.500' : 'gray.300'}
-                                rounded="md"
-                                p={6}
-                                cursor="pointer"
-                                bg={isDragActive ? 'brand.50' : 'gray.50'}
-                                transition="all 0.2s"
-                                _hover={{ borderColor: 'brand.500', bg: 'brand.50' }}
-                                textAlign="center"
-                            >
-                                <input {...getInputProps()} />
-                                <VStack spacing={2}>
-                                    <Icon as={FaCloudUploadAlt} w={10} h={10} color="gray.400" />
-                                    <Text color="gray.600">
-                                        {isDragActive
-                                            ? 'Suelte la imagen aquí...'
-                                            : 'Arrastre y suelte una imagen aquí, o haga clic para seleccionar'}
-                                    </Text>
-                                </VStack>
-                            </Box>
-
-                            {formData.image && (
-                                <Box mt={3} p={3} bg="gray.50" rounded="md" border="1px solid" borderColor="gray.200">
-                                    <Flex align="center" direction="column">
-                                        <Image
-                                            src={formData.image}
-                                            alt="Preview"
-                                            maxH="200px"
-                                            objectFit="contain"
-                                            mb={2}
-                                            rounded="md"
-                                        />
-                                        <Flex width="100%" justify="space-between" align="center">
-                                            <Flex align="center">
-                                                <Icon as={FaFileImage} color="blue.500" mr={2} />
-                                                <Text fontSize="sm" noOfLines={1} maxW="200px">
-                                                    {formData.image.split('/').pop()}
-                                                </Text>
-                                            </Flex>
-                                            <Button
-                                                size="xs"
-                                                colorScheme="red"
-                                                variant="ghost"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setFormData({ ...formData, image: '' });
-                                                }}
-                                            >
-                                                Eliminar
-                                            </Button>
-                                        </Flex>
-                                    </Flex>
-                                </Box>
-                            )}
+                            <FileUpload
+                                accept="image/*"
+                                label="Subir Imagen de Portada"
+                                onFileSelect={(base64) => setFormData((prev) => ({ ...prev, image: base64 }))}
+                                previewUrl={formData.image}
+                            />
                         </FormControl>
 
                         <FormControl>
@@ -233,6 +145,31 @@ export default function CarouselForm() {
                                     <NumberDecrementStepper />
                                 </NumberInputStepper>
                             </NumberInput>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Efecto de Transición</FormLabel>
+                            <Select
+                                value={formData.transition_effect}
+                                onChange={(e) => setFormData({ ...formData, transition_effect: e.target.value })}
+                            >
+                                <option value="slide">Deslizar (Slide)</option>
+                                <option value="fade">Desvanecer (Fade)</option>
+                                <option value="zoom">Zoom</option>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Efecto de Superposición (Trama)</FormLabel>
+                            <Select
+                                value={formData.overlay_effect}
+                                onChange={(e) => setFormData({ ...formData, overlay_effect: e.target.value })}
+                            >
+                                <option value="grid">Cuadriculado (Grid)</option>
+                                <option value="dots">Puntos (Dots)</option>
+                                <option value="scanlines">Líneas de Escaneo</option>
+                                <option value="none">Ninguno</option>
+                            </Select>
                         </FormControl>
 
                         <FormControl>
@@ -253,7 +190,7 @@ export default function CarouselForm() {
                             />
                         </FormControl>
 
-                        <Button type="submit" colorScheme="blue" width="full" mt={4} isLoading={isUploading}>
+                        <Button type="submit" colorScheme="blue" width="full" mt={4}>
                             Guardar
                         </Button>
                         <Button variant="ghost" width="full" onClick={() => navigate('/admin/carousel')}>

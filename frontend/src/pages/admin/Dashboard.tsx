@@ -38,8 +38,17 @@ const CATEGORIES: { key: string; label: string }[] = [
 export default function Dashboard() {
     const { products, removeProduct, reorder } = useProducts();
     const [localProducts, setLocalProducts] = useState(products);
+    const [tabIndex, setTabIndex] = useState(() => {
+        const saved = localStorage.getItem('admin_tab_index');
+        return saved ? parseInt(saved, 10) : 0;
+    });
     const toast = useToast();
     const navigate = useNavigate();
+
+    const handleTabChange = (index: number) => {
+        setTabIndex(index);
+        localStorage.setItem('admin_tab_index', index.toString());
+    };
 
     // Sync local state with global products on load or update
     useEffect(() => {
@@ -206,7 +215,7 @@ export default function Dashboard() {
                 </Flex>
             </Flex>
 
-            <Tabs variant="enclosed" colorScheme="brand" isLazy>
+            <Tabs variant="enclosed" colorScheme="brand" isLazy index={tabIndex} onChange={handleTabChange}>
                 <TabList mb={4}>
                     {CATEGORIES.map((cat) => (
                         <Tab key={cat.key} fontWeight="bold">

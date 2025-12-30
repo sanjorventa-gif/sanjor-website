@@ -25,7 +25,9 @@ export default function News() {
         const fetchNews = async () => {
             try {
                 const data = await getNews();
-                setNews(data);
+                // Sort by date descending (newest first)
+                const sortedData = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                setNews(sortedData);
             } catch (error) {
                 console.error('Error fetching news:', error);
             }

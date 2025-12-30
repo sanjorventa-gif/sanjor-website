@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -10,16 +10,11 @@ import {
     Heading,
     useToast,
     Textarea,
-    Image,
-    Text,
-    VStack,
-    Icon,
+    Image, // Kept if needed, though FileUpload has preview
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getHistory, createHistory, updateHistory } from '../../../api/history';
-import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../../api/upload';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import FileUpload from '../../../components/ui/FileUpload';
 
 export default function HistoryForm() {
     const { id } = useParams();
@@ -27,7 +22,6 @@ export default function HistoryForm() {
     const navigate = useNavigate();
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
 
     const [formData, setFormData] = useState({
         year: new Date().getFullYear(),
@@ -63,41 +57,6 @@ export default function HistoryForm() {
             });
         }
     };
-
-    const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        const file = acceptedFiles[0];
-        if (!file) return;
-
-        setIsUploading(true);
-        try {
-            const response = await uploadFile(file);
-            setFormData((prev) => ({ ...prev, image: response.url }));
-            toast({
-                title: 'Imagen subida',
-                status: 'success',
-                duration: 2000,
-                isClosable: true,
-            });
-        } catch (error) {
-            toast({
-                title: 'Error al subir imagen',
-                description: 'Intente nuevamente.',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
-        } finally {
-            setIsUploading(false);
-        }
-    }, [toast]);
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
-        },
-        multiple: false,
-    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -171,66 +130,11 @@ export default function HistoryForm() {
 
                         <FormControl id="image">
                             <FormLabel>Imagen</FormLabel>
-
-                            {/* Drag and Drop Area */}
-                            <Box
-                                {...getRootProps()}
-                                border="2px dashed"
-                                borderColor={isDragActive ? 'brand.500' : 'gray.300'}
-                                rounded="md"
-                                p={6}
-                                cursor="pointer"
-                                bg={isDragActive ? 'brand.50' : 'gray.50'}
-                                transition="all 0.2s"
-                                _hover={{ borderColor: 'brand.500', bg: 'brand.50' }}
-                                textAlign="center"
-                            >
-                                <input {...getInputProps()} />
-                                <VStack spacing={2}>
-                                    <Icon as={FaCloudUploadAlt} w={10} h={10} color="gray.400" />
-                                    <Text color="gray.600">
-                                        {isDragActive
-                                            ? 'Suelte la imagen aquí...'
-                                            : 'Arrastre y suelte una imagen aquí, o haga clic para seleccionar'}
-                                    </Text>
-                                    <Text fontSize="xs" color="gray.400">
-                                        (JPG, PNG, WEBP)
-                                    </Text>
-                                </VStack>
-                            </Box>
-
-                            {/* Image Preview */}
-                            {formData.image && (
-                                <Box mt={4} position="relative">
-                                    <Text fontSize="sm" fontWeight="medium" mb={2}>Vista Previa:</Text>
-                                    <Image
-                                        src={formData.image}
-                                        alt="Preview"
-                                        maxH="200px"
-                                        objectFit="contain"
-                                        rounded="md"
-                                        border="1px solid"
-                                        borderColor="gray.200"
-                                    />
-                                    <Button
-                                        size="xs"
-                                        colorScheme="red"
-                                        variant="outline"
-                                        mt={2}
-                                        onClick={() => setFormData({ ...formData, image: '' })}
-                                    >
-                                        Eliminar Imagen
-                                    </Button>
-                                </Box>
-                            )}
-
-                            {/* Fallback URL Input */}
-                            <Text fontSize="xs" color="gray.500" mt={2} mb={1}>O ingrese URL manualmente:</Text>
-                            <Input
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                placeholder="https://..."
-                                size="sm"
+                            <FileUpload
+                                accept="image/*"
+                                label="Subir Imagen"
+                                onFileSelect={(base64) => setFormData((prev) => ({ ...prev, image: base64 }))}
+                                previewUrl={formData.image}
                             />
                         </FormControl>
 
@@ -238,8 +142,8 @@ export default function HistoryForm() {
                             type="submit"
                             colorScheme="blue"
                             size="lg"
-                            isLoading={isLoading || isUploading}
-                            loadingText={isUploading ? "Subiendo imagen..." : "Guardando..."}
+                            isLoading={isLoading}
+                            mt={4}
                         >
                             Guardar
                         </Button>

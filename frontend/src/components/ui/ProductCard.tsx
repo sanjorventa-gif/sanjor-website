@@ -18,9 +18,10 @@ interface ProductCardProps {
     href: string;
     dimensions?: { length: number; width: number; height: number; unit: string };
     temperature?: { min: number; max: number; unit: string };
+    temperatureLabel?: string;
 }
 
-export default function ProductCard({ title, image, href, dimensions, temperature }: ProductCardProps) {
+export default function ProductCard({ title, image, href, dimensions, temperature, temperatureLabel }: ProductCardProps) {
     return (
         <Center py={6}>
             <Box
@@ -80,7 +81,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
 
                     {temperature && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="red" textTransform="none">Rango de temperatura</Badge>
+                            <Badge colorScheme="red" textTransform="none">{temperatureLabel || "Rango de temperatura"}</Badge>
                             <Text fontSize="xs" fontWeight="bold">
                                 {temperature.min} - {temperature.max} {temperature.unit}
                             </Text>

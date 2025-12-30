@@ -9,3 +9,5 @@ class CarouselItem(Base):
     order = Column(Integer, default=0)
     button_text = Column(String, nullable=True)
     button_link = Column(String, nullable=True)
+    transition_effect = Column(String, default="slide") # fade, slide, zoom
+    overlay_effect = Column(String, default="grid") # grid, dots, scanlines, none
