@@ -10,7 +10,6 @@ import {
     Heading,
     useToast,
     Textarea,
-    Image,
     SimpleGrid,
     Checkbox,
     CheckboxGroup,

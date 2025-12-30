@@ -10,7 +10,6 @@ import {
     Heading,
     useToast,
     Textarea,
-    Image, // Kept if needed, though FileUpload has preview
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getHistory, createHistory, updateHistory } from '../../../api/history';
