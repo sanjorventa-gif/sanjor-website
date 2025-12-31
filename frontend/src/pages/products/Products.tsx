@@ -55,13 +55,15 @@ export default function Products() {
     return (
         <>
             {/* Header Section - White */}
-            < Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} >
+            < Box bg={useColorModeValue('gray.50', 'gray.900')} pt={10} pb={2} >
                 <Container maxW={'container.xl'}>
-                    <Heading mb={6} color="brand.700">Catálogo de Productos</Heading>
+                    <Heading mb={0} color="brand.700">Catálogo de Productos</Heading>
+                    {/*
                     <Text fontSize="lg" color="gray.600">
                         Explore nuestra gama completa de estufas y equipos para laboratorio.
                         Utilice nuestro <b>Asesor de Estufas</b> para encontrar el equipo ideal según su rango de temperatura.
                     </Text>
+                    */}
                 </Container>
             </Box >
 

@@ -10,6 +10,7 @@ import {
     Badge,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { PLACEHOLDER_IMAGE } from '../../utils/images';
 
 interface ProductCardProps {
     title: string;
@@ -55,7 +56,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                         objectFit="contain"
                         w="100%"
                         maxH="400px"
-                        fallbackSrc="https://via.placeholder.com/400x300?text=SAN+JOR"
+                        fallbackSrc={PLACEHOLDER_IMAGE}
                     />
                 </Box>
                 <Stack flex="1" spacing={3}>

@@ -18,6 +18,7 @@ import type { Product } from '../../../data/products';
 import FileUpload from '../../../components/ui/FileUpload';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { PLACEHOLDER_IMAGE } from '../../../utils/images';
 
 export default function AddProduct() {
     const { addProduct } = useProducts();
@@ -63,7 +64,7 @@ export default function AddProduct() {
             name: formData.name || 'Nuevo Producto',
             category: formData.category as any,
             description: formData.description || '',
-            image: formData.image || 'https://via.placeholder.com/400x300?text=SAN+JOR',
+            image: formData.image || PLACEHOLDER_IMAGE,
             features: [],
             dimensions: (dimLength || dimWidth || dimHeight) ? {
                 length: Number(dimLength),

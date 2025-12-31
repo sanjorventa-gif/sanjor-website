@@ -18,6 +18,7 @@ import { FaFilePdf } from 'react-icons/fa';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useProducts } from '../../context/ProductContext';
 import ProductCard from '../../components/ui/ProductCard';
+import { PLACEHOLDER_IMAGE } from '../../utils/images';
 
 const pulse = emotionKeyframes`
   0% { transform: scale(1); box-shadow: 0 0 0 0 var(--chakra-colors-brand-200); }
@@ -98,7 +99,7 @@ export default function ProductDetail() {
                             rounded={'md'}
                             w={'100%'}
                             objectFit={'cover'}
-                            fallbackSrc="https://via.placeholder.com/600x400?text=SAN+JOR"
+                            fallbackSrc={PLACEHOLDER_IMAGE}
                         />
                     </Box>
 

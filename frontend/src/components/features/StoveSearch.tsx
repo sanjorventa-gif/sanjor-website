@@ -102,14 +102,16 @@ export default function StoveSearch() {
                         onChange={(val) => setSliderValue(val)}
                         mb={4}
                     >
-                        <RangeSliderTrack bg='brand.100'>
-                            <RangeSliderFilledTrack bg='brand.500' />
+                        {/* Thermometer Gradient Track */}
+                        <RangeSliderTrack h={4} borderRadius="full" bgGradient="linear(to-r, blue.400, green.400, yellow.400, orange.400, red.600)">
+                            {/* Selected Range Highlight (Subtle overlay) */}
+                            <RangeSliderFilledTrack bg="whiteAlpha.400" />
                         </RangeSliderTrack>
-                        <RangeSliderThumb index={0} boxSize={6} borderColor="brand.500">
-                            <Box color="brand.500" as={FaThermometerHalf} />
+                        <RangeSliderThumb index={0} boxSize={8} borderColor="white" shadow="md" bg="white">
+                            <Box color="blue.500" as={FaThermometerHalf} />
                         </RangeSliderThumb>
-                        <RangeSliderThumb index={1} boxSize={6} borderColor="brand.500">
-                            <Box color="brand.500" as={FaThermometerHalf} />
+                        <RangeSliderThumb index={1} boxSize={8} borderColor="white" shadow="md" bg="white">
+                            <Box color="red.500" as={FaThermometerHalf} />
                         </RangeSliderThumb>
                     </RangeSlider>
                     <HStack justify="space-between">
