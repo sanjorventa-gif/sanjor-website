@@ -94,7 +94,6 @@ export default function Footer() {
                         </Text>
                         <Text fontSize={'sm'}>Buenos Aires, Argentina</Text>
                         <Text fontSize={'sm'}>info@sanjor.com.ar</Text>
-                        <Text fontSize={'sm'}>+54 11 1234-5678</Text>
                     </Stack>
                 </SimpleGrid>
 
@@ -159,7 +158,6 @@ export default function Footer() {
                                 <Stack align="center">
                                     <Text fontSize={'sm'}>Buenos Aires, Argentina</Text>
                                     <Text fontSize={'sm'}>info@sanjor.com.ar</Text>
-                                    <Text fontSize={'sm'}>+54 11 1234-5678</Text>
                                 </Stack>
                             </AccordionPanel>
                         </AccordionItem>

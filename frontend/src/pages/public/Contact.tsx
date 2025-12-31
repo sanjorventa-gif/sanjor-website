@@ -15,7 +15,7 @@ import {
     useToast,
     Select,
 } from '@chakra-ui/react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import api from '../../api/axios';
 
@@ -53,7 +53,6 @@ export default function Contact() {
                 lastname: data.lastname as string,
                 company: data.company as string,
                 email: data.email as string,
-                phone: data.phone as string,
                 rubro: data.rubro as string,
                 cargo: data.cargo as string,
                 message: data.message as string,
@@ -168,16 +167,10 @@ export default function Contact() {
                                     </FormControl>
                                 </SimpleGrid>
 
-                                <SimpleGrid columns={2} spacing={4}>
-                                    <FormControl id="email" isRequired>
-                                        <FormLabel>Email</FormLabel>
-                                        <Input name="email" type="email" placeholder="email@ejemplo.com" defaultValue={user?.email || ''} readOnly={!!user?.email} />
-                                    </FormControl>
-                                    <FormControl id="phone">
-                                        <FormLabel>Teléfono</FormLabel>
-                                        <Input name="phone" type="tel" placeholder=" Cod. Área + Número" defaultValue={user?.phone || ''} />
-                                    </FormControl>
-                                </SimpleGrid>
+                                <FormControl id="email" isRequired>
+                                    <FormLabel>Email</FormLabel>
+                                    <Input name="email" type="email" placeholder="email@ejemplo.com" defaultValue={user?.email || ''} readOnly={!!user?.email} />
+                                </FormControl>
 
                                 <FormControl id="message" isRequired>
                                     <FormLabel>Consulta / Mensaje</FormLabel>
@@ -211,11 +204,6 @@ export default function Contact() {
                                 icon={FaMapMarkerAlt}
                                 title="Dirección"
                                 text="Joaquín V. González 1115, San Martín, Bs. As."
-                            />
-                            <ContactItem
-                                icon={FaPhone}
-                                title="Teléfono"
-                                text="011 4738-3398"
                             />
                             <ContactItem
                                 icon={FaEnvelope}
