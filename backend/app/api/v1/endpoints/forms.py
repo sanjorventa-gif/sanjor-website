@@ -5,6 +5,8 @@ from app import crud, models, schemas
 from app.api import deps
 from app.models.form import Form
 from app.models.form_submission import FormSubmission
+from app.core.email import send_email
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -55,6 +57,44 @@ def submit_form(
     db.add(submission)
     db.commit()
     db.refresh(submission)
+
+    # -------------------------
+    # Send Email Notifications
+    # -------------------------
+    try:
+        # Extract email from submission data if exists (for confirmation)
+        user_email = None
+        # Try common keys
+        for key in ['email', 'Email', 'correo', 'Correo']:
+            if key in submission_in.data and isinstance(submission_in.data[key], str):
+                user_email = submission_in.data[key]
+                break
+
+        # 1. To Admin
+        send_email(
+            email_to=settings.EMAIL_TO_ADMIN,
+            subject=f"Nuevo Envío: {form.title}",
+            template_name="email/submission_notification.html",
+            environment={
+                "form_title": form.title,
+                "data": submission_in.data
+            }
+        )
+
+        # 2. To User
+        if user_email:
+            send_email(
+                email_to=user_email,
+                subject=f"Recibimos tu formulario: {form.title}",
+                template_name="email/submission_confirmation.html",
+                environment={
+                    "form_title": form.title
+                }
+            )
+
+    except Exception as e:
+        print(f"Error sending form emails: {e}")
+
     return submission
 
 # --- Admin Endpoints ---

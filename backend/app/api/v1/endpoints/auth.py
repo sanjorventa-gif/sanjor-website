@@ -9,6 +9,7 @@ from app import crud, schemas, models
 from app.api import deps
 from app.core import security
 from app.core.config import settings
+from app.core.email import send_email
 
 router = APIRouter()
 
@@ -89,5 +90,40 @@ def register(
         user_in.is_active = True
     
     user_in.is_superuser = False
+    
+    # Create user
     user = crud.user.create(db, obj_in=user_in)
+
+    # -------------------------
+    # Send Email Notifications
+    # -------------------------
+    try:
+        # 1. To Admin
+        send_email(
+            email_to=settings.EMAIL_TO_ADMIN,
+            subject=f"Nuevo Usuario Registrado - {user_in.full_name}",
+            template_name="email/new_account_admin.html",
+            environment={
+                "full_name": user_in.full_name,
+                "email": user_in.email,
+                "role": user_in.role or "N/A",
+                "company": user_in.company,
+                "is_active": user_in.is_active
+            }
+        )
+
+        # 2. To User (Welcome)
+        send_email(
+            email_to=user_in.email,
+            subject="Bienvenido a SAN JOR",
+            template_name="email/new_account.html",
+            environment={
+                "full_name": user_in.full_name,
+                "is_active": user_in.is_active
+            }
+        )
+    except Exception as e:
+        print(f"Error sending registration emails: {e}")
+        # Non-blocking error
+
     return user

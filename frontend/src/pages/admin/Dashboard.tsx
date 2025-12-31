@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Box,
     Heading,
@@ -50,10 +50,20 @@ export default function Dashboard() {
         localStorage.setItem('admin_tab_index', index.toString());
     };
 
+    // Keep a ref to the latest products for the callback (avoid stale closures)
+    const localProductsRef = useRef(products);
+
     // Sync local state with global products on load or update
     useEffect(() => {
-        setLocalProducts([...products].sort((a, b) => (a.order || 0) - (b.order || 0)));
+        const sorted = [...products].sort((a, b) => (a.order || 0) - (b.order || 0));
+        setLocalProducts(sorted);
+        localProductsRef.current = sorted;
     }, [products]);
+
+    // Update ref when local reordering happens
+    useEffect(() => {
+        localProductsRef.current = localProducts;
+    }, [localProducts]);
 
     // Group products for rendering (derived state)
     const getProductsByCategory = (category: string) => {
@@ -66,11 +76,6 @@ export default function Dashboard() {
     };
 
     const handleGroupReorder = (category: string, newGroupOrder: Product[]) => {
-        // When one group changes, we must reconstruct the full list to maintain the "Global Order strategy"
-        // Strategy: The global order is determined by the fixed category order + the internal category order.
-
-        // Special handling for 'otro' since it might not match a key exactly if we had dynamic cats, but here it's fixed.
-
         let newFullList: Product[] = [];
 
         // We iterate through our defined Category Order to rebuild the list
@@ -78,16 +83,28 @@ export default function Dashboard() {
             if (cat.key === category) {
                 newFullList = [...newFullList, ...newGroupOrder];
             } else {
-                newFullList = [...newFullList, ...getProductsByCategory(cat.key)];
+                // IMPORTANT: Fetch from CURRENT local state, not original
+                // We use the helper but applied to the current localProducts state which is implicitly used by the helper
+                const currentCatProducts = localProducts.filter(p =>
+                    cat.key === 'otro'
+                        ? !['cultivo', 'esterilizacion', 'secado', 'cajas'].includes(p.category)
+                        : p.category === cat.key
+                );
+
+                // However, wait. getProductsByCategory uses 'localProducts' from state.
+                // If we are iterating, we must ensure we get the CURRENT order of other categories.
+                newFullList = [...newFullList, ...currentCatProducts];
             }
         });
 
         setLocalProducts(newFullList);
+        // Update ref immediately to ensure handleDragEnd has the latest data (avoiding useEffect latency)
+        localProductsRef.current = newFullList;
     };
 
     const handleDragEnd = () => {
-        // Only trigger API call when drag ends
-        reorder(localProducts);
+        // Use the ref to get the absolute latest state
+        reorder(localProductsRef.current);
     };
 
     const exportColumns = [
@@ -98,105 +115,7 @@ export default function Dashboard() {
         { header: 'Temperatura', key: 'temperature', formatter: (val: any) => val ? `${val.min} - ${val.max} ${val.unit}` : '-' },
     ];
 
-    const ProductTable = ({ items, categoryKey }: { items: Product[], categoryKey: string }) => (
-        <Box overflowX="auto" bg="white" shadow="md" rounded="lg">
-            <Table variant="simple">
-                <Thead bg="gray.50">
-                    <Tr>
-                        <Th w="50px">Orden</Th>
-                        <Th w="100px">Acciones</Th>
-                        <Th>Nombre</Th>
-                        <Th>Imagen</Th>
-                        <Th>Dimensiones</Th>
-                        <Th>Temperatura</Th>
-                    </Tr>
-                </Thead>
-                <Reorder.Group
-                    as="tbody"
-                    axis="y"
-                    values={items}
-                    onReorder={(newOrder) => handleGroupReorder(categoryKey, newOrder)}
-                >
-                    {items.map((product) => (
-                        <Reorder.Item
-                            as="tr"
-                            key={product.id}
-                            value={product}
-                            style={{ cursor: 'grab', position: 'relative' }}
-                            onDragEnd={handleDragEnd}
-                            whileDrag={{
-                                scale: 1.02,
-                                boxShadow: "0px 5px 15px rgba(0,0,0,0.1)",
-                                backgroundColor: "#f7fafc",
-                                display: "table-row",
-                            }}
-                        >
-                            <Td>
-                                <DragHandleIcon color="gray.400" />
-                            </Td>
-                            <Td>
-                                <Flex>
-                                    <IconButton
-                                        aria-label="Editar"
-                                        icon={<EditIcon />}
-                                        colorScheme="blue"
-                                        variant="ghost"
-                                        size="sm"
-                                        mr={2}
-                                        onClick={() => navigate(`/admin/edit/${product.id}`)}
-                                    />
-                                    <IconButton
-                                        aria-label="Eliminar"
-                                        icon={<DeleteIcon />}
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={async () => {
-                                            if (window.confirm('¿Está seguro que desea eliminar este producto?')) {
-                                                await removeProduct(product.id);
-                                                toast({
-                                                    title: 'Producto eliminado',
-                                                    status: 'success',
-                                                    duration: 2000,
-                                                    isClosable: true,
-                                                });
-                                            }
-                                        }}
-                                    />
-                                </Flex>
-                            </Td>
-                            <Td fontWeight="medium">{product.name}</Td>
-                            <Td>
-                                <Image
-                                    src={product.image}
-                                    alt={product.name}
-                                    boxSize="50px"
-                                    objectFit="cover"
-                                    rounded="md"
-                                    fallbackSrc="https://placehold.co/50"
-                                />
-                            </Td>
-                            <Td fontSize="sm" color="gray.600">
-                                {product.dimensions ? (
-                                    `${product.dimensions.length}x${product.dimensions.width}x${product.dimensions.height} ${product.dimensions.unit}`
-                                ) : '-'}
-                            </Td>
-                            <Td fontSize="sm" color="gray.600">
-                                {product.temperature ? (
-                                    `${product.temperature.min} - ${product.temperature.max} ${product.temperature.unit}`
-                                ) : '-'}
-                            </Td>
-                        </Reorder.Item>
-                    ))}
-                </Reorder.Group>
-            </Table>
-            {items.length === 0 && (
-                <Box p={4} textAlign="center" color="gray.500">
-                    No hay productos en esta categoría.
-                </Box>
-            )}
-        </Box>
-    );
+
 
     return (
         <Container maxW="container.xl" py={8}>
@@ -226,7 +145,23 @@ export default function Dashboard() {
                 <TabPanels>
                     {CATEGORIES.map((cat) => (
                         <TabPanel key={cat.key} p={0}>
-                            <ProductTable items={getProductsByCategory(cat.key)} categoryKey={cat.key} />
+                            <ProductTable
+                                items={getProductsByCategory(cat.key)}
+                                onReorder={(newOrder) => handleGroupReorder(cat.key, newOrder)}
+                                onDragEnd={handleDragEnd}
+                                onEdit={(id: string | number) => navigate(`/admin/edit/${id}`)}
+                                onDelete={async (id: string | number) => {
+                                    if (window.confirm('¿Está seguro que desea eliminar este producto?')) {
+                                        await removeProduct(id);
+                                        toast({
+                                            title: 'Producto eliminado',
+                                            status: 'success',
+                                            duration: 2000,
+                                            isClosable: true,
+                                        });
+                                    }
+                                }}
+                            />
                         </TabPanel>
                     ))}
                 </TabPanels>
@@ -234,3 +169,101 @@ export default function Dashboard() {
         </Container>
     );
 }
+
+interface ProductTableProps {
+    items: Product[];
+    onReorder: (newOrder: Product[]) => void;
+    onDragEnd: () => void;
+    onEdit: (id: string | number) => void;
+    onDelete: (id: string | number) => Promise<void>;
+}
+
+const ProductTable = ({ items, onReorder, onDragEnd, onEdit, onDelete }: ProductTableProps) => (
+    <Box overflowX="auto" bg="white" shadow="md" rounded="lg">
+        <Table variant="simple">
+            <Thead bg="gray.50">
+                <Tr>
+                    <Th w="50px">Orden</Th>
+                    <Th w="100px">Acciones</Th>
+                    <Th>Nombre</Th>
+                    <Th>Imagen</Th>
+                    <Th>Dimensiones</Th>
+                    <Th>Temperatura</Th>
+                </Tr>
+            </Thead>
+            <Reorder.Group
+                as="tbody"
+                axis="y"
+                values={items}
+                onReorder={onReorder}
+            >
+                {items.map((product) => (
+                    <Reorder.Item
+                        as="tr"
+                        key={product.id}
+                        value={product}
+                        style={{ cursor: 'grab', position: 'relative' }}
+                        onDragEnd={onDragEnd}
+                        whileDrag={{
+                            scale: 1.02,
+                            boxShadow: "0px 5px 15px rgba(0,0,0,0.1)",
+                            backgroundColor: "#f7fafc",
+                            display: "table-row",
+                        }}
+                    >
+                        <Td>
+                            <DragHandleIcon color="gray.400" />
+                        </Td>
+                        <Td>
+                            <Flex>
+                                <IconButton
+                                    aria-label="Editar"
+                                    icon={<EditIcon />}
+                                    colorScheme="blue"
+                                    variant="ghost"
+                                    size="sm"
+                                    mr={2}
+                                    onClick={() => onEdit(product.id)}
+                                />
+                                <IconButton
+                                    aria-label="Eliminar"
+                                    icon={<DeleteIcon />}
+                                    colorScheme="red"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => onDelete(product.id)}
+                                />
+                            </Flex>
+                        </Td>
+                        <Td fontWeight="medium">{product.name}</Td>
+                        <Td>
+                            <Image
+                                src={product.image}
+                                alt={product.name}
+                                boxSize="50px"
+                                objectFit="cover"
+                                rounded="md"
+                                fallbackSrc="https://placehold.co/50"
+                            />
+                        </Td>
+                        <Td fontSize="sm" color="gray.600">
+                            {product.dimensions ? (
+                                `${product.dimensions.length}x${product.dimensions.width}x${product.dimensions.height} ${product.dimensions.unit}`
+                            ) : '-'}
+                        </Td>
+                        <Td fontSize="sm" color="gray.600">
+                            {product.temperature ? (
+                                `${product.temperature.min} - ${product.temperature.max} ${product.temperature.unit}`
+                            ) : '-'}
+                        </Td>
+                    </Reorder.Item>
+                ))}
+            </Reorder.Group>
+        </Table>
+        {items.length === 0 && (
+            <Box p={4} textAlign="center" color="gray.500">
+                No hay productos en esta categoría.
+            </Box>
+        )}
+    </Box>
+);
