@@ -13,10 +13,14 @@ import {
     TabPanel,
     Stack,
     useColorModeValue,
+    Icon,
+    Button,
 } from '@chakra-ui/react';
+import { FaArrowLeft } from 'react-icons/fa';
 import ProductCard from '../../components/ui/ProductCard';
 // import ProductAdvisor from '../../components/features/ProductAdvisor';
 import StoveSearch from '../../components/features/StoveSearch';
+import SearchBanner from '../../components/features/SearchBanner';
 import { useProducts } from '../../context/ProductContext';
 
 export default function Products() {
@@ -52,23 +56,39 @@ export default function Products() {
         navigate(`/productos/${catId}`);
     };
 
+    const isSearchMode = categories[tabIndex]?.id === 'asesor';
+
+    if (isSearchMode) {
+        return (
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} minH="80vh">
+                <Container maxW={'container.xl'}>
+                    <Button
+                        leftIcon={<Icon as={FaArrowLeft} />}
+                        variant="link"
+                        colorScheme="brand"
+                        mb={6}
+                        onClick={() => handleTabChange(0)}
+                        fontSize="lg"
+                    >
+                        Volver al Catálogo
+                    </Button>
+                    <StoveSearch />
+                </Container>
+            </Box>
+        );
+    }
+
     return (
         <>
             {/* Header Section - White */}
-            < Box bg={useColorModeValue('gray.50', 'gray.900')} pt={10} pb={2} >
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} pt={10} pb={2} >
                 <Container maxW={'container.xl'}>
                     <Heading mb={0} color="brand.700">Catálogo de Productos</Heading>
-                    {/*
-                    <Text fontSize="lg" color="gray.600">
-                        Explore nuestra gama completa de estufas y equipos para laboratorio.
-                        Utilice nuestro <b>Asesor de Estufas</b> para encontrar el equipo ideal según su rango de temperatura.
-                    </Text>
-                    */}
                 </Container>
             </Box >
 
             {/* Content Section - Gray with Pattern */}
-            < Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} position="relative" >
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} position="relative" >
                 <Box
                     position="absolute"
                     top="0"
@@ -83,21 +103,27 @@ export default function Products() {
                 />
                 <Container maxW={'container.xl'} position="relative" zIndex={1}>
 
+                    {/* Search Banner CTA */}
+                    <SearchBanner onSearchClick={() => {
+                        const asesorIndex = categories.findIndex(c => c.id === 'asesor');
+                        if (asesorIndex !== -1) handleTabChange(asesorIndex);
+                    }} />
+
                     <Tabs variant="soft-rounded" colorScheme="brand" index={tabIndex} onChange={handleTabChange}>
                         <TabList mb={8} flexWrap="wrap">
                             {categories.map((cat) => (
-                                <Tab key={cat.id} _selected={{ color: 'white', bg: 'brand.500' }}>
-                                    {cat.label}
-                                </Tab>
+                                cat.id !== 'asesor' && (
+                                    <Tab key={cat.id} _selected={{ color: 'white', bg: 'brand.500' }}>
+                                        {cat.label}
+                                    </Tab>
+                                )
                             ))}
                         </TabList>
 
                         <TabPanels>
                             {categories.map((cat) => (
                                 <TabPanel key={cat.id}>
-                                    {cat.id === 'asesor' ? (
-                                        <StoveSearch />
-                                    ) : (
+                                    {cat.id !== 'asesor' && (
                                         <>
                                             {cat.id === 'cultivo' && (
                                                 <CategoryGuide
