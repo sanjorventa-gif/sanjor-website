@@ -22,6 +22,7 @@ export default function Downloads() {
     const { user, isAuthenticated } = useAuth();
     const [downloads, setDownloads] = useState<Download[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const bgGray = useColorModeValue('gray.50', 'gray.900');
 
     useEffect(() => {
         fetchDownloads();
@@ -85,7 +86,7 @@ export default function Downloads() {
 
         <Box>
             {/* Header Section - White */}
-            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10}>
+            <Box bg={bgGray} py={10}>
                 <Container maxW={'container.xl'}>
                     <Heading mb={4} color="brand.700">Descargas</Heading>
                     <Text fontSize="lg" color="gray.600" mb={4}>
@@ -100,7 +101,7 @@ export default function Downloads() {
             </Box>
 
             {/* Content Section - Gray with Pattern */}
-            <Box bg={useColorModeValue('gray.50', 'gray.900')} py={10} position="relative">
+            <Box bg={bgGray} py={10} position="relative">
                 <Box
                     position="absolute"
                     top="0"
