@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/public/Home';
 import Company from './pages/public/Company';
@@ -126,6 +126,10 @@ function App() {
               </Route>
             </Route>
           </Route>
+
+          {/* Catch-all redirect to Home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
         <NewsletterDrawer isOpen={isNewsletterOpen} onClose={onCloseNewsletter} />
       </RecaptchaProvider>

@@ -14,7 +14,7 @@ import { FaCheckCircle, FaFileDownload, FaHeadset, FaShieldAlt } from 'react-ico
 import { Link as RouterLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 const Feature = ({ title, text, icon }: { title: string; text: string; icon: any }) => {
     return (
