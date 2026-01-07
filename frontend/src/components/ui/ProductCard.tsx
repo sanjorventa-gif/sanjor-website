@@ -31,7 +31,9 @@ const stripHtml = (html: string) => {
 }
 
 export default function ProductCard({ title, image, description, href, dimensions, temperature, temperatureLabel, actionLabel = 'Ver Detalles' }: ProductCardProps) {
-    const cleanDescription = stripHtml(description);
+    // Get first part before newline or <br>
+    const firstPart = description.split(/(\r\n|\n|\r|<br\s*\/?>)/)[0];
+    const cleanDescription = stripHtml(firstPart);
 
     return (
         <Center py={6} h="full">

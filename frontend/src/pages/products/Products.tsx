@@ -16,6 +16,7 @@ import {
     Icon,
     Button,
 } from '@chakra-ui/react';
+import { slugify } from '../../utils/slugify';
 import { FaArrowLeft } from 'react-icons/fa';
 import ProductCard from '../../components/ui/ProductCard';
 // import ProductAdvisor from '../../components/features/ProductAdvisor';
@@ -156,7 +157,7 @@ export default function Products() {
                                                             title={product.name}
                                                             description={product.description}
                                                             image={product.image}
-                                                            href={`/productos/detalle/${product.id}`}
+                                                            href={`/productos/detalle/${slugify(product.name)}`}
                                                             dimensions={cat.id === 'acero' ? undefined : product.dimensions}
                                                             temperature={product.temperature}
                                                         />

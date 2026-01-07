@@ -492,7 +492,7 @@ const NAV_ITEMS: Array<NavItem> = [
             {
                 label: 'Productos de Acero Inoxidable',
                 shortLabel: 'Acero Inoxidable',
-                href: '/productos/cajas',
+                href: '/productos/acero',
             },
         ],
     },

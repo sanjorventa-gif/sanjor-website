@@ -25,6 +25,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useProducts } from '../../context/ProductContext';
 import ProductCard from '../../components/ui/ProductCard';
 import { PLACEHOLDER_IMAGE } from '../../utils/images';
+import { slugify } from '../../utils/slugify';
 
 const pulse = emotionKeyframes`
   0% { transform: scale(1); box-shadow: 0 0 0 0 var(--chakra-colors-brand-200); }
@@ -36,7 +37,7 @@ export default function ProductDetail() {
     const { id } = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { products, isLoading } = useProducts();
-    const product = products.find((p) => p.id == id);
+    const product = products.find((p) => p.id == id || slugify(p.name) === id);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Filter related products
@@ -116,7 +117,7 @@ export default function ProductDetail() {
                         </Box>
 
                         {/* Medidas Internas */}
-                        {product.dimensions && (
+                        {product.dimensions && product.category !== 'acero' && (
                             <Box
                                 bg="blue.50"
                                 border="2px solid"
@@ -189,6 +190,10 @@ export default function ProductDetail() {
                                     marginLeft: '0 !important',
                                     marginTop: '0.5rem',
                                     marginBottom: '0.5rem',
+                                    ...(product.category === 'acero' && {
+                                        columnCount: { base: 1, md: 2 },
+                                        columnGap: '2rem',
+                                    }),
                                 },
 
                                 // List Items
@@ -201,6 +206,7 @@ export default function ProductDetail() {
                                     color: 'gray.600',
                                     display: 'flex',
                                     alignItems: 'center',
+                                    breakInside: 'avoid', // Prevent splitting across columns
                                 },
                                 // Custom animated bullet
                                 '& ul li::before, & ol li::before': {
@@ -291,7 +297,7 @@ export default function ProductDetail() {
                                                 title={related.name}
                                                 image={related.image}
                                                 description={related.description}
-                                                href={`/productos/${related.id}`}
+                                                href={`/productos/detalle/${slugify(related.name)}`}
                                                 dimensions={related.dimensions}
                                                 temperature={related.temperature}
                                                 temperatureLabel="Temp"
