@@ -75,7 +75,7 @@ export default function Home() {
                     </Stack>
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
                         <ProductCard
-                            title="Estufas para Cultivo"
+                            title="Estufas de Cultivo"
                             description="Estufas de cultivo para bacteriología y microbiología, diseñadas para un crecimiento preciso."
                             image="/img/home_products/cultivo.jpg"
                             href="/productos/cultivo"
