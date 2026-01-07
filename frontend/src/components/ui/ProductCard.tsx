@@ -91,7 +91,7 @@ export default function ProductCard({ title, image, description, href, dimension
 
                     {dimensions && (
                         <Stack direction="row" align="center">
-                            <Badge colorScheme="purple" textTransform="none">Medidas internas</Badge>
+                            <Badge colorScheme="purple" textTransform="none">Medidas int.</Badge>
                             <Text fontSize="xs" fontWeight="bold">
                                 {dimensions.length} x {dimensions.width} x {dimensions.height} {dimensions.unit}
                             </Text>

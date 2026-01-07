@@ -120,7 +120,7 @@ export default function AddProduct() {
                             <option value="cultivo">Cultivo</option>
                             <option value="esterilizacion">Esterilización</option>
                             <option value="secado">Secado</option>
-                            <option value="cajas">Cajas de Acero</option>
+                            <option value="acero">Acero</option>
                             <option value="otro">Otro</option>
                         </Select>
                     </FormControl>
@@ -165,7 +165,7 @@ export default function AddProduct() {
                         </FormControl>
                     </Stack>
 
-                    {(formData.category !== 'cajas' && formData.category !== 'otro') && (
+                    {(formData.category !== 'acero' && formData.category !== 'otro') && (
                         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                             <FormControl>
                                 <FormLabel>Temp. Mínima (°C)</FormLabel>

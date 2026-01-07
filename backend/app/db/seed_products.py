@@ -17,15 +17,15 @@ def seed_products():
     try:
         # Re-create tables to ensure schema matches (especially ID type change)
         logger.info("Re-creating tables...")
-        Base.metadata.drop_all(bind=engine)
+        # Base.metadata.drop_all(bind=engine) # Disabled to prevent data loss
         Base.metadata.create_all(bind=engine)
 
         products_data = [
-            # --- CAJAS DE ACERO INOXIDABLE ---
+            # --- ACERO INOXIDABLE ---
             {
                 "id": "sc-17-7-3",
                 "name": "Caja de Acero Inoxidable SC-17-7-3",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma. Especial para ortopedia.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma", "Alta calidad para ortopedia"],
@@ -36,7 +36,7 @@ def seed_products():
             {
                 "id": "sc-32-12-7",
                 "name": "Caja de Acero Inoxidable SC-32-12-7",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -47,7 +47,7 @@ def seed_products():
              {
                 "id": "sc-32-15-6",
                 "name": "Caja de Acero Inoxidable SC-32-15-6",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -58,7 +58,7 @@ def seed_products():
             {
                 "id": "sc-34-16-7",
                 "name": "Caja de Acero Inoxidable SC-34-16-7",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -69,7 +69,7 @@ def seed_products():
             {
                 "id": "sc-35-17-8",
                 "name": "Caja de Acero Inoxidable SC-35-17-8",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -80,7 +80,7 @@ def seed_products():
             {
                 "id": "sc-40-20-8",
                 "name": "Caja de Acero Inoxidable SC-40-20-8",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -91,7 +91,7 @@ def seed_products():
             {
                 "id": "sc-40-20-10",
                 "name": "Caja de Acero Inoxidable SC-40-20-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -102,7 +102,7 @@ def seed_products():
             {
                 "id": "sc-40-30-10",
                 "name": "Caja de Acero Inoxidable SC-40-30-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -113,7 +113,7 @@ def seed_products():
             {
                 "id": "sc-45-20-10",
                 "name": "Caja de Acero Inoxidable SC-45-20-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -124,7 +124,7 @@ def seed_products():
             {
                 "id": "sc-45-25-10",
                 "name": "Caja de Acero Inoxidable SC-45-25-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -135,7 +135,7 @@ def seed_products():
             {
                 "id": "sc-45-30-10",
                 "name": "Caja de Acero Inoxidable SC-45-30-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],
@@ -146,7 +146,7 @@ def seed_products():
             {
                 "id": "sc-50-20-10",
                 "name": "Caja de Acero Inoxidable SC-50-20-10",
-                "category": "cajas",
+                "category": "acero",
                 "description": "Caja fabricada en acero inoxidable 304º 18/8 (antimagnético/quirúrgico) con soldadura por plasma.",
                 "image": "https://placehold.co/400x300?text=Caja+Acero+Inoxidable",
                 "features": ["Acero Inoxidable 304º 18/8", "Soldadura por plasma"],

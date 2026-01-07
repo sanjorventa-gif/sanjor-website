@@ -31,7 +31,7 @@ const CATEGORIES: { key: string; label: string }[] = [
     { key: 'cultivo', label: 'Cultivo' },
     { key: 'esterilizacion', label: 'Esterilización' },
     { key: 'secado', label: 'Secado' },
-    { key: 'cajas', label: 'Cajas' },
+    { key: 'acero', label: 'Acero' },
     { key: 'otro', label: 'Otros' },
 ];
 
@@ -69,7 +69,7 @@ export default function Dashboard() {
     const getProductsByCategory = (category: string) => {
         return localProducts.filter((p) => {
             if (category === 'otro') {
-                return !['cultivo', 'esterilizacion', 'secado', 'cajas'].includes(p.category);
+                return !['cultivo', 'esterilizacion', 'secado', 'acero'].includes(p.category);
             }
             return p.category === category;
         });
@@ -87,7 +87,7 @@ export default function Dashboard() {
                 // We use the helper but applied to the current localProducts state which is implicitly used by the helper
                 const currentCatProducts = localProducts.filter(p =>
                     cat.key === 'otro'
-                        ? !['cultivo', 'esterilizacion', 'secado', 'cajas'].includes(p.category)
+                        ? !['cultivo', 'esterilizacion', 'secado', 'acero'].includes(p.category)
                         : p.category === cat.key
                 );
 

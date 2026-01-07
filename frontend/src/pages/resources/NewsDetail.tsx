@@ -89,8 +89,7 @@ export default function NewsDetail() {
                         src={news.image}
                         alt={news.title}
                         w="100%"
-                        maxH="500px"
-                        objectFit="cover"
+                        h="auto"
                         borderRadius="xl"
                         shadow="lg"
                     />

@@ -146,7 +146,7 @@ export default function EditProduct() {
                             <option value="cultivo">Cultivo</option>
                             <option value="esterilizacion">Esterilización</option>
                             <option value="secado">Secado</option>
-                            <option value="cajas">Cajas de Acero</option>
+                            <option value="acero">Acero</option>
                         </Select>
                     </FormControl>
 

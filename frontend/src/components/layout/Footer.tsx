@@ -14,7 +14,7 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react';
-import { FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -186,6 +186,9 @@ export default function Footer() {
                         </SocialButton>
                         <SocialButton label={'Instagram'} href={'https://www.instagram.com/sanjorenlared/'}>
                             <FaInstagram />
+                        </SocialButton>
+                        <SocialButton label={'YouTube'} href={'https://www.youtube.com/@sanjorenlared'}>
+                            <FaYoutube />
                         </SocialButton>
                         <SocialButton label={'X'} href={'https://x.com/sanjorenlared'}>
                             <FaXTwitter />

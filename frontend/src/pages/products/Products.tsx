@@ -32,7 +32,7 @@ export default function Products() {
         { id: 'cultivo', label: 'Cultivo' },
         { id: 'esterilizacion', label: 'Esterilización' },
         { id: 'secado', label: 'Secado' },
-        { id: 'cajas', label: 'Acero Inoxidable' },
+        { id: 'acero', label: 'Acero' },
         { id: 'asesor', label: 'Buscador' },
     ];
 
@@ -157,7 +157,7 @@ export default function Products() {
                                                             description={product.description}
                                                             image={product.image}
                                                             href={`/productos/detalle/${product.id}`}
-                                                            dimensions={cat.id === 'cajas' ? undefined : product.dimensions}
+                                                            dimensions={cat.id === 'acero' ? undefined : product.dimensions}
                                                             temperature={product.temperature}
                                                         />
                                                     ))}

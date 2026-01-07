@@ -111,9 +111,15 @@ export default function UserDashboard() {
                         src={'https://bit.ly/broken-link'}
                     />
                     <Stack spacing={2} textAlign={{ base: 'center', md: 'left' }}>
-                        <Heading size="lg">¡Hola, {user?.email?.split('@')[0]}!</Heading>
+                        <Heading size="lg">¡Hola, {user?.name || user?.email?.split('@')[0]}!</Heading>
                         <Text fontSize="lg" opacity={0.9}>
-                            Bienvenido a su Panel de Cliente. Desde aquí puede gestionar sus productos y servicios.
+                            Bienvenido a su Panel de {
+                                {
+                                    'admin': 'Administrador',
+                                    'servicio_tecnico': 'Técnico',
+                                    'distribuidor': 'Distribuidor'
+                                }[user?.role as string] || 'Cliente'
+                            }. Desde aquí puede gestionar sus productos y servicios.
                         </Text>
                     </Stack>
                 </Flex>
