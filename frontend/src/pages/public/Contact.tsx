@@ -53,6 +53,7 @@ export default function Contact() {
                 lastname: data.lastname as string,
                 company: data.company as string,
                 email: data.email as string,
+                phone: data.phone as string,
                 rubro: data.rubro as string,
                 cargo: data.cargo as string,
                 message: data.message as string,
@@ -110,7 +111,7 @@ export default function Contact() {
                         rounded={'xl'}
                         boxShadow={'lg'}
                     >
-                        <Heading size="md" mb={6}>Envíenos un mensaje</Heading>
+                        <Heading size="md" mb={6}>Envianos un mensaje</Heading>
                         <form onSubmit={handleSubmit} key={user?.id || 'guest'}>
                             <Stack spacing={4}>
                                 <SimpleGrid columns={2} spacing={4}>
@@ -167,10 +168,16 @@ export default function Contact() {
                                     </FormControl>
                                 </SimpleGrid>
 
-                                <FormControl id="email" isRequired>
-                                    <FormLabel>Email</FormLabel>
-                                    <Input name="email" type="email" placeholder="email@ejemplo.com" defaultValue={user?.email || ''} readOnly={!!user?.email} />
-                                </FormControl>
+                                <SimpleGrid columns={2} spacing={4}>
+                                    <FormControl id="email" isRequired>
+                                        <FormLabel>Email</FormLabel>
+                                        <Input name="email" type="email" placeholder="email@ejemplo.com" defaultValue={user?.email || ''} readOnly={!!user?.email} />
+                                    </FormControl>
+                                    <FormControl id="phone">
+                                        <FormLabel>Teléfono</FormLabel>
+                                        <Input name="phone" type="tel" placeholder="Cod. Área + Número" defaultValue={user?.phone || ''} />
+                                    </FormControl>
+                                </SimpleGrid>
 
                                 <FormControl id="message" isRequired>
                                     <FormLabel>Consulta / Mensaje</FormLabel>

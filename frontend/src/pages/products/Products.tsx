@@ -157,7 +157,7 @@ export default function Products() {
                                                             description={product.description}
                                                             image={product.image}
                                                             href={`/productos/detalle/${product.id}`}
-                                                            dimensions={product.dimensions}
+                                                            dimensions={cat.id === 'cajas' ? undefined : product.dimensions}
                                                             temperature={product.temperature}
                                                         />
                                                     ))}

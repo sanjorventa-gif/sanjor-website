@@ -11,8 +11,14 @@ import {
     Spinner,
     Center,
     IconButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
 } from '@chakra-ui/react';
-import { keyframes as emotionKeyframes } from '@emotion/react'; // Fix alias if needed or just use emotion
+import { keyframes as emotionKeyframes } from '@emotion/react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { FaFilePdf } from 'react-icons/fa';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -28,6 +34,7 @@ const pulse = emotionKeyframes`
 
 export default function ProductDetail() {
     const { id } = useParams();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { products, isLoading } = useProducts();
     const product = products.find((p) => p.id == id);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -92,29 +99,83 @@ export default function ProductDetail() {
                 </Button>
 
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mb={20}>
-                    <Box>
-                        <Image
-                            src={product.image}
-                            alt={product.name}
-                            rounded={'md'}
-                            w={'100%'}
-                            objectFit={'cover'}
-                            fallbackSrc={PLACEHOLDER_IMAGE}
-                        />
-                    </Box>
-
+                    {/* COLUMNA IZQUIERDA: Imagen + Medidas + Botones */}
                     <Stack spacing={6}>
-                        {/* 1. Título */}
+                        <Box cursor="pointer" onClick={onOpen} overflow="hidden" rounded="md">
+                            <Image
+                                src={product.image}
+                                alt={product.name}
+                                w={'100%'}
+                                maxH={'55vh'}
+                                objectFit={'contain'}
+                                fallbackSrc={PLACEHOLDER_IMAGE}
+                                transition="transform 0.3s"
+                                _hover={{ transform: 'scale(1.05)' }}
+                            />
+
+                        </Box>
+
+                        {/* Medidas Internas */}
+                        {product.dimensions && (
+                            <Box
+                                bg="blue.50"
+                                border="2px solid"
+                                borderColor="blue.200"
+                                borderRadius="md"
+                                p={4}
+                            >
+                                <Text fontWeight="bold" fontSize="lg" color="gray.800" mb={1}>
+                                    Medidas Internas
+                                </Text>
+                                <Text fontSize="lg" fontWeight="medium" color="gray.700">
+                                    {product.dimensions.length} x {product.dimensions.width} x {product.dimensions.height}
+                                    <Text as="span" fontSize="md" color="gray.500" fontWeight="normal" ml={2}>
+                                        (Frente x Alto x Fondo en cm)
+                                    </Text>
+                                </Text>
+                            </Box>
+                        )}
+
+                        {/* Botones de acción */}
+                        <Stack direction={{ base: 'column', sm: 'row' }} spacing={4}>
+                            <Button
+                                as={RouterLink}
+                                to={`/contacto?message=${encodeURIComponent(`Hola, quisiera más información sobre el producto ${product.name}`)}`}
+                                size="lg"
+                                colorScheme="brand"
+                                px={8}
+                                flex={1}
+                            >
+                                Envianos tu consulta
+                            </Button>
+                            {product.technicalSheet && (
+                                <Button
+                                    as="a"
+                                    href={product.technicalSheet}
+                                    download={product.technicalSheet.startsWith('data:') ? `${product.id}-ficha.pdf` : undefined}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    size="lg"
+                                    variant="outline"
+                                    leftIcon={<FaFilePdf />}
+                                    flex={1}
+                                >
+                                    Ficha Técnica
+                                </Button>
+                            )}
+                        </Stack>
+                    </Stack>
+
+                    {/* COLUMNA DERECHA: Descripción e Hipertexto */}
+                    <Stack spacing={6}>
                         <Heading as={'h1'} fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700}>
                             {product.name}
                         </Heading>
 
-                        {/* 2. Especificaciones Técnicas */}
                         <Heading as={'h2'} fontSize={{ base: 'xl', sm: '2xl' }} fontWeight={600} color="gray.700">
                             Especificaciones Técnicas
                         </Heading>
 
-                        {/* 3. Descripción (Bullets) */}
                         <Box
                             className="rich-text-content"
                             dangerouslySetInnerHTML={{ __html: product.description }}
@@ -166,57 +227,26 @@ export default function ProductDetail() {
                                 },
                             }}
                         />
-
-                        {/* 4. Medidas Internas (Cuadro coloreado al final) */}
-                        {product.dimensions && (
-                            <Box
-                                bg="blue.50"
-                                border="2px solid"
-                                borderColor="blue.200"
-                                borderRadius="md"
-                                p={4}
-                                mt={4}
-                            >
-                                <Text fontWeight="bold" fontSize="lg" color="gray.800" mb={1}>
-                                    Medidas Internas
-                                </Text>
-                                <Text fontSize="lg" fontWeight="medium" color="gray.700">
-                                    {product.dimensions.length} x {product.dimensions.width} x {product.dimensions.height} {product.dimensions.unit}
-                                    <Text as="span" fontSize="md" color="gray.500" fontWeight="normal" ml={2}>
-                                        (Frente x Alto x Fondo en cm)
-                                    </Text>
-                                </Text>
-                            </Box>
-                        )}
-
-                        {/* Botones de acción */}
-                        <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} pt={4}>
-                            <Button
-                                as={RouterLink}
-                                to={`/contacto?message=${encodeURIComponent(`Hola, quisiera más información sobre el producto ${product.name}`)}`}
-                                size="lg"
-                                colorScheme="brand"
-                                px={8}
-                            >
-                                Obtener más información
-                            </Button>
-                            {product.technicalSheet && (
-                                <Button
-                                    as="a"
-                                    href={product.technicalSheet}
-                                    download={product.technicalSheet.startsWith('data:') ? `${product.id}-ficha.pdf` : undefined}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    size="lg"
-                                    variant="outline"
-                                    leftIcon={<FaFilePdf />}
-                                >
-                                    Ficha Técnica
-                                </Button>
-                            )}
-                        </Stack>
                     </Stack>
                 </SimpleGrid>
+
+                {/* Modal de Imagen Ampliada */}
+                <Modal isOpen={isOpen} onClose={onClose} size="3xl" isCentered>
+                    <ModalOverlay />
+                    <ModalContent bg="transparent" boxShadow="none">
+                        <ModalCloseButton color="white" zIndex={10} />
+                        <ModalBody p={0} onClick={onClose} cursor="pointer">
+                            <Image
+                                src={product.image}
+                                alt={product.name}
+                                w="100%"
+                                h="auto"
+                                objectFit="contain"
+                                rounded="md"
+                            />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
 
                 {/* Related Products Carousel */}
                 {relatedProducts.length > 0 && (

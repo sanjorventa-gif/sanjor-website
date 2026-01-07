@@ -20,12 +20,25 @@ interface ProductCardProps {
     dimensions?: { length: number; width: number; height: number; unit: string };
     temperature?: { min: number; max: number; unit: string };
     temperatureLabel?: string;
+    actionLabel?: string;
 }
 
-export default function ProductCard({ title, image, href, dimensions, temperature, temperatureLabel }: ProductCardProps) {
+const stripHtml = (html: string) => {
+    if (!html) return '';
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
+
+export default function ProductCard({ title, image, description, href, dimensions, temperature, temperatureLabel, actionLabel = 'Ver Detalles' }: ProductCardProps) {
+    const cleanDescription = stripHtml(description);
+
     return (
-        <Center py={6}>
+        <Center py={6} h="full">
             <Box
+                as={RouterLink}
+                to={href}
+
                 maxW={'445px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.900')}
@@ -34,13 +47,13 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                 p={6}
                 overflow={'hidden'}
                 transition="transform 0.2s"
-                _hover={{ transform: 'scale(1.02)' }}
+                _hover={{ transform: 'scale(1.02)', textDecoration: 'none' }}
                 display="flex"
                 flexDirection="column"
                 height="100%"
             >
                 <Box
-                    bg={'gray.100'}
+                    bg={'white'}
                     mt={-6}
                     mx={-6}
                     mb={6}
@@ -70,6 +83,11 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                         {title}
                     </Heading>
 
+                    {cleanDescription && (
+                        <Text color="gray.500" fontSize="sm" noOfLines={3}>
+                            {cleanDescription}
+                        </Text>
+                    )}
 
                     {dimensions && (
                         <Stack direction="row" align="center">
@@ -91,8 +109,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                 </Stack>
                 <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
                     <Button
-                        as={RouterLink}
-                        to={href}
+                        as="div"
                         flex={1}
                         fontSize={'sm'}
                         rounded={'full'}
@@ -102,7 +119,7 @@ export default function ProductCard({ title, image, href, dimensions, temperatur
                             bg: 'brand.400',
                         }}
                     >
-                        Ver Detalles
+                        {actionLabel}
                     </Button>
                 </Stack>
             </Box>

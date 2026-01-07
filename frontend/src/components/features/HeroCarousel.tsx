@@ -193,7 +193,7 @@ export default function HeroCarousel() {
                                 color="white"
                                 px={4}
                             >
-                                <Stack spacing={6} maxW="3xl">
+                                <Stack spacing={6} maxW="3xl" transform="translateY(-10vh)">
                                     <motion.div
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}

@@ -75,22 +75,25 @@ export default function Home() {
                     </Stack>
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
                         <ProductCard
-                            title="Cultivo Bacteriológico"
-                            description="Estufas diseñadas para el crecimiento óptimo de cultivos, con control preciso de temperatura y estabilidad."
-                            image="https://placehold.co/400x300?text=Cultivo"
+                            title="Estufas para Cultivo"
+                            description="Estufas de cultivo para bacteriología y microbiología, diseñadas para un crecimiento preciso."
+                            image="/img/home_products/cultivo.jpg"
                             href="/productos/cultivo"
+                            actionLabel="Ver productos"
                         />
                         <ProductCard
-                            title="Esterilización y Secado"
-                            description="Equipos robustos para esterilización por calor seco y secado de material de laboratorio."
-                            image="https://placehold.co/400x300?text=Esterilizacion"
+                            title="Estufas de Secado"
+                            description="Estufas de secado y esterilización por calor seco, ideales para laboratorios e industria."
+                            image="/img/home_products/secado.jpg"
+                            href="/productos/secado"
+                            actionLabel="Ver productos"
+                        />
+                        <ProductCard
+                            title="Estufas de Esterilización"
+                            description="Equipos de alta temperatura para esterilización de material quirúrgico y de laboratorio."
+                            image="/img/home_products/esterilizacion.jpg"
                             href="/productos/esterilizacion"
-                        />
-                        <ProductCard
-                            title="Sistema BLAST"
-                            description="Estufas de aire forzado para aplicaciones que requieren alta homogeneidad y recuperación térmica rápida."
-                            image="https://placehold.co/400x300?text=BLAST"
-                            href="/productos/blast"
+                            actionLabel="Ver productos"
                         />
                     </SimpleGrid>
                     <Center mt={10}>
