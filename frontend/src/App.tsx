@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/public/Home';
 import Company from './pages/public/Company';
+import Message from './pages/public/Message';
+import FamilyCompanies from './pages/public/FamilyCompanies';
 import Products from './pages/products/Products';
 import BlastSystem from './pages/products/BlastSystem';
 import ProductDetail from './pages/products/ProductDetail';
@@ -52,6 +54,8 @@ import { RecaptchaProvider } from './providers/RecaptchaProvider';
 import ScrollToTop from './components/utils/ScrollToTop';
 import AdminNewsletter from './pages/admin/newsletter/Newsletter';
 
+import WelcomeModal from './components/features/WelcomeModal';
+
 function App() {
   const { isNewsletterOpen, onCloseNewsletter } = useUI();
 
@@ -59,22 +63,25 @@ function App() {
     <>
       <RecaptchaProvider>
         <ScrollToTop />
+        <WelcomeModal />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="empresa" element={<Company />} />
+            <Route path="mensaje" element={<Message />} />
+            <Route path="familias-empresas" element={<FamilyCompanies />} />
             <Route path="historia" element={<History />} />
-            <Route path="productos" element={<Products />} />
-            <Route path="productos/sistema-blast" element={<BlastSystem />} />
-            <Route path="productos/:category" element={<Products />} />
-            <Route path="productos/detalle/:id" element={<ProductDetail />} />
+            {/* <Route path="productos" element={<Products />} /> */}
+            {/* <Route path="productos/sistema-blast" element={<BlastSystem />} /> */}
+            {/* <Route path="productos/:category" element={<Products />} /> */}
+            {/* <Route path="productos/detalle/:id" element={<ProductDetail />} /> */}
             <Route path="/forms/:slug" element={<DynamicFormPage />} />
             <Route path="servicios" element={<Services />} />
             <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
             <Route path="servicios/tecnico" element={<ServiceRequestForm />} />
             <Route path="servicios/registro" element={<WarrantyForm type="standard" />} />
             <Route path="servicios/garantia" element={<WarrantyForm type="extension" />} />
-            <Route path="descargas" element={<Downloads />} />
+            {/* <Route path="descargas" element={<Downloads />} /> */}
             <Route path="novedades" element={<News />} />
             <Route path="novedades/:slug" element={<NewsDetail />} />
             <Route path="preguntas-frecuentes" element={<Faq />} />

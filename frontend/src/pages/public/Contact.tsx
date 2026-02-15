@@ -10,12 +10,10 @@ import {
     Input,
     Textarea,
     Button,
-    Icon,
     useColorModeValue,
     useToast,
     Select,
 } from '@chakra-ui/react';
-import { FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import api from '../../api/axios';
 
@@ -200,29 +198,11 @@ export default function Contact() {
                     {/* Contact Info */}
                     <Stack spacing={8}>
                         <Box>
-                            <Heading mb={4} color="brand.700">SAN JOR</Heading>
-                            <Text fontSize="lg" color="gray.600">
-                                Estamos a su disposición para responder consultas técnicas, comerciales o de servicio.
-                            </Text>
+                            <Heading mb={2} color="brand.700">SAN JOR</Heading>
+                            <Text fontSize="lg" color="gray.600">Joaquín V. González 1115</Text>
+                            <Text fontSize="lg" color="gray.600">B1651DJO San Martín</Text>
+                            <Text fontSize="lg" color="gray.600">Buenos Aires - Argentina</Text>
                         </Box>
-
-                        <Stack spacing={6}>
-                            <ContactItem
-                                icon={FaMapMarkerAlt}
-                                title="Dirección"
-                                text="Joaquín V. González 1115, San Martín, Bs. As."
-                            />
-                            <ContactItem
-                                icon={FaEnvelope}
-                                title="Email"
-                                text="info@sanjor.com.ar"
-                            />
-                            <ContactItem
-                                icon={FaClock}
-                                title="Horario de Atención"
-                                text="Lunes a Viernes de 8:00 a 17:00 hs"
-                            />
-                        </Stack>
 
                         {/* Google Map Embed */}
                         <Box
@@ -248,22 +228,3 @@ export default function Contact() {
         </Box>
     );
 }
-
-const ContactItem = ({ icon, title, text }: { icon: any; title: string; text: string }) => {
-    return (
-        <Stack direction="row" align="center" spacing={4}>
-            <Box
-                bg="brand.100"
-                p={3}
-                rounded="full"
-                color="brand.600"
-            >
-                <Icon as={icon} w={5} h={5} />
-            </Box>
-            <Box>
-                <Text fontWeight="bold" fontSize="sm">{title}</Text>
-                <Text color="gray.600">{text}</Text>
-            </Box>
-        </Stack>
-    );
-};

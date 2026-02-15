@@ -66,8 +66,8 @@ export default function Faq() {
                     >
                         Preguntas Frecuentes
                     </Heading>
-                    <Text fontSize={{ base: 'xl', md: '2xl' }} maxW="2xl" mx="auto" color="brand.100">
-                        Respuestas a las consultas más habituales sobre nuestros productos y servicios.
+                    <Text fontSize={{ base: 'xl', md: '2xl' }} maxW="3xl" mx="auto" color="brand.100">
+                        Respuestas a las consultas habituales sobre los equipos y servicios
                     </Text>
                 </Container>
             </Box>

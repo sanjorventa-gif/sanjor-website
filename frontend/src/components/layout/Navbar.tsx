@@ -90,7 +90,7 @@ export default function Navbar() {
                             as={RouterLink}
                             to="/"
                         >
-                            SAN JOR
+                            VICKING
                         </Text>
 
                         <Flex display={{ base: 'none', lg: 'flex' }} ml={10}>
@@ -460,52 +460,60 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-    {
-        label: 'Productos',
-        // href: '/productos', // Removed to prevent clicking
-        children: [
-            {
-                label: 'Estufas de Cultivo',
-                shortLabel: 'Cultivo',
-                href: '/productos/cultivo',
-            },
-            {
-                label: 'Estufas de Esterilización',
-                shortLabel: 'Esterilización',
-                href: '/productos/esterilizacion',
-            },
-            {
-                label: 'Estufas de Secado',
-                shortLabel: 'Secado',
-                href: '/productos/secado',
-            },
-            {
-                label: 'Buscando su Estufa ideal',
-                shortLabel: 'Buscador',
-                href: '/productos/asesor',
-            },
-            {
-                label: 'Sistema BLAST',
-                shortLabel: 'Sistema BLAST',
-                href: '/productos/sistema-blast',
-            },
-            {
-                label: 'Productos de Acero Inoxidable',
-                shortLabel: 'Acero Inoxidable',
-                href: '/productos/acero',
-            },
-        ],
-    },
+    // {
+    //     label: 'Productos',
+    //     // href: '/productos', // Removed to prevent clicking
+    //     children: [
+    //         {
+    //             label: 'Estufas de Cultivo',
+    //             shortLabel: 'Cultivo',
+    //             href: '/productos/cultivo',
+    //         },
+    //         {
+    //             label: 'Estufas de Esterilización',
+    //             shortLabel: 'Esterilización',
+    //             href: '/productos/esterilizacion',
+    //         },
+    //         {
+    //             label: 'Estufas de Secado',
+    //             shortLabel: 'Secado',
+    //             href: '/productos/secado',
+    //         },
+    //         {
+    //             label: 'Buscando su Estufa ideal',
+    //             shortLabel: 'Buscador',
+    //             href: '/productos/asesor',
+    //         },
+    //         {
+    //             label: 'Sistema BLAST',
+    //             shortLabel: 'Sistema BLAST',
+    //             href: '/productos/sistema-blast',
+    //         },
+    //         {
+    //             label: 'Productos de Acero Inoxidable',
+    //             shortLabel: 'Acero Inoxidable',
+    //             href: '/productos/acero',
+    //         },
+    //     ],
+    // },
     {
         label: 'Empresa',
         children: [
             {
-                label: 'La Empresa',
+                label: 'Acerca de',
                 href: '/empresa',
+            },
+            {
+                label: 'Mensaje',
+                href: '/mensaje',
             },
             {
                 label: 'Historia',
                 href: '/historia',
+            },
+            {
+                label: 'Familias y empresas',
+                href: '/familias-empresas',
             },
         ]
     },
@@ -518,23 +526,15 @@ const NAV_ITEMS: Array<NavItem> = [
                 href: '/servicios/tecnico',
             },
             {
-                label: 'Registro de Estufas',
-                href: '/servicios/registro',
-            },
-            {
-                label: 'Extensión de Garantía',
-                href: '/servicios/garantia',
-            },
-            {
                 label: 'Preguntas Frecuentes',
                 href: '/preguntas-frecuentes',
             },
         ],
     },
-    {
-        label: 'Descargas',
-        href: '/descargas',
-    },
+    // {
+    //     label: 'Descargas',
+    //     href: '/descargas',
+    // },
     {
         label: 'Noticias',
         href: '/novedades',

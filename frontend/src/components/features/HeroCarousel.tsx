@@ -36,11 +36,27 @@ export default function HeroCarousel() {
     useEffect(() => {
         const fetchSlides = async () => {
             try {
-                const data = await getCarouselItems();
+                const data = await getCarouselItems(); // Fetch from API
+                // Sort by ID is usually default, but let's ensure order
                 const sortedData = data.sort((a, b) => a.order - b.order);
                 setSlides(sortedData);
             } catch (error) {
                 console.error('Error fetching carousel items:', error);
+
+                // Fallback if API fails (optional, but good for robustness)
+                setSlides([
+                    {
+                        id: 1,
+                        title: "VICKING",
+                        subtitle: "Equipos médicos de alta calidad. Ahora con soporte técnico oficial de Sanjor.",
+                        image: "/images/carousel/vicking-slide-final.png",
+                        order: 1,
+                        overlay_effect: "grid",
+                        transition_effect: "fade",
+                        button_text: "Solicitar Soporte",
+                        button_link: "/servicios/tecnico",
+                    },
+                ]);
             } finally {
                 setIsLoading(false);
             }

@@ -127,7 +127,7 @@ const ServiceRequestForm = () => {
                                     Información personal
                                 </Heading>
                                 <Text fontSize="sm" color="gray.600" mb={4}>
-                                    Brindaremos, inclusive si nos contacta vía mail, el diagnóstico preciso de su Estufa. Para ello necesitamos la mayor información posible sobre el desperfecto del equipo.
+                                    Brindaremos, inclusive si nos contacta vía mail, el diagnóstico preciso de su Equipo. Para ello necesitamos la mayor información posible sobre el desperfecto del equipo.
                                 </Text>
                             </Box>
 
@@ -219,9 +219,9 @@ const ServiceRequestForm = () => {
 
                             <Box pt={4}>
                                 <Heading size="md" mb={4} color="gray.700" borderBottom="2px solid" borderColor="brand.500" pb={2} display="inline-block">
-                                    Datos de la Estufa
+                                    Datos del Equipo
                                 </Heading>
-                                <Text fontSize="sm" color="gray.500" mb={4}>(Están en la parte posterior de la Estufa)</Text>
+                                <Text fontSize="sm" color="gray.500" mb={4}>(Están en la parte posterior del Equipo)</Text>
 
                                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                                     <FormControl isRequired>
@@ -231,7 +231,7 @@ const ServiceRequestForm = () => {
                                     <FormControl>
                                         <FormLabel>N° de Serie</FormLabel>
                                         <Input {...register('serial_number')} />
-                                        <Text fontSize="xs" color="gray.500" mt={1}>Si no están estos 2 datos puede que la Estufa tenga más de 35 años.</Text>
+                                        <Text fontSize="xs" color="gray.500" mt={1}>Si no están estos 2 datos puede que el Equipo tenga más de 35 años.</Text>
                                     </FormControl>
                                 </SimpleGrid>
                             </Box>

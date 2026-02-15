@@ -45,7 +45,7 @@ export default function Services() {
                 <Container maxW={'container.xl'}>
                     <Heading mb={6} color="brand.700">Servicios y Soporte</Heading>
                     <Text fontSize="lg" color="gray.600">
-                        Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos SAN JOR.
+                        Brindamos soporte integral para asegurar el máximo rendimiento de sus equipos VICKING, con el respaldo técnico oficial de Sanjor.
                     </Text>
                 </Container>
             </Box>
@@ -66,34 +66,20 @@ export default function Services() {
                 <Container maxW={'container.xl'} position="relative" zIndex={1}>
 
 
-                    <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mb={16}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mb={16}>
                         <ServiceCard
                             icon={FaTools}
                             title="Soporte Técnico"
-                            text="Mantenimiento preventivo y correctivo realizado por especialistas."
+                            text="Mantenimiento preventivo, correctivo y repuestos originales."
                             action="Solicitar Soporte"
                             link="/servicios/tecnico"
                         />
                         <ServiceCard
-                            icon={FaShieldAlt}
-                            title="Registro de Estufas"
-                            text="Registre su nuevo equipo para validar la garantía original."
-                            action="Registrar Equipo"
-                            link="/servicios/registro"
-                        />
-                        <ServiceCard
-                            icon={FaShieldAlt}
-                            title="Extensión de Garantía"
-                            text="Amplíe la protección de su inversión extendiendo su garantía a 3 años."
-                            action="Extender Garantía"
-                            link="/servicios/garantia"
-                        />
-                        <ServiceCard
                             icon={FaQuestionCircle}
-                            title="Soporte Online"
-                            text="Resuelva dudas frecuentes y acceda a documentación técnica."
-                            action="Ver FAQ"
-                            link="/descargas"
+                            title="Preguntas Frecuentes"
+                            text="Resuelva dudas frecuentes sobre funcionamiento y mantenimiento."
+                            action="Ver FAQs"
+                            link="/preguntas-frecuentes"
                         />
                     </SimpleGrid>
 

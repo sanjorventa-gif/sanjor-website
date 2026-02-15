@@ -62,11 +62,11 @@ export default function Footer() {
                 <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8} display={{ base: 'none', md: 'grid' }}>
                     <Stack align={'flex-start'}>
                         <Text fontWeight={'bold'} fontSize={'lg'} mb={2}>
-                            SAN JOR
+                            VICKING
                         </Text>
                         <Text fontSize={'sm'}>
-                            Fabricante de estufas para laboratorio, cultivo y esterilización.
-                            Calidad y precisión desde hace más de 50 años.
+                            Equipos médicos de alta calidad.
+                            Soporte técnico oficial garantizado.
                         </Text>
                     </Stack>
 
@@ -83,9 +83,9 @@ export default function Footer() {
                         <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
                             Soporte
                         </Text>
-                        <Link as={RouterLink} to={'/servicios'}>Servicio Técnico</Link>
-                        <Link as={RouterLink} to={'/descargas'}>Manuales y Catálogos</Link>
-                        <Link as={RouterLink} to={'/servicios'}>Garantía</Link>
+                        <Link as={RouterLink} to={'/servicios/tecnico'}>Servicio Técnico</Link>
+                        {/* <Link as={RouterLink} to={'/descargas'}>Manuales y Catálogos</Link> */}
+                        {/* <Link as={RouterLink} to={'/servicios'}>Garantía</Link> */}
                     </Stack>
 
                     <Stack align={'flex-start'}>
@@ -93,7 +93,7 @@ export default function Footer() {
                             Contacto
                         </Text>
                         <Text fontSize={'sm'}>Buenos Aires, Argentina</Text>
-                        <Text fontSize={'sm'}>info@sanjor.com.ar</Text>
+                        <Text fontSize={'sm'}>info@vicking.com.ar</Text>
                     </Stack>
                 </SimpleGrid>
 
@@ -101,10 +101,10 @@ export default function Footer() {
                 <Box display={{ base: 'block', md: 'none' }}>
                     <Stack align="center" textAlign="center" mb={6}>
                         <Text fontWeight={'bold'} fontSize={'lg'} mb={2}>
-                            SAN JOR
+                            VICKING
                         </Text>
                         <Text fontSize={'sm'}>
-                            Fabricante de estufas para laboratorio, cultivo y esterilización.
+                            Equipos médicos de alta calidad. Soporte técnico oficial.
                         </Text>
                     </Stack>
 
@@ -138,9 +138,9 @@ export default function Footer() {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <Stack align="center">
-                                    <Link as={RouterLink} to={'/servicios'}>Servicio Técnico</Link>
-                                    <Link as={RouterLink} to={'/descargas'}>Manuales y Catálogos</Link>
-                                    <Link as={RouterLink} to={'/servicios'}>Garantía</Link>
+                                    <Link as={RouterLink} to={'/servicios/tecnico'}>Servicio Técnico</Link>
+                                    {/* <Link as={RouterLink} to={'/descargas'}>Manuales y Catálogos</Link> */}
+                                    {/* <Link as={RouterLink} to={'/servicios'}>Garantía</Link> */}
                                 </Stack>
                             </AccordionPanel>
                         </AccordionItem>
@@ -157,7 +157,7 @@ export default function Footer() {
                             <AccordionPanel pb={4}>
                                 <Stack align="center">
                                     <Text fontSize={'sm'}>Buenos Aires, Argentina</Text>
-                                    <Text fontSize={'sm'}>info@sanjor.com.ar</Text>
+                                    <Text fontSize={'sm'}>info@vicking.com.ar</Text>
                                 </Stack>
                             </AccordionPanel>
                         </AccordionItem>
@@ -179,7 +179,7 @@ export default function Footer() {
                     justify={{ base: 'center', md: 'space-between' }}
                     align={'center'}
                 >
-                    <Text textAlign={{ base: 'center', md: 'left' }}>© {new Date().getFullYear()} SAN JOR. Todos los derechos reservados.</Text>
+                    <Text textAlign={{ base: 'center', md: 'left' }}>© {new Date().getFullYear()} VICKING (Soporte por Sanjor). Todos los derechos reservados.</Text>
                     <Stack direction={'row'} spacing={6}>
                         <SocialButton label={'Facebook'} href={'https://www.facebook.com/sanjorenlared'}>
                             <FaFacebook />

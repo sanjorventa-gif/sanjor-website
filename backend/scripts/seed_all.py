@@ -23,8 +23,8 @@ def seed_all():
 
         # --- SEED ADMIN USER ---
         logger.info("Seeding Admin User...")
-        admin_email = "admin@sanjor.com.ar"
-        admin_password = "sanjor2024"
+        admin_email = "admin@vicking.com.ar"
+        admin_password = "vicking2024" # Updated password for consistency, user can change
         
         user = User(
             email=admin_email,
@@ -39,8 +39,8 @@ def seed_all():
 
         # --- SEED SERVICE USER ---
         logger.info("Seeding Service User...")
-        service_email = "soporte@sanjor.com.ar"
-        service_password = "sanjor2025"
+        service_email = "soporte@vicking.com.ar"
+        service_password = "vicking2025" # Updated password for consistency
         
         service_user = User(
             email=service_email,

@@ -39,13 +39,13 @@ class Settings(BaseSettings):
     BACKEND_URL: str = "http://localhost:8000"
 
     # Email
-    SMTP_HOST: str = "smtp.donweb.com" # Placeholder for DonWeb
+    SMTP_HOST: str = "mail.vicking.com.ar" # Cyberpanel Host
     SMTP_PORT: int = 465 # SSL
-    SMTP_USER: str = "info@sanjor.com.ar"
+    SMTP_USER: str = "info@vicking.com.ar"
     SMTP_PASSWORD: str = "password"
-    EMAILS_FROM_EMAIL: str = "info@sanjor.com.ar"
-    EMAILS_FROM_NAME: str = "SAN JOR"
-    EMAIL_TO_ADMIN: str = "info@sanjor.com.ar"
+    EMAILS_FROM_EMAIL: str = "info@vicking.com.ar"
+    EMAILS_FROM_NAME: str = "VICKING"
+    EMAIL_TO_ADMIN: str = "info@vicking.com.ar"
 
     class Config:
         case_sensitive = True
